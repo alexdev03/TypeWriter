@@ -5,7 +5,7 @@ import me.gabber235.typewriter.entry.entries.EntityProperty
 class ActivityManager<Context : ActivityContext>(
     private val activity: EntityActivity<in Context>,
 ) {
-    val location: LocationProperty
+    val location: TargetLocationProperty
         get() = activity.currentLocation
 
     val activeProperties: List<EntityProperty>

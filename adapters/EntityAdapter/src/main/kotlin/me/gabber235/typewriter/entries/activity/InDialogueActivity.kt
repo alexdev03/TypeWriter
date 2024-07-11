@@ -49,7 +49,7 @@ class InDialogueActivityEntry(
 ) : GenericEntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<in ActivityContext> {
         return InDialogueActivity(
             dialogueIdleDuration,
@@ -66,7 +66,7 @@ class InDialogueActivity(
     private val priority: Int,
     private val talkingActivity: Ref<out EntityActivityEntry>,
     private val idleActivity: Ref<out EntityActivityEntry>,
-    startLocation: LocationProperty,
+    startLocation: TargetLocationProperty,
 ) : SingleChildActivity<ActivityContext>(startLocation) {
     private val trackers = mutableMapOf<UUID, PlayerDialogueTracker>()
 

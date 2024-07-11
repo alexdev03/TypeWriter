@@ -40,7 +40,7 @@ class GameTimeActivityEntry(
 ) : GenericEntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<ActivityContext> {
         return GameTimeActivity(
             world,
@@ -73,7 +73,7 @@ class GameTimeActivity(
     private val world: String,
     private val activities: List<GameTimedActivity>,
     private val defaultActivity: Ref<out EntityActivityEntry>,
-    startLocation: LocationProperty,
+    startLocation: TargetLocationProperty,
 ) : SingleChildActivity<ActivityContext>(startLocation) {
     override fun currentChild(context: ActivityContext): Ref<out EntityActivityEntry> {
         val world =
