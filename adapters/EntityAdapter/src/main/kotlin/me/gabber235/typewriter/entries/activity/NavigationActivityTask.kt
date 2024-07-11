@@ -7,7 +7,6 @@ import com.extollit.gaming.ai.path.model.IPathingEntity
 import com.extollit.gaming.ai.path.model.Passibility
 import com.extollit.linalg.immutable.Vec3d
 import kotlinx.coroutines.Job
-import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.entity.*
 import me.gabber235.typewriter.entry.roadnetwork.gps.GPS
 import me.gabber235.typewriter.entry.roadnetwork.gps.GPSEdge
@@ -25,12 +24,12 @@ import kotlin.math.sin
 
 class NavigationActivity(
     gps: GPS,
-    startLocation: TargetLocationProperty,
+    startLocation: LocationProperty,
 ) : GenericEntityActivity {
     private var path: List<GPSEdge>? = null
     private var state: NavigationActivityTaskState = NavigationActivityTaskState.Searching(gps, startLocation)
 
-    override val currentLocation: TargetLocationProperty
+    override val currentLocation: LocationProperty
         get() = state.location()
 
     override fun initialize(context: ActivityContext) {}
@@ -77,14 +76,14 @@ class NavigationActivity(
 
 
 private sealed interface NavigationActivityTaskState {
-    fun location(): TargetLocationProperty
+    fun location(): LocationProperty
     fun isComplete(): Boolean = false
     fun tick(context: ActivityContext) {}
     fun dispose() {}
 
     class Searching(
         private val gps: GPS,
-        private val location: TargetLocationProperty,
+        private val location: LocationProperty,
     ) : NavigationActivityTaskState {
         internal var path: List<GPSEdge>? = null
         private val job: Job = ThreadType.DISPATCHERS_ASYNC.launch {
@@ -97,7 +96,7 @@ private sealed interface NavigationActivityTaskState {
             }
         }
 
-        override fun location(): TargetLocationProperty = location
+        override fun location(): LocationProperty = location
 
         override fun isComplete(): Boolean = path != null
 
@@ -151,7 +150,7 @@ private sealed interface NavigationActivityTaskState {
             path = navigator.initiatePathTo(edge.end.x, edge.end.y, edge.end.z)
         }
 
-        override fun location(): TargetLocationProperty = location
+        override fun location(): LocationProperty = location
 
         override fun tick(context: ActivityContext) {
             path = navigator.updatePathFor(this)
@@ -160,7 +159,7 @@ private sealed interface NavigationActivityTaskState {
 
         override fun moveTo(position: Vec3d, passibility: Passibility?, gravitation: Gravitation?) {
             val target =
-                TargetLocation(location.world, position.x, position.y, position.z, location.yaw, location.pitch)
+                LocationProperty(location.world, position.x, position.y, position.z, location.yaw, location.pitch)
 
             val velocity = calculateVelocity(target, capabilities().speed().toDouble())
             val result = calculateMovement(velocity)
@@ -171,7 +170,7 @@ private sealed interface NavigationActivityTaskState {
             location = location.copy(yaw = yaw, pitch = pitch)
         }
 
-        fun calculateVelocity(target: TargetLocation, speed: Double): Vector {
+        fun calculateVelocity(target: LocationProperty, speed: Double): Vector {
             var speed = speed
             val dx: Double = target.x - location.x
             val dy: Double = target.y - location.y

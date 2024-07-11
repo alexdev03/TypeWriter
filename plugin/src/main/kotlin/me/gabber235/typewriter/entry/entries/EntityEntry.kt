@@ -80,43 +80,43 @@ interface EntityActivityEntry : ActivityCreator, ManifestEntry
 interface SharedEntityActivityEntry : EntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: TargetLocationProperty
+        currentLocation: LocationProperty
     ): EntityActivity<ActivityContext> {
         if (context !is SharedActivityContext) throw WrongActivityContextException(context, SharedActivityContext::class, this)
         return create(context, currentLocation) as EntityActivity<ActivityContext>
     }
-    fun create(context: SharedActivityContext, currentLocation: TargetLocationProperty): EntityActivity<SharedActivityContext>
+    fun create(context: SharedActivityContext, currentLocation: LocationProperty): EntityActivity<SharedActivityContext>
 }
 
 @Tags("individual_entity_activity")
 interface IndividualEntityActivityEntry : EntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: TargetLocationProperty
+        currentLocation: LocationProperty
     ): EntityActivity<ActivityContext> {
         if (context !is IndividualActivityContext) throw WrongActivityContextException(context, IndividualActivityContext::class, this)
         return create(context, currentLocation) as EntityActivity<ActivityContext>
     }
-    fun create(context: IndividualActivityContext, currentLocation: TargetLocationProperty): EntityActivity<IndividualActivityContext>
+    fun create(context: IndividualActivityContext, currentLocation: LocationProperty): EntityActivity<IndividualActivityContext>
 }
 
 @Tags("generic_entity_activity")
 interface GenericEntityActivityEntry : SharedEntityActivityEntry, IndividualEntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: TargetLocationProperty
+        currentLocation: LocationProperty
     ): EntityActivity<ActivityContext>
 
     override fun create(
         context: SharedActivityContext,
-        currentLocation: TargetLocationProperty
+        currentLocation: LocationProperty
     ): EntityActivity<SharedActivityContext> {
         return create(context as ActivityContext, currentLocation) as EntityActivity<SharedActivityContext>
     }
 
     override fun create(
         context: IndividualActivityContext,
-        currentLocation: TargetLocationProperty
+        currentLocation: LocationProperty
     ): EntityActivity<IndividualActivityContext> {
         return create(context as ActivityContext, currentLocation) as EntityActivity<IndividualActivityContext>
     }

@@ -129,3 +129,7 @@ data class TargetLocationProperty(
 fun TargetLocation.toProperty(): TargetLocationProperty {
     return TargetLocationProperty(this)
 }
+
+fun fromBukkitLocation(location: org.bukkit.Location): TargetLocationProperty {
+    return TargetLocationProperty(location.world.name, location.x, location.y, location.z, location.yaw, location.pitch)
+}

@@ -36,7 +36,7 @@ class AudienceActivityEntry(
 ) : IndividualEntityActivityEntry {
     override fun create(
         context: IndividualActivityContext,
-        currentLocation: TargetLocationProperty
+        currentLocation: LocationProperty
     ): EntityActivity<IndividualActivityContext> {
         return AudienceActivity(activities, defaultActivity, currentLocation)
     }
@@ -50,7 +50,7 @@ class AudienceActivityPair(
 class AudienceActivity(
     private val activities: List<AudienceActivityPair>,
     private val defaultActivity: Ref<out EntityActivityEntry>,
-    startLocation: TargetLocationProperty,
+    startLocation: LocationProperty,
 ) : SingleChildActivity<IndividualActivityContext>(startLocation) {
     override fun currentChild(context: IndividualActivityContext): Ref<out EntityActivityEntry> {
         val player = context.viewer
