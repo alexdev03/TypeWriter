@@ -3,7 +3,12 @@ package me.gabber235.typewriter.entries.cinematic
 import com.github.retrooper.packetevents.protocol.entity.pose.EntityPose
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot.*
 import com.google.gson.Gson
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonSerializer
+import com.google.gson.TypeAdapter
 import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
 import io.papermc.paper.event.player.PlayerArmSwingEvent
 import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
@@ -11,6 +16,7 @@ import me.gabber235.typewriter.adapters.Tags
 import me.gabber235.typewriter.adapters.modifiers.ContentEditor
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.Segments
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.content.ContentContext
 import me.gabber235.typewriter.content.ContentMode
 import me.gabber235.typewriter.content.components.cachedInventory
@@ -114,7 +120,8 @@ class EntityCinematicAction(
             .filterValues { it != null }
             .mapValues { assetManager.fetchAsset(it.value!!) }
             .filterValues { it != null }
-            .mapValues { gson.fromJson(it.value, object : TypeToken<Tape<EntityFrame>>() {}.type) }
+            .mapValues {
+                gson.fromJson(it.value, object : TypeToken<Tape<EntityFrame>>() {}.type) }
     }
 
     override suspend fun startSegment(segment: EntityRecordedSegment, player: Player) {
@@ -131,7 +138,7 @@ class EntityCinematicAction(
         val collectedProperties = collectors.mapNotNull { it.collect(player) }
 
         this.entity?.consumeProperties(collectedProperties + firstFrame.toProperties())
-        this.entity?.spawn(TargetLocationProperty.fromLocation(startLocation))
+        this.entity?.spawn(startLocation.toProperty())
     }
 
     override suspend fun tickSegment(segment: EntityRecordedSegment, frame: Int, player: Player) {
@@ -161,7 +168,7 @@ class EntityCinematicViewing(context: ContentContext, player: Player) : ContentM
 }
 
 data class EntityFrame(
-    val location: Location?,
+    val location: TargetLocation?,
     val pose: EntityPose?,
     val swing: ArmSwing?,
 
@@ -229,7 +236,7 @@ class EntityCinematicRecording(
         val inv = player.inventory
         val pose = if (player.isInsideVehicle) Pose.SITTING else player.pose
         val data = EntityFrame(
-            location = player.location,
+            location = TargetLocation.fromLocation(player.location),
             pose = pose.toEntityPose(),
             swing = swing,
             mainHand = if (inv.itemInMainHand.isEmpty) null else inv.itemInMainHand,
@@ -244,7 +251,7 @@ class EntityCinematicRecording(
     }
 
     override fun applyState(value: EntityFrame) {
-        value.location?.let { player.teleport(it) }
+        value.location?.let { player.teleport(it.toLocation(player)) }
         value.pose?.let { player.pose = it.toBukkitPose() }
         value.swing?.let { swing ->
             when (swing) {

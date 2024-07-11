@@ -16,7 +16,7 @@ data class TargetLocation(
     var pitch: Float = 0f
 ) {
     fun world(player: Player?): World {
-        if(player!=null && world?.isNotEmpty() == true) {
+        if (player != null && world?.isNotEmpty() == true) {
             val pWorld = PlaceholderAPI.setPlaceholders(player, world!!)
             val bukkitWorld = server.getWorld(pWorld)
             if (bukkitWorld != null) {
@@ -58,10 +58,23 @@ data class TargetLocation(
     }
 
 
-}
+    companion object {
+        fun fromLocation(location: org.bukkit.Location): TargetLocation {
+            return TargetLocation(location.world.name, location.x, location.y, location.z, location.yaw, location.pitch)
+        }
 
-fun fromPlayer(player: Player): TargetLocation {
-    return TargetLocation(player.world.name, player.location.x, player.location.y, player.location.z, player.location.yaw, player.location.pitch)
+        fun fromPlayer(player: Player): TargetLocation {
+            return TargetLocation(
+                player.world.name,
+                player.location.x,
+                player.location.y,
+                player.location.z,
+                player.location.yaw,
+                player.location.pitch
+            )
+        }
+
+    }
 }
 
 

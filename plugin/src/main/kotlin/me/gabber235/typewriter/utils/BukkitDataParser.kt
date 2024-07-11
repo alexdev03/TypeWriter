@@ -1,6 +1,7 @@
 package me.gabber235.typewriter.utils
 
 import com.google.gson.*
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.logger
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -12,6 +13,7 @@ import java.util.*
 
 fun createBukkitDataParser(): Gson = GsonBuilder()
     .registerTypeAdapter(Location::class.java, LocationSerializer())
+    .registerTypeAdapter(TargetLocation::class.java, TargetLocationSerializer())
     .registerTypeHierarchyAdapter(ItemStack::class.java, ItemStackSerializer())
     .create()
 
@@ -53,3 +55,22 @@ class LocationSerializer : JsonSerializer<Location>, JsonDeserializer<Location> 
         )
     }
 }
+
+class TargetLocationSerializer : JsonSerializer<TargetLocation>, JsonDeserializer<TargetLocation> {
+    override fun serialize(src: TargetLocation, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+        return JsonPrimitive("${src.world},${src.x},${src.y},${src.z},${src.yaw},${src.pitch}")
+    }
+
+    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): TargetLocation {
+        val split = json.asString.split(",")
+        return TargetLocation(
+            split[0],
+            split[1].toDouble(),
+            split[2].toDouble(),
+            split[3].toDouble(),
+            split[4].toFloat(),
+            split[5].toFloat()
+        )
+    }
+}
+

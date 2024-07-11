@@ -40,7 +40,7 @@ abstract class WrapperFakeEntity(
         entity.entityMeta.setNotifyAboutChanges(false)
         properties.forEach {
             when (it) {
-                is LocationProperty -> {
+                is TargetLocationProperty -> {
                     entity.teleport(it.toPacketLocation())
                     entity.rotateHead(it.yaw, it.pitch)
                 }

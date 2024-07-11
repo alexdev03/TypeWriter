@@ -195,10 +195,10 @@ class PlayerEntity(
         sitEntity = null
     }
 
-    private fun sit(location: LocationProperty? = null) {
+    private fun sit(location: TargetLocationProperty? = null) {
         if (sitEntity != null) return
         sitEntity = WrapperEntity(EntityTypes.BLOCK_DISPLAY)
-        val loc = location ?: property<LocationProperty>() ?: return
+        val loc = location ?: property<TargetLocationProperty>() ?: return
         sitEntity?.spawn(loc.toPacketLocation())
         sitEntity?.addViewer(player.uniqueId)
         sitEntity?.addPassengers(this.entity)

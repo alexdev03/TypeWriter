@@ -7,9 +7,7 @@ import me.gabber235.typewriter.adapters.modifiers.WithRotation
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entity.*
 import me.gabber235.typewriter.utils.Sound
-import org.bukkit.Location
 import org.bukkit.entity.Player
-import org.checkerframework.checker.units.qual.A
 import kotlin.reflect.KClass
 
 @Tags("speaker")
