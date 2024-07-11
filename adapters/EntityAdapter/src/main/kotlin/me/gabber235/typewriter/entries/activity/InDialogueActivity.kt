@@ -7,10 +7,7 @@ import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.dialogue.currentDialogue
 import me.gabber235.typewriter.entry.dialogue.speakersInDialogue
 import me.gabber235.typewriter.entry.emptyRef
-import me.gabber235.typewriter.entry.entity.ActivityContext
-import me.gabber235.typewriter.entry.entity.EntityActivity
-import me.gabber235.typewriter.entry.entity.LocationProperty
-import me.gabber235.typewriter.entry.entity.SingleChildActivity
+import me.gabber235.typewriter.entry.entity.*
 import me.gabber235.typewriter.entry.entries.DialogueEntry
 import me.gabber235.typewriter.entry.entries.EntityActivityEntry
 import me.gabber235.typewriter.entry.entries.EntityDefinitionEntry
@@ -52,7 +49,7 @@ class InDialogueActivityEntry(
 ) : GenericEntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<in ActivityContext> {
         return InDialogueActivity(
             dialogueIdleDuration,
@@ -69,7 +66,7 @@ class InDialogueActivity(
     private val priority: Int,
     private val talkingActivity: Ref<out EntityActivityEntry>,
     private val idleActivity: Ref<out EntityActivityEntry>,
-    startLocation: LocationProperty,
+    startLocation: TargetLocationProperty,
 ) : SingleChildActivity<ActivityContext>(startLocation) {
     private val trackers = mutableMapOf<UUID, PlayerDialogueTracker>()
 

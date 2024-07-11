@@ -56,8 +56,8 @@ class TriggerSequenceAction(
 ) : SimpleCinematicAction<TriggerSequenceSegment>() {
     override val segments: List<TriggerSequenceSegment> = entry.segments
 
-    override suspend fun startSegment(segment: TriggerSequenceSegment) {
-        super.startSegment(segment)
+    override suspend fun startSegment(segment: TriggerSequenceSegment, player: Player) {
+        super.startSegment(segment, player)
 
         val entry = segment.trigger.get() ?: return
         EntryTrigger(entry) triggerFor player

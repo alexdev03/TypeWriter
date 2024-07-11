@@ -5,6 +5,9 @@ import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.Tags
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.OnlyTags
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
+import me.gabber235.typewriter.entries.data.minecraft.display.BillboardConstraintProperty
+import me.gabber235.typewriter.entries.data.minecraft.display.TranslationProperty
 import me.gabber235.typewriter.entries.entity.minecraft.PlayerEntity
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.emptyRef
@@ -53,7 +56,7 @@ class NpcInstance(
     override val id: String = "",
     override val name: String = "",
     override val definition: Ref<NpcDefinition> = emptyRef(),
-    override val spawnLocation: Location = Location(null, 0.0, 0.0, 0.0),
+    override val spawnLocation: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @OnlyTags("generic_entity_data", "living_entity_data", "lines", "player_data")
     override val data: List<Ref<EntityData<*>>> = emptyList(),
     override val activity: Ref<out SharedEntityActivityEntry> = emptyRef(),

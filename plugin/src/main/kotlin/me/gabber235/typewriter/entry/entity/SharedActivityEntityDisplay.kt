@@ -1,5 +1,6 @@
 package me.gabber235.typewriter.entry.entity
 
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.entries.AudienceFilter
 import me.gabber235.typewriter.entry.entries.EntityInstanceEntry
@@ -18,7 +19,7 @@ class SharedActivityEntityDisplay(
     override val creator: EntityCreator,
     private val activityCreators: ActivityCreator,
     private val suppliers: List<Pair<PropertySupplier<*>, Int>>,
-    private val spawnLocation: Location,
+    private val spawnLocation: TargetLocation,
 ) : AudienceFilter(ref), TickableDisplay, ActivityEntityDisplay {
     private var activityManager: ActivityManager<SharedActivityContext>? = null
     private val entities = ConcurrentHashMap<UUID, DisplayEntity>()
@@ -29,8 +30,8 @@ class SharedActivityEntityDisplay(
         return distance <= entityShowRange * entityShowRange
     }
 
-    override fun initialize() {
-        super.initialize()
+    override fun initialize(player: Player) {
+        super.initialize(player)
         val context = SharedActivityContext(ref, players)
         activityManager =
             ActivityManager(activityCreators.create(context, spawnLocation.toProperty()))

@@ -1,20 +1,21 @@
 package me.gabber235.typewriter.entry.entity
 
 import com.github.retrooper.packetevents.protocol.world.Location
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.entries.EntityProperty
 import me.gabber235.typewriter.utils.Point
 import java.util.*
 
-data class LocationProperty(
-    val world: UUID,
+data class TargetLocationProperty(
+    val world: String,
     override val x: Double,
     override val y: Double,
     override val z: Double,
     val yaw: Float,
     val pitch: Float,
 ) : EntityProperty, Point {
-    constructor(location: org.bukkit.Location) : this(
-        location.world.uid,
+    constructor(location: TargetLocation) : this(
+        location.world.toString(),
         location.x,
         location.y,
         location.z,
@@ -28,6 +29,10 @@ data class LocationProperty(
         return org.bukkit.Location(org.bukkit.Bukkit.getWorld(world), x, y, z, yaw, pitch)
     }
 
+    fun toTargetLocation(): TargetLocation {
+        return TargetLocation(world, x, y, z, yaw, pitch)
+    }
+
     fun toPacketLocation(): Location {
         return Location(x, y, z, yaw, pitch)
     }
@@ -36,18 +41,18 @@ data class LocationProperty(
         return org.bukkit.util.Vector(x, y, z)
     }
 
-    fun distanceSqrt(other: LocationProperty): Double? {
+    fun distanceSqrt(other: TargetLocationProperty): Double? {
         if (world != other.world) return null
         return toVector().distanceSquared(other.toVector())
     }
 
     fun distanceSqrt(other: org.bukkit.Location): Double? {
-        if (world != other.world.uid) return null
+        if (world != other.world.name) return null
         return toVector().distanceSquared(other.toVector())
     }
 
     // Returns the x, z centered location
-    fun mid(): LocationProperty {
+    fun mid(): TargetLocationProperty {
         return copy(x = x.toInt() + 0.5, y = y.toInt().toDouble(), z = z.toInt() + 0.5)
     }
 
@@ -57,7 +62,7 @@ data class LocationProperty(
 
     override fun withZ(z: Double): Point = copy(z = z)
 
-    override fun add(x: Double, y: Double, z: Double): LocationProperty {
+    override fun add(x: Double, y: Double, z: Double): TargetLocationProperty {
         return copy(x = this.x + x, y = this.y + y, z = this.z + z)
     }
 
@@ -96,8 +101,6 @@ data class LocationProperty(
     override fun div(value: Double) = div(value, value, value)
 }
 
-fun org.bukkit.Location.toProperty(): LocationProperty {
-    return LocationProperty(this)
+fun TargetLocation.toProperty(): TargetLocationProperty {
+    return TargetLocationProperty(this)
 }
-
-

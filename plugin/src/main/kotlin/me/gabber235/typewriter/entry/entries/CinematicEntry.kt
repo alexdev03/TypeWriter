@@ -60,12 +60,12 @@ interface CinematicAction {
      * When the same action is used for recording, it may be that previous frames are played back.
      * If this is not possible, create a new action for recording!
      */
-    suspend fun tick(frame: Int) {}
+    suspend fun tick(frame: Int, player: Player) {}
 
     /**
      * Called when the cinematic is finished
      */
-    suspend fun teardown() {}
+    suspend fun teardown(player: Player) {}
 
     /**
      * Common use case
@@ -86,7 +86,7 @@ fun List<CinematicAction>.maxFrame(): Int {
 
 object EmptyCinematicAction : CinematicAction {
     override suspend fun setup() {}
-    override suspend fun tick(frame: Int) {}
-    override suspend fun teardown() {}
+    override suspend fun tick(frame: Int, player: Player) {}
+    override suspend fun teardown(player: Player) {}
     override fun canFinish(frame: Int): Boolean = false
 }

@@ -51,22 +51,22 @@ class BlindingCinematicAction(
 ) : SimpleCinematicAction<BlindingSegment>() {
     override val segments: List<BlindingSegment> = entry.segments
 
-    override suspend fun tickSegment(segment: BlindingSegment, frame: Int) {
-        super.tickSegment(segment, frame)
+    override suspend fun tickSegment(segment: BlindingSegment, frame: Int, player: Player) {
+        super.tickSegment(segment, frame, player)
 
         val packet = WrapperPlayServerChangeGameState(WrapperPlayServerChangeGameState.Reason.WIN_GAME, 1f)
         packet.sendPacketTo(player)
     }
 
-    override suspend fun stopSegment(segment: BlindingSegment) {
-        super.stopSegment(segment)
+    override suspend fun stopSegment(segment: BlindingSegment, player: Player) {
+        super.stopSegment(segment, player)
         val packet = WrapperPlayServerCloseWindow(0)
         packet.sendPacketTo(player)
     }
 
 
-    override suspend fun teardown() {
-        super.teardown()
+    override suspend fun teardown(player: Player) {
+        super.teardown(player)
         val packet = WrapperPlayServerCloseWindow(0)
         packet.sendPacketTo(player)
     }

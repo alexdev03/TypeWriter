@@ -70,7 +70,7 @@ abstract class AudienceDisplay : Listener {
         return AudienceDisplayState.NOT_CONSIDERED
     }
 
-    open fun initialize() {
+    open fun initialize(player: Player) {
         if (isActive) return
         isActive = true
         server.pluginManager.registerEvents(this, plugin)
@@ -84,7 +84,7 @@ abstract class AudienceDisplay : Listener {
     }
 
     fun addPlayer(player: Player) {
-        if (playerIds.isEmpty()) initialize()
+        if (playerIds.isEmpty()) initialize(player)
         if (!playerIds.add(player.uniqueId)) return
         onPlayerAdd(player)
     }

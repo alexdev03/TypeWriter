@@ -5,6 +5,7 @@ import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.Tags
 import me.gabber235.typewriter.adapters.modifiers.OnlyTags
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entries.data.minecraft.applyGenericEntityData
 import me.gabber235.typewriter.entries.data.minecraft.display.applyDisplayEntityData
 import me.gabber235.typewriter.entries.data.minecraft.display.text.*
@@ -51,7 +52,7 @@ class TextDisplayInstance(
     override val id: String = "",
     override val name: String = "",
     override val definition: Ref<TextDisplayDefinition> = emptyRef(),
-    override val spawnLocation: Location = Location(null, 0.0, 0.0, 0.0),
+    override val spawnLocation: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @OnlyTags("generic_entity_data", "display_data", "lines", "text_display_data")
     override val data: List<Ref<EntityData<*>>> = emptyList(),
     override val activity: Ref<out SharedEntityActivityEntry> = emptyRef(),

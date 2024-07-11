@@ -36,12 +36,32 @@ interface FactEntry : StaticEntry {
 
         return FactId(id, groupId)
     }
+
+    fun identifier(uuid: UUID): FactId? {
+        val entry = group.get()
+
+        val groupId = if (entry != null) {
+            // If the player is not in an group, we don't want to do anything with this fact
+//            entry.groupId(uuid) ?: return null
+            return null
+        } else {
+            // If no group entry is set, we assume that the player is the group for backwards compatibility
+            GroupId(uuid)
+        }
+
+        return FactId(id, groupId)
+    }
 }
 
 @Tags("readable-fact")
 interface ReadableFactEntry : FactEntry, PlaceholderEntry {
     fun readForPlayersGroup(player: Player): FactData {
         val factId = identifier(player) ?: return FactData(0)
+        return readForGroup(factId.groupId)
+    }
+
+    fun readForPlayersGroup(uuid: UUID): FactData {
+        val factId = identifier(uuid) ?: return FactData(0)
         return readForGroup(factId.groupId)
     }
 
@@ -74,7 +94,15 @@ interface WritableFactEntry : FactEntry {
         write(factId, value)
     }
 
-    fun write(id: FactId, value: Int)
+    fun write(uuid: UUID, value: Int) {
+        val factId = identifier(uuid) ?: return
+        write(factId, value)
+    }
+
+    fun write(id: FactId, value: Int) {
+        val factDatabase: FactDatabase = get(FactDatabase::class.java)
+        factDatabase.getRedis().saveFact(id, FactData(value))
+    }
 }
 
 @Tags("cachable-fact")

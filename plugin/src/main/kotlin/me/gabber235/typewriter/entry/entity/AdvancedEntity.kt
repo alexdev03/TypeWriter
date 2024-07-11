@@ -2,6 +2,7 @@ package me.gabber235.typewriter.entry.entity
 
 import me.gabber235.typewriter.adapters.Tags
 import me.gabber235.typewriter.adapters.modifiers.Help
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.descendants
 import me.gabber235.typewriter.entry.entries.*
@@ -60,7 +61,7 @@ interface IndividualAdvancedEntityInstance : EntityInstanceEntry {
 
 private fun EntityInstanceEntry.toAdvancedEntityDisplay(
     activityCreator: ActivityCreator,
-    creator: (Ref<out EntityInstanceEntry>, EntityDefinitionEntry, ActivityCreator, List<Pair<EntityData<*>, Int>>, Location) -> AudienceFilter,
+    creator: (Ref<out EntityInstanceEntry>, EntityDefinitionEntry, ActivityCreator, List<Pair<EntityData<*>, Int>>, TargetLocation) -> AudienceFilter,
 ): AudienceFilter {
     val definition = definition.get()
     if (definition == null) {

@@ -5,10 +5,7 @@ import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.emptyRef
-import me.gabber235.typewriter.entry.entity.EntityActivity
-import me.gabber235.typewriter.entry.entity.IndividualActivityContext
-import me.gabber235.typewriter.entry.entity.LocationProperty
-import me.gabber235.typewriter.entry.entity.SingleChildActivity
+import me.gabber235.typewriter.entry.entity.*
 import me.gabber235.typewriter.entry.entries.AudienceEntry
 import me.gabber235.typewriter.entry.entries.EntityActivityEntry
 import me.gabber235.typewriter.entry.entries.IndividualEntityActivityEntry
@@ -39,7 +36,7 @@ class AudienceActivityEntry(
 ) : IndividualEntityActivityEntry {
     override fun create(
         context: IndividualActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<IndividualActivityContext> {
         return AudienceActivity(activities, defaultActivity, currentLocation)
     }
@@ -53,7 +50,7 @@ class AudienceActivityPair(
 class AudienceActivity(
     private val activities: List<AudienceActivityPair>,
     private val defaultActivity: Ref<out EntityActivityEntry>,
-    startLocation: LocationProperty,
+    startLocation: TargetLocationProperty,
 ) : SingleChildActivity<IndividualActivityContext>(startLocation) {
     override fun currentChild(context: IndividualActivityContext): Ref<out EntityActivityEntry> {
         val player = context.viewer

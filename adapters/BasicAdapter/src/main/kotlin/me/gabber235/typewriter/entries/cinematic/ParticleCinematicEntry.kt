@@ -5,6 +5,7 @@ import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.Negative
 import me.gabber235.typewriter.adapters.modifiers.Segments
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.entries.*
 import org.bukkit.Location
@@ -26,7 +27,7 @@ class ParticleCinematicEntry(
     override val name: String = "",
     override val criteria: List<Criteria> = emptyList(),
     @Help("The location to spawn the particles at.")
-    val location: Location = Location(null, 0.0, 0.0, 0.0),
+    val location: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @Help("The particle to spawn.")
     val particle: Particle = Particle.FLAME,
     @Help("The amount of particles to spawn.")
@@ -64,13 +65,13 @@ class ParticleCinematicAction(
     private val player: Player,
     private val entry: ParticleCinematicEntry,
 ) : CinematicAction {
-    override suspend fun tick(frame: Int) {
-        super.tick(frame)
+    override suspend fun tick(frame: Int, player: Player) {
+        super.tick(frame, player)
         (entry.segments activeSegmentAt frame) ?: return
 
         player.spawnParticle(
             entry.particle,
-            entry.location,
+            entry.location.toLocation(player),
             entry.count,
             entry.offsetX,
             entry.offsetY,

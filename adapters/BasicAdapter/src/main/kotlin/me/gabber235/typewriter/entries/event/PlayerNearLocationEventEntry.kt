@@ -5,6 +5,7 @@ import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.Min
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entries.EmptyTrigger
 import me.gabber235.typewriter.entry.entries.EventEntry
@@ -27,7 +28,7 @@ class PlayerNearLocationEventEntry(
     override val name: String = "",
     override val triggers: List<Ref<TriggerableEntry>> = emptyList(),
     @Help("The location the player should be near.")
-    val location: Location = Location(null, 0.0, 0.0, 0.0),
+    val location: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @Help("The range within which the event should trigger.")
     @Min(1)
     val range: Double = 1.0
@@ -40,9 +41,9 @@ fun onPlayerNearLocation(event: PlayerMoveEvent, query: Query<PlayerNearLocation
 
     query findWhere { entry ->
         !event.from.blockLocation.isInRange(
-            entry.location,
+            entry.location.toLocation(event.player),
             entry.range
-        ) && event.to.blockLocation.isInRange(entry.location, entry.range)
+        ) && event.to.blockLocation.isInRange(entry.location.toLocation(event.player), entry.range)
     } triggerAllFor event.player
 }
 

@@ -6,14 +6,12 @@ import io.lumine.mythic.bukkit.MythicBukkit
 import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
-import me.gabber235.typewriter.adapters.modifiers.Placeholder
 import me.gabber235.typewriter.adapters.modifiers.WithRotation
 import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.Modifier
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.TriggerableEntry
 import me.gabber235.typewriter.entry.entries.ActionEntry
-import me.gabber235.typewriter.extensions.placeholderapi.parsePlaceholders
 import me.gabber235.typewriter.plugin
 import me.gabber235.typewriter.utils.ThreadType.SYNC
 import org.bukkit.Location
@@ -43,7 +41,7 @@ class SpawnMobActionEntry(
     private val onlyVisibleForPlayer: Boolean = false,
     @Help("The mob's spawn location")
     @WithRotation
-    private var spawnLocation: Location,
+    private var spawnLocation: TargetLocation,
 ) : ActionEntry {
     override fun execute(player: Player) {
         super.execute(player)
@@ -52,7 +50,7 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         SYNC.launch {
-            mob.get().spawn(BukkitAdapter.adapt(spawnLocation), level, SpawnReason.OTHER) {
+            mob.get().spawn(BukkitAdapter.adapt(spawnLocation.toLocation(player)), level, SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false
                     player.showEntity(plugin, it)

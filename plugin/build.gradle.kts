@@ -28,9 +28,12 @@ repositories {
     // Floodgate
     maven("https://repo.opencollab.dev/maven-snapshots/")
     // PacketEvents, CommandAPI
+    maven("https://repo.codemc.io/repository/maven-snapshots/")
     maven("https://repo.codemc.io/repository/maven-releases/")
     // PlaceholderAPI
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    // Floodgate
+    maven("https://repo.opencollab.dev/maven-snapshots/")
     // PaperMC
     maven("https://repo.papermc.io/repository/maven-public/")
     // EntityLib
@@ -42,13 +45,14 @@ val centralDependencies = listOf(
     "org.jetbrains.kotlin:kotlin-reflect:2.0.0",
     "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC",
     "com.corundumstudio.socketio:netty-socketio:1.7.19", // Keep this on a lower version as the newer version breaks the ping
+    "io.lettuce:lettuce-core:6.3.2.RELEASE"
 )
 
 dependencies {
     for (dependency in centralDependencies) {
         compileOnlyApi(dependency)
     }
-    compileOnlyApi("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    compileOnlyApi("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
     api("com.github.Tofaa2.EntityLib:spigot:2.4.9-SNAPSHOT")
     api("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.17.0")

@@ -104,7 +104,7 @@ data class CameraSegment(
 
 data class PathPoint(
     @WithRotation
-    val location: Location = Location(null, 0.0, 0.0, 0.0),
+    val location: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @Help("The duration of the path point in frames.")
     /**
      * The duration of the path point in frames.
@@ -135,20 +135,20 @@ class CameraCinematicAction(
         super.setup()
     }
 
-    override suspend fun tick(frame: Int) {
-        super.tick(frame)
+    override suspend fun tick(frame: Int, player: Player) {
+        super.tick(frame, player)
 
         val segment = (entry.segments activeSegmentAt frame)
 
         if (segment != previousSegment) {
             if (previousSegment == null && segment != null) {
                 player.setup()
-                action.startSegment(segment)
+                action.startSegment(segment, player)
             } else if (segment != null) {
-                action.switchSegment(segment)
+                action.switchSegment(segment, player)
             } else {
                 action.stop()
-                player.teardown()
+                player.teardown2()
             }
 
             previousSegment = segment
@@ -156,7 +156,7 @@ class CameraCinematicAction(
 
         if (segment != null) {
             val baseFrame = frame - segment.startFrame
-            action.tickSegment(baseFrame)
+            action.tickSegment(baseFrame, player)
         }
     }
 
@@ -235,7 +235,7 @@ class CameraCinematicAction(
         }
     }
 
-    private suspend fun Player.teardown() {
+    private suspend fun Player.teardown2() {
         listener?.unregister()
         listener = null
         interceptor?.cancel()
@@ -251,11 +251,11 @@ class CameraCinematicAction(
         originalState = null
     }
 
-    override suspend fun teardown() {
-        super.teardown()
-        action.stop()
-        player.teardown()
-    }
+//    override suspend fun teardown(player: Player) {
+//        super.teardown(player)
+//        action.stop()
+//        player.teardown()
+//    }
 
     override fun canFinish(frame: Int): Boolean = entry.segments canFinishAt frame
 }
@@ -291,9 +291,9 @@ private data class PointSegment(
 ) : Segment
 
 private interface CameraAction {
-    suspend fun startSegment(segment: CameraSegment)
-    suspend fun tickSegment(frame: Int)
-    suspend fun switchSegment(newSegment: CameraSegment)
+    suspend fun startSegment(segment: CameraSegment, player: Player)
+    suspend fun tickSegment(frame: Int, player: Player)
+    suspend fun switchSegment(newSegment: CameraSegment, player: Player)
     suspend fun stop()
 }
 
@@ -314,16 +314,16 @@ private class DisplayCameraAction(
             }
     }
 
-    private fun setupPath(segment: CameraSegment) {
-        path = segment.path.transform(segment.duration - BASE_INTERPOLATION) {
+    private fun setupPath(segment: CameraSegment, player: Player) {
+        path = segment.path.transform(segment.duration - BASE_INTERPOLATION, {
             it.clone().apply {
                 y += player.eyeHeight
             }
-        }
+        }, player)
     }
 
-    override suspend fun startSegment(segment: CameraSegment) {
-        setupPath(segment)
+    override suspend fun startSegment(segment: CameraSegment, player: Player) {
+        setupPath(segment, player)
 
         SYNC.switchContext {
             player.teleport(path.first().location)
@@ -334,18 +334,18 @@ private class DisplayCameraAction(
         player.spectateEntity(entity)
     }
 
-    override suspend fun tickSegment(frame: Int) {
+    override suspend fun tickSegment(frame: Int, player: Player) {
         val location = path.interpolate(frame)
         entity.rotateHead(location.yaw, location.pitch)
         entity.teleport(location.toPacketLocation())
         player.teleportIfNeeded(frame, location)
     }
 
-    override suspend fun switchSegment(newSegment: CameraSegment) {
+    override suspend fun switchSegment(newSegment: CameraSegment, player: Player) {
         val oldWorld = path.first().location.world.uid
-        val newWorld = newSegment.path.first().location.world.uid
+        val newWorld = newSegment.path.first().location.world(player).uid
 
-        setupPath(newSegment)
+        setupPath(newSegment, player)
         if (oldWorld == newWorld) {
             switchSeamless()
         } else {
@@ -391,11 +391,15 @@ private class TeleportCameraAction(
 ) : CameraAction {
     private var path = emptyList<PointSegment>()
 
-    override suspend fun startSegment(segment: CameraSegment) {
-        path = segment.path.transform(segment.duration, Location::clone)
+    override suspend fun startSegment(segment: CameraSegment, player: Player) {
+        path = segment.path.transform(segment.duration, {
+            it.clone().apply {
+                y += player.eyeHeight
+            }
+        }, player)
     }
 
-    override suspend fun tickSegment(frame: Int) {
+    override suspend fun tickSegment(frame: Int, player: Player) {
         val location = path.interpolate(frame)
         SYNC.switchContext {
             player.teleport(location)
@@ -404,8 +408,8 @@ private class TeleportCameraAction(
         }
     }
 
-    override suspend fun switchSegment(newSegment: CameraSegment) {
-        path = newSegment.path.transform(newSegment.duration, Location::clone)
+    override suspend fun switchSegment(newSegment: CameraSegment, player: Player) {
+        path = newSegment.path.transform(newSegment.duration, Location::clone, player)
     }
 
     override suspend fun stop() {
@@ -418,18 +422,30 @@ class SimulatedCameraCinematicAction(
 ) : SimpleCinematicAction<CameraSegment>() {
     override val segments: List<CameraSegment> = entry.segments
 
-    private val paths = entry.segments.associateWith { segment ->
-        segment.path.transform(segment.duration) {
-            it.clone().apply {
-                y += player.eyeHeight
-            }
+    private val paths = emptyMap<CameraSegment, List<PointSegment>>().toMutableMap()
+
+    private fun setupPaths(player: Player) {
+        paths.clear()
+//        entry.segments.forEach { segment ->
+//            paths.addAll(segment.path.transform(segment.duration, {
+//                it.clone().apply {
+//                    y += player.eyeHeight
+//                }
+//            }, player))
+//        }
+        entry.segments.forEach { segment ->
+            paths[segment] = segment.path.transform(segment.duration, {
+                it.clone().apply {
+                    y += player.eyeHeight
+                }
+            }, player)
         }
     }
 
     private var entity: WrapperEntity? = null
 
-    override suspend fun startSegment(segment: CameraSegment) {
-        super.startSegment(segment)
+    override suspend fun startSegment(segment: CameraSegment, player: Player) {
+        super.startSegment(segment, player)
         entity?.despawn()
         entity?.remove()
         entity = WrapperEntity(EntityTypes.ITEM_DISPLAY)
@@ -440,21 +456,22 @@ class SimulatedCameraCinematicAction(
                     applySkinUrl("https://textures.minecraft.net/texture/427066e899358b1185460f867fc6dc434c7b4c82fbe70e1919ce74b8bacf80a1")
                 })
             }
+        setupPaths(player)
         val path = paths[segment] ?: return
         val location = path.interpolate(lastFrame - segment.startFrame)
         entity?.spawn(location.toPacketLocation().apply { yaw += 180; pitch = -pitch })
         entity?.addViewer(player.uniqueId)
     }
 
-    override suspend fun tickSegment(segment: CameraSegment, frame: Int) {
-        super.tickSegment(segment, frame)
+    override suspend fun tickSegment(segment: CameraSegment, frame: Int, player: Player) {
+        super.tickSegment(segment, frame, player)
         val path = paths[segment] ?: return
         val location = path.interpolate(frame - segment.startFrame)
         entity?.teleport(location.toPacketLocation().apply { yaw += 180; pitch = -pitch })
     }
 
-    override suspend fun stopSegment(segment: CameraSegment) {
-        super.stopSegment(segment)
+    override suspend fun stopSegment(segment: CameraSegment, player: Player) {
+        super.stopSegment(segment, player)
         entity?.despawn()
         entity?.remove()
         entity = null
@@ -465,7 +482,8 @@ class SimulatedCameraCinematicAction(
 
 private fun List<PathPoint>.transform(
     totalDuration: Int,
-    locationTransformer: (Location) -> Location
+    locationTransformer: (Location) -> Location,
+    player: Player
 ): List<PointSegment> {
     if (isEmpty()) {
         throw IllegalArgumentException("The path points cannot be empty.")
@@ -473,7 +491,7 @@ private fun List<PathPoint>.transform(
 
     if (size == 1) {
         val pathPoint = first()
-        val location = pathPoint.location.run(locationTransformer)
+        val location = pathPoint.location.toLocation(player).run(locationTransformer)
         return listOf(PointSegment(0, totalDuration, location))
     }
 
@@ -496,7 +514,8 @@ private fun List<PathPoint>.transform(
         var currentFrame = 0
         return map {
             val endFrame = currentFrame + it.duration.orElse(0)
-            val segment = PointSegment(currentFrame, endFrame, it.location.run(locationTransformer))
+            val segment =
+                PointSegment(currentFrame, endFrame, it.location.toLocation(player).run(locationTransformer))
             currentFrame = endFrame
             segment
         }
@@ -517,7 +536,8 @@ private fun List<PathPoint>.transform(
             }
         }
         val endFrame = currentFrame + duration
-        val segment = PointSegment(currentFrame, endFrame, pathPoint.location.run(locationTransformer))
+        val segment =
+            PointSegment(currentFrame, endFrame, pathPoint.location.toLocation(player).run(locationTransformer))
         currentFrame = endFrame
         segment
     }

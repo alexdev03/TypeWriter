@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.adapters.modifiers.WithRotation
 import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.Modifier
@@ -32,11 +33,11 @@ class TeleportActionEntry(
     override val customTriggers: List<Ref<TriggerableEntry>>,
     @WithRotation
     @Help("The location to teleport the player to.")
-    val location: Location = Location(null, 0.0, 0.0, 0.0),
+    val location: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
 ) : CustomTriggeringActionEntry {
     override fun execute(player: Player) {
         SYNC.launch {
-            player.teleport(location)
+            player.teleport(location.toLocation(player))
             super.execute(player)
             player.triggerCustomTriggers()
         }

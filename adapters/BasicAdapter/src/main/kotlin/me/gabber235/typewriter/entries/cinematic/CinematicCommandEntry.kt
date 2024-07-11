@@ -97,8 +97,8 @@ class CommandAction(
 ) : SimpleCinematicAction<CommandSegment>() {
     override val segments: List<CommandSegment> = entry.segments
 
-    override suspend fun startSegment(segment: CommandSegment) {
-        super.startSegment(segment)
+    override suspend fun startSegment(segment: CommandSegment, player: Player) {
+        super.startSegment(segment, player)
         SYNC.switchContext {
             val commands = segment.command.parsePlaceholders(player).lines()
             commands.forEach(run)

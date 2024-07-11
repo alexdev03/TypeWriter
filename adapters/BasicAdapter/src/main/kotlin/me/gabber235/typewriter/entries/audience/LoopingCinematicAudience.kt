@@ -9,6 +9,7 @@ import me.gabber235.typewriter.entry.entries.*
 import me.gabber235.typewriter.entry.matches
 import me.gabber235.typewriter.logger
 import me.gabber235.typewriter.utils.ThreadType
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -118,13 +119,13 @@ private class CinematicDisplay(
         if (!hasSetupCompleted) return
         frame++
         ThreadType.DISPATCHERS_ASYNC.launch {
-            actions.forEach { it.tick(frame) }
+            actions.forEach { it.tick(frame, Bukkit.getOnlinePlayers().stream().findAny().get()) }
         }
     }
 
     fun teardown() {
         ThreadType.DISPATCHERS_ASYNC.launch {
-            actions.forEach { it.teardown() }
+            actions.forEach { it.teardown(Bukkit.getOnlinePlayers().stream().findAny().get()) }
         }
     }
 }

@@ -2,6 +2,7 @@ package me.gabber235.typewriter.entry.entries
 
 import me.gabber235.typewriter.adapters.Tags
 import me.gabber235.typewriter.adapters.modifiers.Help
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.adapters.modifiers.WithRotation
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entity.*
@@ -69,7 +70,7 @@ interface EntityInstanceEntry : AudienceFilterEntry {
     val definition: Ref<out EntityDefinitionEntry>
 
     @WithRotation
-    val spawnLocation: Location
+    val spawnLocation: TargetLocation
 }
 
 @Tags("entity_activity")
@@ -79,43 +80,43 @@ interface EntityActivityEntry : ActivityCreator, ManifestEntry
 interface SharedEntityActivityEntry : EntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<ActivityContext> {
         if (context !is SharedActivityContext) throw WrongActivityContextException(context, SharedActivityContext::class, this)
         return create(context, currentLocation) as EntityActivity<ActivityContext>
     }
-    fun create(context: SharedActivityContext, currentLocation: LocationProperty): EntityActivity<SharedActivityContext>
+    fun create(context: SharedActivityContext, currentLocation: TargetLocationProperty): EntityActivity<SharedActivityContext>
 }
 
 @Tags("individual_entity_activity")
 interface IndividualEntityActivityEntry : EntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<ActivityContext> {
         if (context !is IndividualActivityContext) throw WrongActivityContextException(context, IndividualActivityContext::class, this)
         return create(context, currentLocation) as EntityActivity<ActivityContext>
     }
-    fun create(context: IndividualActivityContext, currentLocation: LocationProperty): EntityActivity<IndividualActivityContext>
+    fun create(context: IndividualActivityContext, currentLocation: TargetLocationProperty): EntityActivity<IndividualActivityContext>
 }
 
 @Tags("generic_entity_activity")
 interface GenericEntityActivityEntry : SharedEntityActivityEntry, IndividualEntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<ActivityContext>
 
     override fun create(
         context: SharedActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<SharedActivityContext> {
         return create(context as ActivityContext, currentLocation) as EntityActivity<SharedActivityContext>
     }
 
     override fun create(
         context: IndividualActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<IndividualActivityContext> {
         return create(context as ActivityContext, currentLocation) as EntityActivity<IndividualActivityContext>
     }

@@ -3,6 +3,7 @@ package me.gabber235.typewriter.entries.action
 import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.Modifier
 import me.gabber235.typewriter.entry.Ref
@@ -35,13 +36,13 @@ class SetBlockActionEntry(
     @Help("The material of the block to set.")
     val material: Material = Material.AIR,
     @Help("The location to set the block at.")
-    val location: Location = Location(null, 0.0, 0.0, 0.0),
+    val location: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
 ) : ActionEntry {
     override fun execute(player: Player) {
         super.execute(player)
 
         SYNC.launch {
-            location.block.type = material
+            location.toLocation(player).block.type = material
         }
     }
 }

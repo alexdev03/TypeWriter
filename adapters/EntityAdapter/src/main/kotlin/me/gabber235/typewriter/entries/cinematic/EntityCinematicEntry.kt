@@ -119,8 +119,8 @@ class EntityCinematicAction(
             .mapValues { gson.fromJson(it.value, object : TypeToken<Tape<EntityFrame>>() {}.type) }
     }
 
-    override suspend fun startSegment(segment: EntityRecordedSegment) {
-        super.startSegment(segment)
+    override suspend fun startSegment(segment: EntityRecordedSegment, player: Player) {
+        super.startSegment(segment, player)
         val recording = recordings[segment.artifact.id] ?: return
         val definition = entry.definition.get() ?: return
         this.entity = definition.create(player)
@@ -136,8 +136,8 @@ class EntityCinematicAction(
         this.entity?.spawn(startLocation.toProperty())
     }
 
-    override suspend fun tickSegment(segment: EntityRecordedSegment, frame: Int) {
-        super.tickSegment(segment, frame)
+    override suspend fun tickSegment(segment: EntityRecordedSegment, frame: Int, player: Player) {
+        super.tickSegment(segment, frame, player)
         val relativeFrame = frame - segment.startFrame
         val recording = recordings[segment.artifact.id] ?: return
         val frameData = recording.getFrame(relativeFrame) ?: return
@@ -145,8 +145,8 @@ class EntityCinematicAction(
         this.entity?.consumeProperties(collectedProperties + frameData.toProperties())
     }
 
-    override suspend fun stopSegment(segment: EntityRecordedSegment) {
-        super.stopSegment(segment)
+    override suspend fun stopSegment(segment: EntityRecordedSegment, player: Player) {
+        super.stopSegment(segment, player)
         this.entity?.dispose()
         this.entity = null
     }

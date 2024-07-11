@@ -5,6 +5,7 @@ import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.Tags
 import me.gabber235.typewriter.adapters.modifiers.OnlyTags
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entries.data.minecraft.applyGenericEntityData
 import me.gabber235.typewriter.entries.data.minecraft.living.*
 import me.gabber235.typewriter.entries.data.minecraft.living.piglin.DancingProperty
@@ -53,7 +54,7 @@ class PiglinInstance(
     override val id: String = "",
     override val name: String = "",
     override val definition: Ref<PiglinDefinition> = emptyRef(),
-    override val spawnLocation: Location = Location(null, 0.0, 0.0, 0.0),
+    override val spawnLocation: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @OnlyTags(
         "generic_entity_data",
         "living_entity_data",

@@ -32,14 +32,14 @@ class LookCloseActivityEntry(
 ) : GenericEntityActivityEntry {
     override fun create(
         context: ActivityContext,
-        currentLocation: LocationProperty
+        currentLocation: TargetLocationProperty
     ): EntityActivity<in ActivityContext> {
         return LookCloseActivity(currentLocation)
     }
 }
 
 class LookCloseActivity(
-    override var currentLocation: LocationProperty,
+    override var currentLocation: TargetLocationProperty,
 ) : EntityActivity<ActivityContext> {
     private var target: Target? = null
     private val yawVelocity = Velocity(0f)
@@ -93,7 +93,7 @@ class LookCloseActivity(
         )
 
         currentLocation =
-            LocationProperty(currentLocation.world, currentLocation.x, currentLocation.y, currentLocation.z, yaw, pitch)
+            TargetLocationProperty(currentLocation.world, currentLocation.x, currentLocation.y, currentLocation.z, yaw, pitch)
         return TickResult.CONSUMED
     }
 

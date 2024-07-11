@@ -6,6 +6,7 @@ import lirand.api.extensions.inventory.meta
 import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.Modifier
 import me.gabber235.typewriter.entry.Ref
@@ -43,7 +44,7 @@ class FireworkActionEntry(
     override val criteria: List<Criteria> = emptyList(),
     override val modifiers: List<Modifier> = emptyList(),
     @Help("The location to spawn the firework.")
-    val location: Location = Location(null, 0.0, 0.0, 0.0),
+    val location: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @Help("The effects to display on the firework.")
     val effects: List<FireworkEffectConfig> = emptyList(),
     @Help("The power of the firework.")
@@ -66,7 +67,7 @@ class FireworkActionEntry(
         }
         val entity = WrapperEntity(entityId, uuid, EntityTypes.FIREWORK_ROCKET, meta)
         entity.addViewer(player.uniqueId)
-        entity.spawn(location.toPacketLocation())
+        entity.spawn(location.toLocation(player).toPacketLocation())
         WrapperPlayServerEntityStatus(entityId, FIREWORK_EXPLOSION_STATUS) sendPacketTo player
         entity.despawn()
     }

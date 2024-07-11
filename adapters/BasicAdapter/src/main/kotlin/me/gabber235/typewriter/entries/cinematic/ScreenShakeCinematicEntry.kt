@@ -50,8 +50,8 @@ class ScreenShakeCinematicAction(
     private val entry: ScreenShakeCinematicEntry,
 ) : CinematicAction {
 
-    override suspend fun tick(frame: Int) {
-        super.tick(frame)
+    override suspend fun tick(frame: Int, player: Player) {
+        super.tick(frame, player)
 
         val segment = (entry.segments activeSegmentAt frame) ?: return
         val baseFrame = frame - segment.startFrame

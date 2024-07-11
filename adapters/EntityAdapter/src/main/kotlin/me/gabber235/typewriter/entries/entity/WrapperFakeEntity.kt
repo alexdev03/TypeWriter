@@ -53,7 +53,7 @@ abstract class WrapperFakeEntity(
 
     abstract fun applyProperty(property: EntityProperty)
 
-    override fun spawn(location: LocationProperty) {
+    override fun spawn(location: TargetLocationProperty) {
         entity.spawn(location.toPacketLocation())
         entity.addViewer(player.uniqueId)
         super.spawn(location)

@@ -72,8 +72,8 @@ class PotionEffectCinematicAction(
 
     override val segments: List<PotionEffectSegment> = entry.segments
 
-    override suspend fun startSegment(segment: PotionEffectSegment) {
-        super.startSegment(segment)
+    override suspend fun startSegment(segment: PotionEffectSegment, player: Player) {
+        super.startSegment(segment, player)
         state = player.state(EffectStateProvider(segment.potionEffectType))
 
         SYNC.switchContext {
@@ -90,8 +90,8 @@ class PotionEffectCinematicAction(
         }
     }
 
-    override suspend fun stopSegment(segment: PotionEffectSegment) {
-        super.stopSegment(segment)
+    override suspend fun stopSegment(segment: PotionEffectSegment, player: Player) {
+        super.stopSegment(segment, player)
         restoreState()
     }
 
@@ -103,8 +103,8 @@ class PotionEffectCinematicAction(
         }
     }
 
-    override suspend fun teardown() {
-        super.teardown()
+    override suspend fun teardown(player: Player) {
+        super.teardown(player)
 
         if (state != null) {
             restoreState()

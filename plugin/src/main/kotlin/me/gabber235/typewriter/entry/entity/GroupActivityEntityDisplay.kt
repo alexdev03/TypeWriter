@@ -1,6 +1,7 @@
 package me.gabber235.typewriter.entry.entity
 
 import lirand.api.extensions.server.server
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.entries.*
 import org.bukkit.Location
@@ -13,7 +14,7 @@ class GroupActivityEntityDisplay(
     override val creator: EntityCreator,
     private val activityCreators: ActivityCreator,
     private val suppliers: List<Pair<PropertySupplier<*>, Int>>,
-    private val spawnLocation: Location,
+    private val spawnLocation: TargetLocation,
     private val group: GroupEntry,
 ) : AudienceFilter(ref), TickableDisplay, ActivityEntityDisplay {
     private val activityManagers = ConcurrentHashMap<GroupId, ActivityManager<in SharedActivityContext>>()

@@ -9,6 +9,7 @@ import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.Tags
 import me.gabber235.typewriter.adapters.modifiers.OnlyTags
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entries.data.minecraft.PoseProperty
 import me.gabber235.typewriter.entries.data.minecraft.applyGenericEntityData
 import me.gabber235.typewriter.entries.data.minecraft.living.applyLivingEntityData
@@ -21,6 +22,7 @@ import me.gabber235.typewriter.entry.entries.EntityProperty
 import me.gabber235.typewriter.entry.entries.SharedEntityActivityEntry
 import me.gabber235.typewriter.extensions.packetevents.meta
 import me.gabber235.typewriter.extensions.packetevents.sendPacketTo
+import me.gabber235.typewriter.extensions.packetevents.toPacketLocation
 import me.gabber235.typewriter.utils.Sound
 import me.gabber235.typewriter.utils.stripped
 import me.tofaa.entitylib.EntityLib
@@ -62,7 +64,7 @@ class PlayerInstance(
     override val id: String = "",
     override val name: String = "",
     override val definition: Ref<PlayerDefinition> = emptyRef(),
-    override val spawnLocation: Location = Location(null, 0.0, 0.0, 0.0),
+    override val spawnLocation: TargetLocation = TargetLocation(null, 0.0, 0.0, 0.0),
     @OnlyTags("generic_entity_data", "living_entity_data", "player_data")
     override val data: List<Ref<EntityData<*>>> = emptyList(),
     override val activity: Ref<out SharedEntityActivityEntry> = emptyRef(),
@@ -130,12 +132,12 @@ class PlayerEntity(
         }
     }
 
-    override fun spawn(location: LocationProperty) {
+    override fun spawn(location: TargetLocationProperty) {
         if (sitEntity != null) {
-            sitEntity?.spawn(location.toPacketLocation())
+            sitEntity?.spawn(location.toTargetLocation().toLocation(player).toPacketLocation())
             sitEntity?.addViewer(player.uniqueId)
         }
-        entity.spawn(location.toPacketLocation())
+        entity.spawn(location.toTargetLocation().toLocation(player).toPacketLocation())
         entity.addViewer(player.uniqueId)
 
         sitEntity?.addPassengers(this.entity)

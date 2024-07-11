@@ -62,8 +62,8 @@ class SkillCinematicAction(
 ) : SimpleCinematicAction<MythicSkillSegment>() {
     override val segments: List<MythicSkillSegment> = entry.segments
 
-    override suspend fun startSegment(segment: MythicSkillSegment) {
-        super.startSegment(segment)
+    override suspend fun startSegment(segment: MythicSkillSegment, player: Player) {
+        super.startSegment(segment, player)
 
         val skill = MythicBukkit.inst().skillManager.getSkill(segment.skillName).orElseGet {
             throw IllegalArgumentException("Skill ${segment.skillName} not found")

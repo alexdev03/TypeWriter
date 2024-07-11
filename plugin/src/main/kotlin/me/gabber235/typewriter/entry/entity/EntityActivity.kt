@@ -8,7 +8,7 @@ import me.gabber235.typewriter.entry.entries.EntityProperty
 import org.bukkit.entity.Player
 
 interface ActivityCreator {
-    fun create(context: ActivityContext, currentLocation: LocationProperty): EntityActivity<ActivityContext>
+    fun create(context: ActivityContext, currentLocation: TargetLocationProperty): EntityActivity<ActivityContext>
 }
 
 interface EntityActivity<Context : ActivityContext> {
@@ -16,7 +16,7 @@ interface EntityActivity<Context : ActivityContext> {
     fun tick(context: Context): TickResult
     fun dispose(context: Context)
 
-    val currentLocation: LocationProperty
+    val currentLocation: TargetLocationProperty
     val currentProperties: List<EntityProperty> get() = listOf(currentLocation)
 }
 
@@ -37,7 +37,7 @@ interface SharedEntityActivity : EntityActivity<SharedActivityContext>
 interface IndividualEntityActivity : EntityActivity<IndividualActivityContext>
 interface GenericEntityActivity : EntityActivity<ActivityContext>
 
-class IdleActivity(override var currentLocation: LocationProperty) : GenericEntityActivity {
+class IdleActivity(override var currentLocation: TargetLocationProperty) : GenericEntityActivity {
     override fun initialize(context: ActivityContext) {}
 
     override fun tick(context: ActivityContext): TickResult = TickResult.IGNORED
@@ -45,12 +45,12 @@ class IdleActivity(override var currentLocation: LocationProperty) : GenericEnti
     override fun dispose(context: ActivityContext) {}
 
     companion object : ActivityCreator {
-        override fun create(context: ActivityContext, currentLocation: LocationProperty): EntityActivity<in ActivityContext> = IdleActivity(currentLocation)
+        override fun create(context: ActivityContext, currentLocation: TargetLocationProperty): EntityActivity<in ActivityContext> = IdleActivity(currentLocation)
     }
 }
 
 abstract class SingleChildActivity<Context : ActivityContext>(
-    private val startLocation: LocationProperty,
+    private val startLocation: TargetLocationProperty,
 ) : EntityActivity<Context> {
     private var child: Ref<out EntityActivityEntry> = emptyRef()
     private var currentActivity: EntityActivity<in Context>? = null
@@ -79,7 +79,7 @@ abstract class SingleChildActivity<Context : ActivityContext>(
         child = emptyRef()
     }
 
-    override val currentLocation: LocationProperty
+    override val currentLocation: TargetLocationProperty
         get() = currentActivity?.currentLocation ?: startLocation
 
     abstract fun currentChild(context: Context): Ref<out EntityActivityEntry>
