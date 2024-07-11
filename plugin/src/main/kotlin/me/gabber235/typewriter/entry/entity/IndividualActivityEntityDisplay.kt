@@ -32,7 +32,7 @@ class IndividualActivityEntityDisplay(
     override fun onPlayerAdd(player: Player) {
         activityManagers.computeIfAbsent(player.uniqueId) {
             val context = IndividualActivityContext(ref, player)
-            val activity = activityCreator.create(context, spawnLocation.toProperty())
+            val activity = activityCreator.create(context, spawnLocation.toLocation(player).toProperty())
             val activityManager = ActivityManager(activity)
             activityManager.initialize(context)
             activityManager

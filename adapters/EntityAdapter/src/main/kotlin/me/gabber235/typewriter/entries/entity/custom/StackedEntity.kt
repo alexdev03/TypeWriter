@@ -7,6 +7,7 @@ import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.entity.EntityState
 import me.gabber235.typewriter.entry.entity.FakeEntity
 import me.gabber235.typewriter.entry.entity.LocationProperty
+import me.gabber235.typewriter.entry.entity.TargetLocationProperty
 import me.gabber235.typewriter.entry.entries.EntityData
 import me.gabber235.typewriter.entry.entries.EntityDefinitionEntry
 import me.gabber235.typewriter.entry.entries.EntityProperty
@@ -61,7 +62,7 @@ class StackedEntity(
         entities.asSequence().drop(1).forEach { it.consumeProperties(otherProperties) }
     }
 
-    override fun spawn(location: LocationProperty) {
+    override fun spawn(location: TargetLocationProperty) {
         if (entities.isEmpty()) return
         val baseEntity = entities.first()
         for (entity in entities) {

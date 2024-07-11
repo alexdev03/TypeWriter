@@ -107,7 +107,7 @@ class PlayerEntity(
     override fun applyProperties(properties: List<EntityProperty>) {
         properties.forEach { property ->
             when (property) {
-                is LocationProperty -> {
+                is TargetLocationProperty -> {
                     sitEntity?.teleport(property.toPacketLocation())
                     entity.teleport(property.toPacketLocation())
                     entity.rotateHead(property.yaw, property.pitch)

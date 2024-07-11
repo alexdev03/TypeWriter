@@ -22,7 +22,7 @@ internal class DisplayEntity(
         get() = entity.state
 
     init {
-        entity.spawn(activityManager.location)
+        entity.spawn(TargetLocationProperty.fromLocationProperty(activityManager.location))
         applyProperties()
     }
 

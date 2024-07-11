@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.protocol.world.Location
 import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.entries.EntityProperty
 import me.gabber235.typewriter.utils.Point
+import org.bukkit.Bukkit
 import java.util.*
 
 data class TargetLocationProperty(
@@ -99,8 +100,36 @@ data class TargetLocationProperty(
     override fun div(point: Point) = div(point.x, point.y, point.z)
 
     override fun div(value: Double) = div(value, value, value)
+
+    companion object {
+        fun fromLocation(toPacketLocation: org.bukkit.Location): TargetLocationProperty {
+            return TargetLocationProperty(
+                toPacketLocation.world.name,
+                toPacketLocation.x,
+                toPacketLocation.y,
+                toPacketLocation.z,
+                toPacketLocation.yaw,
+                toPacketLocation.pitch,
+            )
+        }
+
+        fun fromLocationProperty(location: LocationProperty): TargetLocationProperty {
+            return TargetLocationProperty(
+                Bukkit.getWorld(location.world)?.name.orEmpty(),
+                location.x,
+                location.y,
+                location.z,
+                location.yaw,
+                location.pitch,
+            )
+        }
+    }
 }
 
 fun TargetLocation.toProperty(): TargetLocationProperty {
     return TargetLocationProperty(this)
+}
+
+fun fromBukkitLocation(location: org.bukkit.Location): TargetLocationProperty {
+    return TargetLocationProperty(location.world.name, location.x, location.y, location.z, location.yaw, location.pitch)
 }

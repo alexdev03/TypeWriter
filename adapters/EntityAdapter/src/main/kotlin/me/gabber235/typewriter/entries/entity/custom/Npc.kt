@@ -92,7 +92,7 @@ class NpcEntity(
         namePlate.tick()
     }
 
-    override fun spawn(location: LocationProperty) {
+    override fun spawn(location: TargetLocationProperty) {
         namePlate.spawn(location)
     }
 

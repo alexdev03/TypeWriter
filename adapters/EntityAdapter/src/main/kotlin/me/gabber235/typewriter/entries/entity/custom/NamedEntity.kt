@@ -11,6 +11,7 @@ import me.gabber235.typewriter.entry.entity.EntityState
 import me.gabber235.typewriter.entry.entity.FakeEntity
 import me.gabber235.typewriter.entry.entity.LocationProperty
 import me.gabber235.typewriter.entry.entity.SimpleEntityDefinition
+import me.gabber235.typewriter.entry.entity.TargetLocationProperty
 import me.gabber235.typewriter.entry.entries.EntityData
 import me.gabber235.typewriter.entry.entries.EntityDefinitionEntry
 import me.gabber235.typewriter.entry.entries.EntityProperty
@@ -119,7 +120,7 @@ class NamedEntity(
         return Vector(y = height)
     }
 
-    override fun spawn(location: LocationProperty) {
+    override fun spawn(location: TargetLocationProperty) {
         baseEntity.spawn(location)
         hologram.spawn(location)
 

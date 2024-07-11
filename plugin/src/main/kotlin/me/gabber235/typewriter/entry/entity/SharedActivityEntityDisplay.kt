@@ -34,7 +34,7 @@ class SharedActivityEntityDisplay(
         super.initialize(player)
         val context = SharedActivityContext(ref, players)
         activityManager =
-            ActivityManager(activityCreators.create(context, spawnLocation.toProperty()))
+            ActivityManager(activityCreators.create(context, spawnLocation.toLocation(player).toProperty()))
         activityManager?.initialize(context)
     }
 

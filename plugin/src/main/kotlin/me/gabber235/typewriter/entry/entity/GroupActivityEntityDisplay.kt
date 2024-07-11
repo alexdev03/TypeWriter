@@ -36,7 +36,7 @@ class GroupActivityEntityDisplay(
         activityManagers.computeIfAbsent(groupId) {
             val viewers = groupViewers(groupId)
             val context = SharedActivityContext(ref, viewers)
-            val activity = activityCreators.create(context, spawnLocation.toProperty())
+            val activity = activityCreators.create(context, spawnLocation.toLocation(player).toProperty())
             val activityManager = ActivityManager(activity)
             activityManager.initialize(context)
             activityManager

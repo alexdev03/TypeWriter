@@ -63,7 +63,7 @@ class SelfNpc(
         playerEntity.tick()
     }
 
-    override fun spawn(location: LocationProperty) {
+    override fun spawn(location: TargetLocationProperty) {
         // When in a cinematic, the equipment will be reset to empty. We want to keep the player's equipment.
         super.spawn(location)
         setup()

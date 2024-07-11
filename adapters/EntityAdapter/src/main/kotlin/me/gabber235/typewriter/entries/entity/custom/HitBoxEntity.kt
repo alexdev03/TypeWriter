@@ -8,6 +8,7 @@ import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.emptyRef
 import me.gabber235.typewriter.entry.entity.FakeEntity
 import me.gabber235.typewriter.entry.entity.LocationProperty
+import me.gabber235.typewriter.entry.entity.TargetLocationProperty
 import me.gabber235.typewriter.entries.entity.WrapperFakeEntity
 import me.gabber235.typewriter.entry.entries.EntityData
 import me.gabber235.typewriter.entry.entries.EntityDefinitionEntry
@@ -85,7 +86,7 @@ class HitBoxEntity(
         }
     }
 
-    override fun spawn(location: LocationProperty) {
+    override fun spawn(location: TargetLocationProperty) {
         super.spawn(location.add(offset))
         baseEntity.spawn(location)
     }

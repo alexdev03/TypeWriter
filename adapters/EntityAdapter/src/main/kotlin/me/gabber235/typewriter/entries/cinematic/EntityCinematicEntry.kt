@@ -27,12 +27,10 @@ import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.cinematic.SimpleCinematicAction
 import me.gabber235.typewriter.entry.emptyRef
-import me.gabber235.typewriter.entry.entity.FakeEntity
-import me.gabber235.typewriter.entry.entity.withPriority
-import me.gabber235.typewriter.entry.entity.toCollectors
-import me.gabber235.typewriter.entry.entity.toProperty
+import me.gabber235.typewriter.entry.entity.*
 import me.gabber235.typewriter.entry.entries.*
 import me.gabber235.typewriter.extensions.packetevents.ArmSwing
+import me.gabber235.typewriter.extensions.packetevents.toPacketLocation
 import me.gabber235.typewriter.utils.ok
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -133,7 +131,7 @@ class EntityCinematicAction(
         val collectedProperties = collectors.mapNotNull { it.collect(player) }
 
         this.entity?.consumeProperties(collectedProperties + firstFrame.toProperties())
-        this.entity?.spawn(startLocation.toProperty())
+        this.entity?.spawn(TargetLocationProperty.fromLocation(startLocation))
     }
 
     override suspend fun tickSegment(segment: EntityRecordedSegment, frame: Int, player: Player) {
