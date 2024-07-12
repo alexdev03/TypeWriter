@@ -34,6 +34,10 @@ class InteractionHandler : Listener, KoinComponent {
     val Player.interaction: Interaction?
         get() = interactions[uniqueId]
 
+    fun getInteractionObject(player: Player): Interaction? {
+        return interactions[player.uniqueId]
+    }
+
 
     /** Some triggers start dialogue. Though we don't want to trigger the starting of dialogue multiple times,
      * we need to check if the player is already in a dialogue.

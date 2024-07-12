@@ -1,26 +1,21 @@
 package me.gabber235.typewriter.facts
 
-import io.lettuce.core.RedisClient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import lirand.api.extensions.events.listen
 import me.gabber235.typewriter.db.RedisManager
+import me.gabber235.typewriter.db.RedisProxyMap
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entries.ExpirableFactEntry
 import me.gabber235.typewriter.entry.entries.PersistableFactEntry
 import me.gabber235.typewriter.entry.entries.ReadableFactEntry
 import me.gabber235.typewriter.entry.entries.WritableFactEntry
 import me.gabber235.typewriter.plugin
-import me.gabber235.typewriter.ui.CommunicationHandler
 import me.gabber235.typewriter.utils.ThreadType.DISPATCHERS_ASYNC
 import me.gabber235.typewriter.utils.logErrorIfNull
 import org.bukkit.entity.Player
-import org.bukkit.event.player.PlayerJoinEvent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.java.KoinJavaComponent
 import java.util.concurrent.ConcurrentHashMap
-import java.util.stream.Collectors
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -29,48 +24,43 @@ private const val FACT_STORAGE_DELAY = 60 * 3
 
 class FactDatabase : KoinComponent {
     private val storage: FactStorage by inject()
-    private lateinit var redis: RedisManager
+//    private lateinit var redis: RedisManager
 
     // Local stored version of player facts
-    private val cache = ConcurrentHashMap<FactId, FactData>()
+    private val cache = RedisProxyMap(ConcurrentHashMap<FactId, FactData>())
 
     fun initialize() {
         storage.init()
 
-        val communicationHandler: CommunicationHandler = KoinJavaComponent.get(CommunicationHandler::class.java)
-        redis = RedisManager(this, RedisClient.create(communicationHandler.getRedisURI()), 10)
+//        redis = RedisManager(this, RedisClient.create(communicationHandler.getRedisURI()), 10)
 
         // Load all the facts from the storage
-        runBlocking {
-//            loadFactsFromPersistentStorage()
-            println("loading facts from redis")
-            redis.loadFacts().thenAccept {
-                println("loaded: $cache")
-                cache.putAll(it)
-            }.exceptionally { it.printStackTrace(); null }
-        }
+//        runBlocking {
+////            loadFactsFromPersistentStorage()
+//            println("loading facts from redis")
+//
+//        }
 
         // Filter expired facts every second.
         // After that, save the facts of the players who have facts that expired or changed.
         DISPATCHERS_ASYNC.launch {
-            var cycle = 1
+//            var cycle = 1
             while (plugin.isEnabled) {
                 delay(1000)
                 removeExpiredFacts()
 
-                if (cycle++ % FACT_STORAGE_DELAY == 0) {
-                    storeFactsInPersistentStorage()
-                }
+//                if (cycle++ % FACT_STORAGE_DELAY == 0) {
+//                    storeFactsInPersistentStorage()
+//                }
             }
         }
 
-        plugin.listen<PlayerJoinEvent> {
-            redis.saveUsername(it.player.uniqueId, it.player.name)
-        }
+
     }
 
-    fun getRedis() : RedisManager{
-        return redis
+
+    fun getRedis() : RedisManager {
+        return cache.redis
     }
 
 
@@ -119,10 +109,8 @@ class FactDatabase : KoinComponent {
     internal operator fun set(id: FactId, data: FactData) {
         if (data.value == 0) {
             cache.remove(id)
-            redis.deleteFact(id)
         } else {
             cache[id] = data
-            redis.saveFact(id, data)
         }
     }
 

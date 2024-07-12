@@ -4,12 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.lettuce.core.RedisClient;
+import me.gabber235.typewriter.Typewriter;
 import me.gabber235.typewriter.facts.FactData;
-import me.gabber235.typewriter.facts.FactDatabase;
 import me.gabber235.typewriter.facts.FactId;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -23,13 +24,14 @@ import java.util.concurrent.CompletionStage;
 public class RedisManager extends RedisAbstract {
 
     private final Gson gson;
-    private final FactDatabase factDatabase;
+    private final RedisProxyMap redisProxyMap;
     private final ZoneOffset zoneOffset = OffsetDateTime.now().getOffset();
 
-    public RedisManager(FactDatabase factDatabase, RedisClient lettuceRedisClient, int poolSize) {
+    public RedisManager(RedisProxyMap redisProxyMap, RedisClient lettuceRedisClient, int poolSize) {
         super(lettuceRedisClient, poolSize);
         gson = new Gson();
-        this.factDatabase = factDatabase;
+        this.redisProxyMap = redisProxyMap;
+        this.registerSub(new String[]{RedisKeys.FACTS_UPDATE.getKey()});
     }
 
     public void saveUsername(@NotNull UUID uuid, @NotNull String username) {
@@ -62,6 +64,8 @@ public class RedisManager extends RedisAbstract {
     }
 
     public void saveFact(FactId factId, FactData factData) {
+//        System.out.println("Pre send update: " + factId + " " + factData);
+        Typewriter.getPlugin(Typewriter.class).getLogger().info("Pre send update: " + factId + " " + factData);
         String factIdAsString = gson.toJson(factId);
         String factDataAsString = serializeFactData(factData);
         getConnectionAsync(c -> c.hset(RedisKeys.FACS.getKey(), factIdAsString, factDataAsString));
@@ -81,7 +85,15 @@ public class RedisManager extends RedisAbstract {
     }
 
     public void sendUpdate(FactId factId, @Nullable FactData factData) {
-        getConnectionAsync(c -> c.publish(RedisKeys.FACTS_UPDATE.getKey(), serializePair(factId, factData)));
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.add("data", serializePairJson(factId, factData));
+        jsonObject.addProperty("server", getServerName());
+        getConnectionAsync(c -> c.publish(RedisKeys.FACTS_UPDATE.getKey(), jsonObject.toString()));
+        Typewriter.getPlugin(Typewriter.class).getLogger().info("Sent update: " + jsonObject + " " + factData);
+    }
+
+    public String getServerName() {
+        return new File(System.getProperty("user.dir")).getName();
     }
 
     private Map<FactId, FactData> deserializeFactMap(String json) {
@@ -141,26 +153,37 @@ public class RedisManager extends RedisAbstract {
     private Pair<FactId, FactData> deserializePair(String json) {
         final JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
         final FactId factId = gson.fromJson(jsonObject.get("key"), FactId.class);
-        final FactData factData = jsonObject.get("value") == null ? null : deserializeFactData(jsonObject.get("value").getAsJsonObject());
+        final FactData factData = !jsonObject.has("value") ? null : deserializeFactData(jsonObject.get("value").getAsJsonObject());
         return Pair.of(factId, factData);
     }
 
     private String serializePair(FactId factId, @Nullable FactData factData) {
+        return serializePairJson(factId, factData).toString();
+    }
+
+    private JsonObject serializePairJson(FactId factId, @Nullable FactData factData) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.add("key", gson.toJsonTree(factId));
-        jsonObject.add("value", factData == null ? null : gson.toJsonTree(serializeFactDataJson(factData)));
-        return jsonObject.toString();
+        if (factData != null) {
+            jsonObject.add("value", serializeFactDataJson(factData));
+
+        }
+        return jsonObject;
     }
 
     @Override
     public void receiveMessage(String channel, String message) {
         if (message == null) return;
         if (channel.equals(RedisKeys.FACTS_UPDATE.getKey())) {
-            Pair<FactId, FactData> pair = deserializePair(message);
+            final JsonObject jsonObject = gson.fromJson(message, JsonObject.class);
+            final String server = jsonObject.get("server").getAsString();
+            if (server.equals(getServerName())) return;
+            final Pair<FactId, FactData> pair = deserializePair(jsonObject.get("data").toString());
+            Typewriter.getPlugin(Typewriter.class).getLogger().info("Received update: " + pair.key + " " + pair.value);
             if (pair.value == null) {
-                factDatabase.removeFact(pair.key);
+                redisProxyMap.forceRemove(pair.key);
             } else {
-                factDatabase.updateFact(pair.key, pair.value);
+                redisProxyMap.forceUpdate(pair.key, pair.value);
             }
         }
     }
