@@ -5,6 +5,7 @@ import lirand.api.extensions.other.set
 import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entries.ActionEntry
 import me.gabber235.typewriter.utils.Item
@@ -36,14 +37,14 @@ class DropItemActionEntry(
     val item: Item = Item.Empty,
     @Help("The location to drop the item. (Defaults to the player's location)")
     // The location to drop the item at. If this field is left blank, the item will be dropped at the location of the player triggering the action.
-    private val location: Optional<Location> = Optional.empty(),
+    private val location: Optional<TargetLocation> = Optional.empty(),
 ) : ActionEntry {
     override fun execute(player: Player) {
         super.execute(player)
         // Run on main thread
         SYNC.launch {
             if (location.isPresent) {
-                location.get().world.dropItem(location.get(), item.build(player))
+                location.get().toLocation(player).world.dropItem(location.get().toLocation(player), item.build(player))
             } else {
                 player.location.world.dropItem(player.location, item.build(player))
             }

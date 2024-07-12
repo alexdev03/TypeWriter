@@ -7,6 +7,7 @@ import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.MaterialProperties
 import me.gabber235.typewriter.adapters.modifiers.MaterialProperty
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entries.EventEntry
 import me.gabber235.typewriter.utils.Item
@@ -33,7 +34,7 @@ class BlockBreakEventEntry(
     @Help("The block that was broken.")
     val block: Optional<Material> = Optional.empty(),
     @Help("The location of the block that was broken.")
-    val location: Optional<Location> = Optional.empty(),
+    val location: Optional<TargetLocation> = Optional.empty(),
     @Help("The item the player must be holding when the block is broken.")
     val itemInHand: Item = Item.Empty,
 ) : EventEntry
@@ -49,7 +50,7 @@ private fun hasItemInHand(player: Player, item: Item): Boolean {
 fun onBlockBreak(event: BlockBreakEvent, query: Query<BlockBreakEventEntry>) {
     query findWhere { entry ->
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it == event.block.location }.orElse(true)) return@findWhere false
+        if (!entry.location.map { it.toLocation(event.player) == event.block.location }.orElse(true)) return@findWhere false
 
         // Check if the player is holding the correct item
         if (!hasItemInHand(event.player, entry.itemInHand)) return@findWhere false

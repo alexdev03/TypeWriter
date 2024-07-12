@@ -2,6 +2,7 @@ package me.gabber235.typewriter.entries.quest
 
 import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.emptyRef
@@ -35,6 +36,6 @@ class LocationObjectiveEntry(
     override val children: List<Ref<AudienceEntry>> = emptyList(),
     override val criteria: List<Criteria> = emptyList(),
     override val display: String = "",
-    val targetLocation: Location,
+    val targetLocation: TargetLocation,
     override val priorityOverride: Optional<Int> = Optional.empty(),
 ) : ObjectiveEntry

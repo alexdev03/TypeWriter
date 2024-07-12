@@ -4,6 +4,7 @@ import me.gabber235.typewriter.adapters.Colors
 import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.Negative
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Criteria
 import me.gabber235.typewriter.entry.Modifier
 import me.gabber235.typewriter.entry.Ref
@@ -29,7 +30,7 @@ class SpawnParticleActionEntry(
     override val modifiers: List<Modifier> = emptyList(),
     override val triggers: List<Ref<TriggerableEntry>> = emptyList(),
     @Help("The location to spawn the particles at. (Defaults to player's location)")
-    val location: Optional<Location> = Optional.empty(),
+    val location: Optional<TargetLocation> = Optional.empty(),
     @Help("The particle to spawn.")
     val particle: Particle = Particle.FLAME,
     @Help("The amount of particles to spawn.")
@@ -50,7 +51,7 @@ class SpawnParticleActionEntry(
         super.execute(player)
 
         if (location.isPresent) {
-            location.get().world?.spawnParticle(particle, location.get(), count, offsetX, offsetY, offsetZ, speed)
+            location.get().toLocation(player).world?.spawnParticle(particle, location.get().toLocation(player), count, offsetX, offsetY, offsetZ, speed)
         } else {
             player.world.spawnParticle(particle, player.location, count, offsetX, offsetY, offsetZ, speed)
         }

@@ -5,6 +5,7 @@ import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.MaterialProperties
 import me.gabber235.typewriter.adapters.modifiers.MaterialProperty.BLOCK
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entries.EventEntry
 import org.bukkit.Location
@@ -25,7 +26,7 @@ class BlockPlaceEventEntry(
     override val name: String = "",
     override val triggers: List<Ref<TriggerableEntry>> = emptyList(),
     @Help("The location of the block that was placed.")
-    val location: Optional<Location> = Optional.empty(),
+    val location: Optional<TargetLocation> = Optional.empty(),
     @MaterialProperties(BLOCK)
     @Help("The block that is placed.")
     val block: Material = Material.STONE,
@@ -35,7 +36,7 @@ class BlockPlaceEventEntry(
 fun onPlaceBlock(event: BlockPlaceEvent, query: Query<BlockPlaceEventEntry>) {
     query findWhere { entry ->
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it == event.block.location }.orElse(true)) return@findWhere false
+        if (!entry.location.map { it.toLocation(event.player) == event.block.location }.orElse(true)) return@findWhere false
 
         entry.block == event.block.type
     } startDialogueWithOrNextDialogue event.player

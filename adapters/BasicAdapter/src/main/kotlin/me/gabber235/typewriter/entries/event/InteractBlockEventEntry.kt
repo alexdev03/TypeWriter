@@ -7,6 +7,7 @@ import me.gabber235.typewriter.adapters.Entry
 import me.gabber235.typewriter.adapters.modifiers.Help
 import me.gabber235.typewriter.adapters.modifiers.MaterialProperties
 import me.gabber235.typewriter.adapters.modifiers.MaterialProperty.BLOCK
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.*
 import me.gabber235.typewriter.entry.entries.EventEntry
 import me.gabber235.typewriter.utils.Item
@@ -34,7 +35,7 @@ class InteractBlockEventEntry(
     @Help("The block that was interacted with.")
     val block: Material = Material.AIR,
     @Help("The location of the block that was interacted with.")
-    val location: Optional<Location> = Optional.empty(),
+    val location: Optional<TargetLocation> = Optional.empty(),
     @Help("The item the player must be holding when the block is interacted with.")
     val itemInHand: Item = Item.Empty,
     @Help("Cancel the event when triggered")
@@ -97,7 +98,7 @@ fun onInteractBlock(event: PlayerInteractEvent, query: Query<InteractBlockEventE
         if (!entry.interactionType.actions.contains(event.action)) return@findWhere false
 
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it.isSameBlock(event.clickedBlock!!.location) }
+        if (!entry.location.map { it.toLocation(event.player).isSameBlock(event.clickedBlock!!.location) }
                 .orElse(true)) return@findWhere false
 
         // Check if the player is holding the correct item
