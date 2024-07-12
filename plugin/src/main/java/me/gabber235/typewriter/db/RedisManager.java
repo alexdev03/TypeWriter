@@ -14,10 +14,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -43,14 +40,17 @@ public class RedisManager extends RedisAbstract {
                 .thenApply(UUID::fromString));
     }
 
-    public CompletableFuture<List<String>> getUsernameThatMatch(String username) {
+    public CompletableFuture<Collection<String>> getUsernameThatMatch(String username) {
+        final String usernameLowerCase = username.toLowerCase();
         return getConnectionAsync(c -> c.hkeys(RedisKeys.USERNAMES.getKey())
                 .thenApply(list -> {
                     if (list.size() > 50) {
-                        return list.stream().filter(s -> s.contains(username)).limit(50).toList();
+                        return list.stream().filter(s -> s.toLowerCase().startsWith(usernameLowerCase)).limit(50).toList();
                     }
-                    return list.stream().filter(s -> s.contains(username)).toList();
-                })).toCompletableFuture();
+                    return list.stream().filter(s -> s.toLowerCase().startsWith(usernameLowerCase)).toList();
+                })
+                .thenApply(d -> (Collection<String>) d)
+        ).toCompletableFuture();
     }
 
     public CompletionStage<Map<FactId, FactData>> loadFacts() {

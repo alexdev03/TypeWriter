@@ -73,18 +73,6 @@ val factDatabase: FactDatabase = get(FactDatabase::class.java)
 private fun CommandTree.factsCommands() = literalArgument("facts") {
     withPermission("typewriter.facts")
 
-//    includeSuggestions (ArgumentSuggestions.stringsWithTooltips { t ->
-//        val factDatabase: FactDatabase = get(FactDatabase::class.java)
-//        factDatabase.getRedis().getUsernameThatMatch(t.currentArg)
-//    })
-
-    includeSuggestions (ArgumentSuggestions.stringsAsync { t ->
-        val factDatabase: FactDatabase = get(FactDatabase::class.java)
-        factDatabase.getRedis().getUsernameThatMatch(t.currentArg).thenApply {
-            it.toTypedArray()
-        }
-    })
-
     literalArgument("set") {
         withPermission("typewriter.facts.set")
         argument(entryArgument<WritableFactEntry>("fact")) {
@@ -97,7 +85,8 @@ private fun CommandTree.factsCommands() = literalArgument("facts") {
                             val fact = args["fact"] as WritableFactEntry
                             val value = args["value"] as Int
                             fact.write(it, value)
-                            sender.msg("Fact <blue>${fact.formattedName}</blue> set to $value for ${target}.")
+                            val targetName : String = args["target"] as String
+                            sender.msg("Fact <blue>${fact.formattedName}</blue> set to $value for $targetName (${target}).")
                         }
                     }
                     includeSuggestions (ArgumentSuggestions.stringsAsync { t ->
@@ -115,17 +104,6 @@ private fun CommandTree.factsCommands() = literalArgument("facts") {
         withPermission("typewriter.facts.reset")
         optionalTarget {
             anyExecutor { sender, args ->
-//                val target = args.targetOrSelfPlayer(sender) ?: return@anyExecutor
-//                val entries = Query.find<WritableFactEntry>().toList()
-//                if (entries.none()) {
-//                    sender.msg("There are no facts available.")
-//                    return@anyExecutor
-//                }
-//
-//                for (entry in entries) {
-//                    entry.write(target, 0)
-//                }
-//                sender.msg("All facts for ${target.name} have been reset.")
                 factDatabase.getRedis().loadUsername(args.targetOrSelfPlayer(sender)).thenApply {
                     val target = it
                     val entries = Query.find<WritableFactEntry>().toList()
@@ -137,7 +115,8 @@ private fun CommandTree.factsCommands() = literalArgument("facts") {
                     for (entry in entries) {
                         entry.write(target, 0)
                     }
-                    sender.msg("All facts for ${target} have been reset.")
+                    val targetName : String = args["target"] as String
+                    sender.msg("All facts for $targetName (${target}) have been reset.")
                 }
             }
             includeSuggestions (ArgumentSuggestions.stringsAsync { t ->
@@ -151,33 +130,6 @@ private fun CommandTree.factsCommands() = literalArgument("facts") {
 
     optionalTarget {
         anyExecutor { sender, args ->
-//            val target = args.targetOrSelfPlayer(sender) ?: return@anyExecutor
-//
-//            val factEntries = Query.find<ReadableFactEntry>().toList()
-//            if (factEntries.none()) {
-//                sender.msg("There are no facts available.")
-//                return@anyExecutor
-//            }
-//
-//            sender.sendMini("\n\n")
-//            val formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy")
-//            sender.msg("${target} has the following facts:\n")
-//
-//            for (entry in factEntries) {
-//                val data = entry.readForPlayersGroup(target)
-//                sender.sendMini(
-//                    "<hover:show_text:'${
-//                        entry.comment.replace(
-//                            Regex(" +"),
-//                            " "
-//                        ).replace("'", "\\'")
-//                    }\n\n<gray><i>Click to modify'><click:suggest_command:'/tw facts set ${entry.name} ${data.value} ${target.name}'><gray> - </gray><blue>${entry.formattedName}:</blue> ${data.value} <gray><i>(${
-//                        formatter.format(
-//                            data.lastUpdate
-//                        )
-//                    })</i></gray>"
-//                )
-//            }
             factDatabase.getRedis().loadUsername(args.targetOrSelfPlayer(sender)).thenApply {
                 val target = it
                 val factEntries = Query.find<ReadableFactEntry>().toList()
@@ -188,7 +140,8 @@ private fun CommandTree.factsCommands() = literalArgument("facts") {
 
                 sender.sendMini("\n\n")
                 val formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy")
-                sender.msg("${target} has the following facts:\n")
+                val targetName : String = args["target"] as String
+                sender.msg("$targetName (${target}) has the following facts:\n")
 
                 for (entry in factEntries) {
                     val data = entry.readForPlayersGroup(target)
@@ -207,6 +160,12 @@ private fun CommandTree.factsCommands() = literalArgument("facts") {
                 }
             }
         }
+        includeSuggestions (ArgumentSuggestions.stringsAsync { t ->
+            val factDatabase: FactDatabase = get(FactDatabase::class.java)
+            factDatabase.getRedis().getUsernameThatMatch(t.currentArg).thenApply {
+                it.toTypedArray()
+            }
+        })
     }
 }
 
@@ -325,13 +284,6 @@ private fun CommandTree.questCommands() = literalArgument("quest") {
                     val quest = args["quest"] as QuestEntry
                     target.trackQuest(quest.ref())
                     sender.msg("You are now tracking <blue>${quest.display(target)}</blue>.")
-//                    factDatabase.getRedis().loadUsername(args.targetOrSelfPlayer(sender)).thenApply {
-//                        val target = it
-//                        val quest = args["quest"] as QuestEntry
-//                        val player = Bukkit.getPlayer(target) ?: return@thenApply
-//                        player.trackQuest(quest.ref())
-//                        sender.msg("You are now tracking <blue>${quest.display(player)}</blue>.")
-//                    }
                 }
             }
         }
@@ -464,7 +416,7 @@ fun CommandArguments.targetOrSelfOnlinePlayer(commandSender: CommandSender): Pla
     return null
 }
 
-fun Argument<*>.optionalTarget(block: Argument<*>.() -> Unit) = playerArgument("target", optional = true, block)
+fun Argument<*>.optionalTarget(block: Argument<*>.() -> Unit) = stringArgument("target", optional = true, block)
 
 inline fun <reified E : Entry> entryArgument(name: String): Argument<E> = CustomArgument(StringArgument(name)) { info ->
     Query.findById(E::class, info.input)
