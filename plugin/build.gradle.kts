@@ -84,7 +84,7 @@ dependencies {
 
 val targetJavaVersion = 21
 // TODO: Sync versions back up to 21. This is a temporary fix to allow 1.20.4 servers to still use java 17.
-val languageJavaVersion = 17
+val languageJavaVersion = 21
 java {
     val javaVersion = JavaVersion.toVersion(targetJavaVersion)
     val languageVersion = JavaVersion.toVersion(languageJavaVersion)
@@ -96,8 +96,11 @@ java {
     disableAutoTargetJvm()
 }
 
-kotlin {
-    jvmToolchain(languageJavaVersion)
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "$languageJavaVersion"
+    }
 }
 
 tasks.test {
