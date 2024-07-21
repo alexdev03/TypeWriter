@@ -100,12 +100,6 @@ kotlin {
     jvmToolchain(languageJavaVersion)
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "$languageJavaVersion"
-    }
-}
-
 tasks.test {
     useJUnitPlatform()
 }
