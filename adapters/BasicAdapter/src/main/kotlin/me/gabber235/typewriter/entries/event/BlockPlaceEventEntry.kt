@@ -36,7 +36,7 @@ class BlockPlaceEventEntry(
 fun onPlaceBlock(event: BlockPlaceEvent, query: Query<BlockPlaceEventEntry>) {
     query findWhere { entry ->
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it.toLocation(event.player) == event.block.location }.orElse(true)) return@findWhere false
+        if (!entry.location.map { it.toLocation(event.player).isSameBlock(event.block.location) }.orElse(true)) return@findWhere false
 
         entry.block == event.block.type
     } startDialogueWithOrNextDialogue event.player

@@ -4,6 +4,7 @@ import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import me.gabber235.typewriter.adapters.editors.*
 import me.gabber235.typewriter.adapters.modifiers.StaticModifierComputer
+import me.gabber235.typewriter.adapters.modifiers.TargetLocation
 import me.gabber235.typewriter.entry.Ref
 import me.gabber235.typewriter.entry.entity.SkinProperty
 import me.gabber235.typewriter.logger
@@ -218,6 +219,7 @@ internal val customEditors by lazy {
         ObjectEditor<Material>::material,
         ObjectEditor<Optional<*>>::optional,
         ObjectEditor<Location>::location,
+        ObjectEditor<TargetLocation>::location,
         ObjectEditor<Duration>::duration,
         ObjectEditor<CronExpression>::cron,
         ObjectEditor<PotionEffectType>::potionEffectType,

@@ -50,7 +50,11 @@ private fun hasItemInHand(player: Player, item: Item): Boolean {
 fun onBlockBreak(event: BlockBreakEvent, query: Query<BlockBreakEventEntry>) {
     query findWhere { entry ->
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it.toLocation(event.player) == event.block.location }.orElse(true)) return@findWhere false
+//        println(entry.location.map { it.coordsEquals(event.player.location) })
+//        println(entry.location)
+//        println(entry.location.map { it.toLocation(event.player) })
+//        println(event.block.location)
+        if (!entry.location.map { it.toLocation(event.player).isSameBlock(event.block.location) }.orElse(true)) return@findWhere false
 
         // Check if the player is holding the correct item
         if (!hasItemInHand(event.player, entry.itemInHand)) return@findWhere false

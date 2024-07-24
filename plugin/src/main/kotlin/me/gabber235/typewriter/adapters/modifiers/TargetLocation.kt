@@ -4,6 +4,7 @@ import lirand.api.extensions.server.mainWorld
 import lirand.api.extensions.server.server
 import me.clip.placeholderapi.PlaceholderAPI
 import me.gabber235.typewriter.utils.logErrorIfNull
+import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
 
@@ -55,6 +56,15 @@ data class TargetLocation(
         }
 
         return org.bukkit.Location(world(player), x, y, z, yaw, pitch)
+    }
+
+    fun coordsEquals(location: Location): Boolean {
+        return location.blockX == x.toInt() && location.blockY == y.toInt() && location.blockZ == z.toInt()
+    }
+
+    fun distanceSqrt(location: Location, player: Player): Double {
+        val targetLocation = toLocation(player)
+        return targetLocation.distanceSquared(location)
     }
 
 

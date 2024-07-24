@@ -25,7 +25,15 @@ class IndividualActivityEntityDisplay(
     override fun filter(player: Player): Boolean {
         val activityManager = activityManagers[player.uniqueId] ?: return false
         val npcLocation = activityManager.location
-        val distance = npcLocation.distanceSqrt(player.location) ?: return false
+        val distance: Double? = if (spawnLocation.x == activityManager.location.x && spawnLocation.y == activityManager.location.y && spawnLocation.z == activityManager.location.z) {
+            spawnLocation.distanceSqrt(player.location, player)
+        } else {
+            npcLocation.distanceSqrt(player.location)
+        }
+        if (distance == null) return false
+//        println("npcLocation: $npcLocation")
+//        println("playerLocation: ${player.location}")
+//        println("distance: $distance")
         return distance <= entityShowRange * entityShowRange
     }
 

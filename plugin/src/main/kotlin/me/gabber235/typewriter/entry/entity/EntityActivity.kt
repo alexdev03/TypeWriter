@@ -5,6 +5,7 @@ import me.gabber235.typewriter.entry.emptyRef
 import me.gabber235.typewriter.entry.entries.EntityActivityEntry
 import me.gabber235.typewriter.entry.entries.EntityInstanceEntry
 import me.gabber235.typewriter.entry.entries.EntityProperty
+import org.bukkit.World
 import org.bukkit.entity.Player
 
 interface ActivityCreator {

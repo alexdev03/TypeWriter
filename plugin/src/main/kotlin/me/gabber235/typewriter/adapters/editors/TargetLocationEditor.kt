@@ -54,7 +54,7 @@ fun ObjectEditor<TargetLocation>.location() = reference {
         obj
     }
 
-    ContentEditorModifierComputer with ContentEditor(LocationContentMode::class)
+    ContentEditorModifierComputer with ContentEditor(TargetLocationContentMode::class)
 }
 
 class TargetLocationContentMode(context: ContentContext, player: Player) :
