@@ -65,8 +65,8 @@ class ParticleCinematicAction(
     private val player: Player,
     private val entry: ParticleCinematicEntry,
 ) : CinematicAction {
-    override suspend fun tick(frame: Int, player: Player) {
-        super.tick(frame, player)
+    override suspend fun tick(frame: Int) {
+        super.tick(frame)
         (entry.segments activeSegmentAt frame) ?: return
 
         player.spawnParticle(

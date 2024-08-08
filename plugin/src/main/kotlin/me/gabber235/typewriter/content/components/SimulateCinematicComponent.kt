@@ -98,7 +98,7 @@ class SimulateCinematicComponent(
             actions.map {
                 launch {
                     try {
-                        it.tick(frame, player)
+                        it.tick(frame)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -123,7 +123,7 @@ class SimulateCinematicComponent(
         player.stopBlockingActionBar()
         actions.forEach {
             try {
-                it.teardown(player)
+                it.teardown()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

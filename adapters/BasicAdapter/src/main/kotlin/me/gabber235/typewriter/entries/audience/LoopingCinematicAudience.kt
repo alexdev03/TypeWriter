@@ -119,13 +119,13 @@ private class CinematicDisplay(
         if (!hasSetupCompleted) return
         frame++
         ThreadType.DISPATCHERS_ASYNC.launch {
-            actions.forEach { it.tick(frame, Bukkit.getOnlinePlayers().stream().findAny().get()) }
+            actions.forEach { it.tick(frame) }
         }
     }
 
     fun teardown() {
         ThreadType.DISPATCHERS_ASYNC.launch {
-            actions.forEach { it.teardown(Bukkit.getOnlinePlayers().stream().findAny().get()) }
+            actions.forEach { it.teardown() }
         }
     }
 }

@@ -64,7 +64,7 @@ class CinematicSequence(
             actions.map {
                 launch {
                     try {
-                        it.tick(frame, player)
+                        it.tick(frame)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -90,7 +90,7 @@ class CinematicSequence(
 
         actions.forEach {
             try {
-                it.teardown(player)
+                it.teardown()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

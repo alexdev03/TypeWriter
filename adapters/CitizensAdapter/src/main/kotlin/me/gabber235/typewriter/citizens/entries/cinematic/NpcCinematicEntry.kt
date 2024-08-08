@@ -92,8 +92,8 @@ class NpcCinematicAction<N>(
         }
     }
 
-    override suspend fun tick(frame: Int, player: Player) {
-        super.tick(frame, player)
+    override suspend fun tick(frame: Int) {
+        super.tick(frame)
 
         val segment = (entry.recordedSegments activeSegmentAt frame) ?: return
         val recording = recordings[segment.artifact.id] ?: return
@@ -134,8 +134,8 @@ class NpcCinematicAction<N>(
         data.handleInventory(player, npc, slot, itemStack)
     }
 
-    override suspend fun teardown(player: Player) {
-        super.teardown(player)
+    override suspend fun teardown() {
+        super.teardown()
         withCorrectContext {
             npc?.let { data.teardown(player, it) }
         }

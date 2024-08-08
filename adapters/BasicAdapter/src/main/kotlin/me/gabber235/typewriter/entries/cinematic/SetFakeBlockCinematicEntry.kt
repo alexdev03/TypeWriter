@@ -47,16 +47,16 @@ class SetFakeBlockCinematicAction(
 ) : SimpleCinematicAction<SetFakeBlockSegment>() {
     override val segments: List<SetFakeBlockSegment> = entry.segments
 
-    override suspend fun startSegment(segment: SetFakeBlockSegment, player: Player) {
-        super.startSegment(segment, player)
+    override suspend fun startSegment(segment: SetFakeBlockSegment) {
+        super.startSegment(segment)
 
         val state = SpigotConversionUtil.fromBukkitBlockData(segment.block.createBlockData())
         val packet = WrapperPlayServerBlockChange(segment.location.toLocation(player).toVector3i(), state.globalId)
         packet.sendPacketTo(player)
     }
 
-    override suspend fun stopSegment(segment: SetFakeBlockSegment, player: Player) {
-        super.stopSegment(segment, player)
+    override suspend fun stopSegment(segment: SetFakeBlockSegment) {
+        super.stopSegment(segment)
 
         player.sendBlockChange(segment.location.toLocation(player), segment.location.toLocation(player).block.blockData)
     }

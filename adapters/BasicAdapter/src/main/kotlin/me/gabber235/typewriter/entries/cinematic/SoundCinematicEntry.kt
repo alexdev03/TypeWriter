@@ -55,13 +55,13 @@ class SoundCinematicAction(
 
     override val segments: List<SoundSegment> = entry.segments
 
-    override suspend fun startSegment(segment: SoundSegment, player: Player) {
-        super.startSegment(segment, player)
+    override suspend fun startSegment(segment: SoundSegment) {
+        super.startSegment(segment)
         player.playSound(segment.sound)
     }
 
-    override suspend fun stopSegment(segment: SoundSegment, player: Player) {
-        super.stopSegment(segment, player)
+    override suspend fun stopSegment(segment: SoundSegment) {
+        super.stopSegment(segment)
         player.stopSound(segment.sound)
     }
 

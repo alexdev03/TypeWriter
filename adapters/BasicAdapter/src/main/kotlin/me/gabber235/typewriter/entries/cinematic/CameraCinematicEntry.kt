@@ -135,8 +135,8 @@ class CameraCinematicAction(
         super.setup()
     }
 
-    override suspend fun tick(frame: Int, player: Player) {
-        super.tick(frame, player)
+    override suspend fun tick(frame: Int) {
+        super.tick(frame)
 
         val segment = (entry.segments activeSegmentAt frame)
 
@@ -444,8 +444,8 @@ class SimulatedCameraCinematicAction(
 
     private var entity: WrapperEntity? = null
 
-    override suspend fun startSegment(segment: CameraSegment, player: Player) {
-        super.startSegment(segment, player)
+    override suspend fun startSegment(segment: CameraSegment) {
+        super.startSegment(segment)
         entity?.despawn()
         entity?.remove()
         entity = WrapperEntity(EntityTypes.ITEM_DISPLAY)
@@ -463,15 +463,15 @@ class SimulatedCameraCinematicAction(
         entity?.addViewer(player.uniqueId)
     }
 
-    override suspend fun tickSegment(segment: CameraSegment, frame: Int, player: Player) {
-        super.tickSegment(segment, frame, player)
+    override suspend fun tickSegment(segment: CameraSegment, frame: Int) {
+        super.tickSegment(segment, frame)
         val path = paths[segment] ?: return
         val location = path.interpolate(frame - segment.startFrame)
         entity?.teleport(location.toPacketLocation().apply { yaw += 180; pitch = -pitch })
     }
 
-    override suspend fun stopSegment(segment: CameraSegment, player: Player) {
-        super.stopSegment(segment, player)
+    override suspend fun stopSegment(segment: CameraSegment) {
+        super.stopSegment(segment)
         entity?.despawn()
         entity?.remove()
         entity = null

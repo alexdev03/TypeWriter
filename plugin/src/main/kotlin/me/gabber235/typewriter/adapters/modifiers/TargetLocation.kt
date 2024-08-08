@@ -58,6 +58,10 @@ data class TargetLocation(
         return org.bukkit.Location(world(player), x, y, z, yaw, pitch)
     }
 
+    fun toLocation(): org.bukkit.Location {
+        return org.bukkit.Location(world(null), x, y, z, yaw, pitch)
+    }
+
     fun coordsEquals(location: Location): Boolean {
         return location.blockX == x.toInt() && location.blockY == y.toInt() && location.blockZ == z.toInt()
     }

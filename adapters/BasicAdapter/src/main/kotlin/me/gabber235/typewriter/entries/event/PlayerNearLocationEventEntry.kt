@@ -50,10 +50,11 @@ fun onPlayerNearLocation(event: PlayerMoveEvent, query: Query<PlayerNearLocation
 @EntryListener(PlayerNearLocationEventEntry::class)
 fun onPlayerTeleportNearLocation(event: PlayerTeleportEvent, query: Query<PlayerNearLocationEventEntry>) {
     query findWhere { entry ->
+        val loc = entry.location.toLocation(event.player)
         !event.from.blockLocation.isInRange(
-            entry.location,
+            loc,
             entry.range
-        ) && event.to.blockLocation.isInRange(entry.location, entry.range)
+        ) && event.to.blockLocation.isInRange(loc, entry.range)
     } triggerAllFor event.player
 }
 

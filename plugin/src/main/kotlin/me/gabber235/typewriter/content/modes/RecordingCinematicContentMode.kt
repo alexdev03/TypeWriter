@@ -199,7 +199,7 @@ abstract class RecordingCinematicContentMode<T : Any>(
             actions.map {
                 launch {
                     try {
-                        it.tick(frame.coerceAtLeast(0), player)
+                        it.tick(frame.coerceAtLeast(0))
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -282,7 +282,7 @@ abstract class RecordingCinematicContentMode<T : Any>(
         if (!::actions.isInitialized) return
         actions.forEach {
             try {
-                it.teardown(player)
+                it.teardown()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

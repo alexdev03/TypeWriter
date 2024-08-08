@@ -40,7 +40,7 @@ interface GroupAdvancedEntityInstance : EntityInstanceEntry {
         return toAdvancedEntityDisplay(
             activityCreator,
         ) { ref, definition, activityCreator, suppliers, spawnLocation ->
-            GroupActivityEntityDisplay(ref, definition, activityCreator, suppliers, spawnLocation, group)
+            GroupActivityEntityDisplay(ref, definition, activityCreator, suppliers, spawnLocation.toLocation(), group)
         }
     }
 }

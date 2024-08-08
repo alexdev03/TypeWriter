@@ -22,8 +22,6 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.koin.java.KoinJavaComponent
-import java.util.Map.entry
 
 val roadNetworkMaxDistance by snippet("road_network.distance.max", 30.0)
 

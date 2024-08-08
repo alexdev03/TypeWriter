@@ -89,8 +89,8 @@ class DisplayDialogueCinematicAction(
         setup?.invoke(player)
     }
 
-    override suspend fun tick(frame: Int, player: Player) {
-        super.tick(frame, player)
+    override suspend fun tick(frame: Int) {
+        super.tick(frame)
         val segment = (segments activeSegmentAt frame)
 
         if (segment == null) {
@@ -127,8 +127,8 @@ class DisplayDialogueCinematicAction(
         display(player, speaker?.displayName?.parsePlaceholders(player) ?: "", text, displayPercentage)
     }
 
-    override suspend fun teardown(player: Player) {
-        super.teardown(player)
+    override suspend fun teardown() {
+        super.teardown()
         teardown?.invoke(player)
         reset?.invoke(player)
         SYNC.switchContext {

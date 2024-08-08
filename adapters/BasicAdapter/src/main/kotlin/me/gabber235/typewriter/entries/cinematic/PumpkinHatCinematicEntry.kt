@@ -55,8 +55,8 @@ class PumpkinHatCinematicAction(
 ) : SimpleCinematicAction<PumpkinHatSegment>() {
     override val segments: List<PumpkinHatSegment> = entry.segments
 
-    override suspend fun startSegment(segment: PumpkinHatSegment, player: Player) {
-        super.startSegment(segment, player)
+    override suspend fun startSegment(segment: PumpkinHatSegment) {
+        super.startSegment(segment)
 
         WrapperPlayServerEntityEquipment(
             player.entityId,
@@ -74,8 +74,8 @@ class PumpkinHatCinematicAction(
         ) sendPacketTo player
     }
 
-    override suspend fun stopSegment(segment: PumpkinHatSegment, player: Player) {
-        super.stopSegment(segment, player)
+    override suspend fun stopSegment(segment: PumpkinHatSegment) {
+        super.stopSegment(segment)
         WrapperPlayServerEntityEquipment(
             player.entityId,
             listOf(

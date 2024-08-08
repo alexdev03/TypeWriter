@@ -28,7 +28,7 @@ fun onEvent(event: SomeBukkitEvent, query: Query<ExampleEventEntry>) {
 }
 //</code-block:event_entry_listener>
 
-class SomeBukkitEvent(val player: Player) : PlayerEvent(player) {
+class SomeBukkitEvent(private val player: Player) : PlayerEvent(player) {
     override fun getHandlers(): HandlerList = HANDLER_LIST
 
     companion object {

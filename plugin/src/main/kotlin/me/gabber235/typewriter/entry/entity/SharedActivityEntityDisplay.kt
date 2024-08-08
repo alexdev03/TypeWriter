@@ -30,11 +30,11 @@ class SharedActivityEntityDisplay(
         return distance <= entityShowRange * entityShowRange
     }
 
-    override fun initialize(player: Player) {
-        super.initialize(player)
+    override fun initialize() {
+        super.initialize()
         val context = SharedActivityContext(ref, players)
         activityManager =
-            ActivityManager(activityCreators.create(context, spawnLocation.toLocation(player).toProperty()))
+            ActivityManager(activityCreators.create(context, spawnLocation.toLocation().toProperty()))
         activityManager?.initialize(context)
     }
 
