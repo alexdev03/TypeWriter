@@ -148,7 +148,7 @@ class CameraCinematicAction(
                 action.switchSegment(segment, player)
             } else {
                 action.stop()
-                player.teardown2()
+                player.teardown()
             }
 
             previousSegment = segment
@@ -235,27 +235,28 @@ class CameraCinematicAction(
         }
     }
 
-    private suspend fun Player.teardown2() {
+    private suspend fun Player.teardown() {
         listener?.unregister()
         listener = null
-        interceptor?.cancel()
-        interceptor = null
-        originalState?.let {
-            SYNC.switchContext {
+
+        SYNC.switchContext {
+            interceptor?.cancel()
+            interceptor = null
+            originalState?.let {
                 restore(it)
-                if (gameMode != GameMode.CREATIVE) {
-                    restoreInventory()
-                }
+            }
+            if (gameMode != GameMode.CREATIVE) {
+                restoreInventory()
             }
         }
         originalState = null
     }
 
-//    override suspend fun teardown(player: Player) {
-//        super.teardown(player)
-//        action.stop()
-//        player.teardown()
-//    }
+    override suspend fun teardown() {
+        super.teardown()
+        action.stop()
+        player.teardown()
+    }
 
     override fun canFinish(frame: Int): Boolean = entry.segments canFinishAt frame
 }

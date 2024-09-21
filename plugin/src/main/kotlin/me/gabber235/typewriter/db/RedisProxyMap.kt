@@ -30,24 +30,20 @@ class RedisProxyMap(
         }
 
         override fun put(key: FactId, value: FactData): FactData? {
-            println("Putting $key to $value")
             redis.saveFact(key, value)
             return map.put(key, value)
         }
 
         override fun remove(key: FactId): FactData? {
-            println("Removing $key")
             redis.deleteFact(key)
             return map.remove(key)
         }
 
         fun forceRemove(key: FactId): FactData? {
-            println("Force removing $key")
             return map.remove(key)
         }
 
         fun forceUpdate(key: FactId, value: FactData) {
-            println("Force updating $key to $value")
             map[key] = value
         }
     }

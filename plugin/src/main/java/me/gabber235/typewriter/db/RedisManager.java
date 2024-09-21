@@ -65,7 +65,6 @@ public class RedisManager extends RedisAbstract {
 
     public void saveFact(FactId factId, FactData factData) {
 //        System.out.println("Pre send update: " + factId + " " + factData);
-        Typewriter.getPlugin(Typewriter.class).getLogger().info("Pre send update: " + factId + " " + factData);
         String factIdAsString = gson.toJson(factId);
         String factDataAsString = serializeFactData(factData);
         getConnectionAsync(c -> c.hset(RedisKeys.FACS.getKey(), factIdAsString, factDataAsString));
@@ -89,7 +88,6 @@ public class RedisManager extends RedisAbstract {
         jsonObject.add("data", serializePairJson(factId, factData));
         jsonObject.addProperty("server", getServerName());
         getConnectionAsync(c -> c.publish(RedisKeys.FACTS_UPDATE.getKey(), jsonObject.toString()));
-        Typewriter.getPlugin(Typewriter.class).getLogger().info("Sent update: " + jsonObject + " " + factData);
     }
 
     public String getServerName() {
@@ -179,7 +177,6 @@ public class RedisManager extends RedisAbstract {
             final String server = jsonObject.get("server").getAsString();
             if (server.equals(getServerName())) return;
             final Pair<FactId, FactData> pair = deserializePair(jsonObject.get("data").toString());
-            Typewriter.getPlugin(Typewriter.class).getLogger().info("Received update: " + pair.key + " " + pair.value);
             if (pair.value == null) {
                 redisProxyMap.forceRemove(pair.key);
             } else {

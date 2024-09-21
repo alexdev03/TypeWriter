@@ -1,6 +1,7 @@
 package me.gabber235.typewriter.interaction
 
 import kotlinx.coroutines.runBlocking
+import lirand.api.extensions.server.registerEvents
 import lirand.api.extensions.server.registerSuspendingEvents
 import lirand.api.extensions.server.server
 import me.gabber235.typewriter.entry.Query
@@ -100,7 +101,7 @@ class InteractionHandler : Listener, KoinComponent {
     }
 
     fun initialize() {
-        plugin.registerSuspendingEvents(this)
+        plugin.registerEvents(this)
     }
 
     // When a player joins the server, we need to create an interaction for them.
