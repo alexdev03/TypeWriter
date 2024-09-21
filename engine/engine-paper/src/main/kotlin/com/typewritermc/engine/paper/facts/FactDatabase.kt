@@ -1,8 +1,10 @@
 package com.typewritermc.engine.paper.facts
 
+import com.typewritermc.core.db.RedisManager
 import com.typewritermc.core.entries.Query
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.ref
+import com.typewritermc.engine.paper.db.RedisProxyMap
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.ModifierOperator
 import com.typewritermc.engine.paper.entry.RefreshFactTrigger
@@ -28,36 +30,49 @@ private const val FACT_STORAGE_DELAY = 60 * 3
 
 class FactDatabase : KoinComponent {
     private val storage: FactStorage by inject()
+//    private lateinit var redis: RedisManager
 
     // Local stored version of player facts
-    private val cache = ConcurrentHashMap<FactId, FactData>()
+    private val cache = RedisProxyMap(ConcurrentHashMap<FactId, FactData>())
 
     fun initialize() {
         storage.init()
 
+//        redis = RedisManager(this, RedisClient.create(communicationHandler.getRedisURI()), 10)
+
         // Load all the facts from the storage
-        runBlocking {
-            loadFactsFromPersistentStorage()
-        }
+//        runBlocking {
+////            loadFactsFromPersistentStorage()
+//            println("loading facts from redis")
+//
+//        }
 
         // Filter expired facts every second.
         // After that, save the facts of the players who have facts that expired or changed.
         DISPATCHERS_ASYNC.launch {
-            var cycle = 1
+//            var cycle = 1
             while (plugin.isEnabled) {
                 delay(1000)
                 removeExpiredFacts()
 
-                if (cycle++ % FACT_STORAGE_DELAY == 0) {
-                    storeFactsInPersistentStorage()
-                }
+//                if (cycle++ % FACT_STORAGE_DELAY == 0) {
+//                    storeFactsInPersistentStorage()
+//                }
             }
         }
+
+
     }
+
+
+    fun getRedis() : RedisManager {
+        return cache.redis
+    }
+
 
     fun shutdown() {
         runBlocking {
-            storeFactsInPersistentStorage()
+//            storeFactsInPersistentStorage()
         }
         storage.shutdown()
     }
@@ -85,7 +100,7 @@ class FactDatabase : KoinComponent {
             true
         }.map { (id, data) -> id to data }
 
-        storage.storeFacts(facts)
+//        redis.saveFacts(facts.stream().collect(Collectors.toMap({ it.first }, { it.second })))
     }
 
     private fun removeExpiredFacts() {
@@ -142,6 +157,14 @@ class FactDatabase : KoinComponent {
                 RefreshFactTrigger(entry.ref()) triggerFor player
             }
         }
+    }
+
+    fun updateFact(factId: FactId, factData: FactData) {
+        cache[factId] = factData
+    }
+
+    fun removeFact(key: FactId) {
+        cache.remove(key)
     }
 }
 
