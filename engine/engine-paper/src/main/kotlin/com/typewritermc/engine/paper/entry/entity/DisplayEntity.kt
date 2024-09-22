@@ -5,6 +5,7 @@ import com.typewritermc.engine.paper.entry.entries.PropertyCollector
 import com.typewritermc.engine.paper.entry.entries.PropertyCollectorSupplier
 import com.typewritermc.engine.paper.entry.entries.PropertySupplier
 import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
 import org.bukkit.SoundCategory
 import org.bukkit.entity.Player
 import kotlin.reflect.full.companionObjectInstance
@@ -38,8 +39,8 @@ internal class DisplayEntity(
         // FIXME: Magic number
         if ((lastSoundLocation.distanceSqrt(activityManager.position) ?: 0.0) > 1.7) {
             lastSoundLocation = activityManager.position
-            val sound = lastSoundLocation.toBukkitLocation().block.blockData.soundGroup.stepSound
-            player.playSound(lastSoundLocation.toBukkitLocation(), sound, SoundCategory.NEUTRAL, 0.4f, 1.0f)
+            val sound = lastSoundLocation.toBukkitPlayerLocation(player).block.blockData.soundGroup.stepSound
+            player.playSound(lastSoundLocation.toBukkitPlayerLocation(player), sound, SoundCategory.NEUTRAL, 0.4f, 1.0f)
         }
     }
 

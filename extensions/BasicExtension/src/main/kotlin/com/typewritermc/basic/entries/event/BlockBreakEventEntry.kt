@@ -13,8 +13,6 @@ import com.typewritermc.engine.paper.utils.item.Item
 import com.typewritermc.engine.paper.utils.toPosition
 import com.typewritermc.core.extension.annotations.Entry
 import com.typewritermc.core.extension.annotations.EntryListener
-import com.typewritermc.engine.paper.entry.entries.ConstVar
-import com.typewritermc.engine.paper.entry.entries.Var
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockBreakEvent
