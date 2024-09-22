@@ -3,6 +3,7 @@ package com.typewritermc.mythicmobs.entries.action
 import com.typewritermc.core.books.pages.Colors
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.extension.annotations.Entry
+import com.typewritermc.core.extension.annotations.Help
 import com.typewritermc.core.extension.annotations.Placeholder
 import com.typewritermc.core.extension.annotations.WithRotation
 import com.typewritermc.core.utils.point.Position
@@ -42,6 +43,7 @@ class SpawnMobActionEntry(
     private val level: Double = 1.0,
     private val onlyVisibleForPlayer: Boolean = false,
     @Placeholder
+    @Help("The variables to set for the mob. Format: variableName:type=value. Example: test:INTEGER=100")
     private val variables : List<String> = emptyList(),
     @WithRotation
     private var spawnLocation: Position = Position.ORIGIN,
@@ -53,6 +55,7 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         SYNC.launch {
+            println(spawnLocation)
             val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.toBukkitPlayerLocation(player)), level, SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false
