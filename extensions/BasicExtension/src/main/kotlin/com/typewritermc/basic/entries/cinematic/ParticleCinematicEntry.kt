@@ -9,6 +9,7 @@ import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.Criteria
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 
@@ -65,7 +66,7 @@ class ParticleCinematicAction(
 
         player.spawnParticle(
             entry.particle,
-            entry.location.toBukkitLocation(),
+            entry.location.toPlayerPosition(player).toBukkitLocation(),
             entry.count,
             entry.offsetX,
             entry.offsetY,

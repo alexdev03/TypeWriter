@@ -11,8 +11,10 @@ import com.typewritermc.core.extension.annotations.Min
 import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.*
 import com.typewritermc.engine.paper.entry.entries.EventEntry
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import com.typewritermc.engine.paper.utils.toPosition
 import lirand.api.extensions.math.blockLocation
+import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 
@@ -41,21 +43,23 @@ fun onPlayerNearLocation(event: PlayerMoveEvent, query: Query<PlayerNearLocation
     if (!event.hasChangedBlock()) return
     val fromPosition = event.from.blockLocation.toPosition()
     val toPosition = event.to.blockLocation.toPosition()
-    query.findInRange(fromPosition, toPosition).triggerAllFor(event.player)
+    query.findInRange(fromPosition, toPosition, event.player).triggerAllFor(event.player)
 }
 
 @EntryListener(PlayerNearLocationEventEntry::class)
 fun onPlayerTeleportNearLocation(event: PlayerTeleportEvent, query: Query<PlayerNearLocationEventEntry>) {
     val fromPosition = event.from.blockLocation.toPosition()
     val toPosition = event.to.blockLocation.toPosition()
-    query.findInRange(fromPosition, toPosition).triggerAllFor(event.player)
+    query.findInRange(fromPosition, toPosition, event.player).triggerAllFor(event.player)
 }
 
 private fun Query<PlayerNearLocationEventEntry>.findInRange(
     from: Position,
     to: Position,
+    player: Player
 ): Sequence<PlayerNearLocationEventEntry> {
     return findWhere { entry ->
-        !from.isInRange(entry.location, entry.range) && to.isInRange(entry.location, entry.range)
+        val playerPos = entry.location.toPlayerPosition(player)
+            !from.isInRange(playerPos, entry.range) && to.isInRange(playerPos, entry.range)
     }
 }

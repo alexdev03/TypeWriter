@@ -13,6 +13,7 @@ import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.*
 import com.typewritermc.engine.paper.entry.entries.EventEntry
 import com.typewritermc.engine.paper.utils.item.Item
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import com.typewritermc.engine.paper.utils.toPosition
 import org.bukkit.Location
 import org.bukkit.Material
@@ -95,7 +96,7 @@ fun onInteractBlock(event: PlayerInteractEvent, query: Query<InteractBlockEventE
         if (!entry.interactionType.actions.contains(event.action)) return@findWhere false
 
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it.sameBlock(event.clickedBlock!!.location.toPosition()) }
+        if (!entry.location.map { it.toPlayerPosition(event.player).sameBlock(event.clickedBlock!!.location.toPosition()) }
                 .orElse(true)) return@findWhere false
 
         // Check if the player is holding the correct item

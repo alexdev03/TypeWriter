@@ -10,6 +10,7 @@ import com.typewritermc.engine.paper.entry.TriggerableEntry
 import com.typewritermc.engine.paper.entry.entries.ActionEntry
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
 import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -39,7 +40,7 @@ class SetBlockActionEntry(
         super.execute(player)
 
         SYNC.launch {
-            val bukkitLocation = location.toBukkitLocation()
+            val bukkitLocation = location.toPlayerPosition(player).toBukkitLocation()
             bukkitLocation.block.type = material
         }
     }

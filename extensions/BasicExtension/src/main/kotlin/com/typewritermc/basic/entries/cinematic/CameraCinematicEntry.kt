@@ -335,7 +335,7 @@ private class DisplayCameraAction(
         val location = path.interpolate(frame)
         entity.rotateHead(location.yaw, location.pitch)
         entity.teleport(location.toPacketLocation())
-        player.teleportIfNeeded(frame, location.toBukkitLocation())
+        player.teleportIfNeeded(frame, location.toBukkitPlayerLocation(player))
     }
 
     override suspend fun switchSegment(newSegment: CameraSegment) {

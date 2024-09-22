@@ -14,6 +14,7 @@ import com.typewritermc.engine.paper.entry.entries.Segment
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
 import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
 import io.lumine.mythic.api.mobs.GenericCaster
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
@@ -67,7 +68,7 @@ class MobCinematicAction(
             val mob =
                 MythicBukkit.inst().mobManager.spawnMob(
                     segment.mobName.parsePlaceholders(player),
-                    segment.location.toBukkitLocation()
+                    segment.location.toBukkitPlayerLocation(player)
                 )
             this@MobCinematicAction.mob = mob
             val hideMechanic = MythicBukkit.inst().skillManager.getMechanic("hide")

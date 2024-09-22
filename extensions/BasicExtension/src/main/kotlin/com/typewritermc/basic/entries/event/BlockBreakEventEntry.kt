@@ -13,6 +13,7 @@ import com.typewritermc.engine.paper.utils.item.Item
 import com.typewritermc.engine.paper.utils.toPosition
 import com.typewritermc.core.extension.annotations.Entry
 import com.typewritermc.core.extension.annotations.EntryListener
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockBreakEvent
@@ -49,7 +50,7 @@ fun onBlockBreak(event: BlockBreakEvent, query: Query<BlockBreakEventEntry>) {
     val position = event.block.location.toPosition()
     query findWhere { entry ->
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it == position }.orElse(true)) return@findWhere false
+        if (!entry.location.map { it == position.toPlayerPosition(event.player) }.orElse(true)) return@findWhere false
 
         // Check if the player is holding the correct item
         if (!hasItemInHand(event.player, entry.itemInHand)) return@findWhere false

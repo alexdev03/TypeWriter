@@ -11,6 +11,7 @@ import com.typewritermc.core.extension.annotations.MaterialProperty.BLOCK
 import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.*
 import com.typewritermc.engine.paper.entry.entries.EventEntry
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import com.typewritermc.engine.paper.utils.toPosition
 import org.bukkit.Material
 import org.bukkit.event.block.BlockPlaceEvent
@@ -38,7 +39,7 @@ fun onPlaceBlock(event: BlockPlaceEvent, query: Query<BlockPlaceEventEntry>) {
     val position = event.block.location.toPosition()
     query findWhere { entry ->
         // Check if the player clicked on the correct location
-        if (!entry.location.map { it == position }.orElse(true)) return@findWhere false
+        if (!entry.location.map { it == position.toPlayerPosition(event.player) }.orElse(true)) return@findWhere false
 
         entry.block == event.block.type
     } startDialogueWithOrNextDialogue event.player

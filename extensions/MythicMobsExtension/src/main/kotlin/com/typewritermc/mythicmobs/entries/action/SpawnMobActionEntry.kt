@@ -14,9 +14,12 @@ import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
 import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
 import io.lumine.mythic.api.mobs.entities.SpawnReason
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
+import io.lumine.mythic.core.skills.variables.Variable
+import io.lumine.mythic.core.skills.variables.VariableType
 import org.bukkit.entity.Player
 
 
@@ -38,6 +41,8 @@ class SpawnMobActionEntry(
     private val mobName: String = "",
     private val level: Double = 1.0,
     private val onlyVisibleForPlayer: Boolean = false,
+    @Placeholder
+    private val variables : List<String> = emptyList(),
     @WithRotation
     private var spawnLocation: Position = Position.ORIGIN,
 ) : ActionEntry {
@@ -48,12 +53,35 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         SYNC.launch {
-            mob.get().spawn(BukkitAdapter.adapt(spawnLocation.toBukkitLocation()), level, SpawnReason.OTHER) {
+            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.toBukkitPlayerLocation(player)), level, SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false
                     player.showEntity(plugin, it)
                 }
+
             }
+
+            val variableMap = mutableMapOf<String, Any>()
+            val variableType = mutableMapOf<String, VariableType>()
+            variables.forEach { variable ->
+                val split = variable.split("=")
+                if (split.size == 2) {
+                    val split2 = split[0].split(":")
+                    if (split2.size == 2) {
+                        val type = VariableType.valueOf(split2[1].uppercase())
+                        val name = split2[0]
+                        variableMap[name] = split[1].parsePlaceholders(player)
+                        variableType[name] = type
+                    }
+                }
+            }
+
+            variableMap.forEach { (key, value) ->
+                val variable = Variable.ofType(variableType[key]!!, value)
+                activeMob.variables.put(key, variable)
+            }
+
         }
+
     }
 }

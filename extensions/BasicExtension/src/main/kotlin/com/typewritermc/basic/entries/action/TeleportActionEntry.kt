@@ -12,6 +12,7 @@ import com.typewritermc.engine.paper.entry.TriggerableEntry
 import com.typewritermc.engine.paper.entry.entries.CustomTriggeringActionEntry
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
 import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
 import org.bukkit.entity.Player
 
 @Entry("teleport", "Teleport a player", Colors.RED, "teenyicons:google-streetview-solid")
@@ -34,7 +35,7 @@ class TeleportActionEntry(
 ) : CustomTriggeringActionEntry {
     override fun execute(player: Player) {
         SYNC.launch {
-            player.teleport(location.toBukkitLocation())
+            player.teleport(location.toBukkitPlayerLocation(player))
             super.execute(player)
             player.triggerCustomTriggers()
         }

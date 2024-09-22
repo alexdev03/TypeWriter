@@ -17,6 +17,7 @@ import com.typewritermc.engine.paper.utils.Color
 import com.typewritermc.engine.paper.utils.ThreadType
 import com.typewritermc.engine.paper.utils.toPacketLocation
 import kotlinx.coroutines.delay
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import me.tofaa.entitylib.EntityLib
 import me.tofaa.entitylib.meta.Metadata
 import me.tofaa.entitylib.meta.other.FireworkRocketMeta
@@ -66,7 +67,7 @@ class FireworkActionEntry(
         }
         val entity = WrapperEntity(entityId, uuid, EntityTypes.FIREWORK_ROCKET, meta)
         entity.addViewer(player.uniqueId)
-        entity.spawn(location.toPacketLocation())
+        entity.spawn(location.toPlayerPosition(player).toPacketLocation())
         if (flightDuration.isZero) {
             WrapperPlayServerEntityStatus(entityId, FIREWORK_EXPLOSION_STATUS) sendPacketTo player
             entity.despawn()
