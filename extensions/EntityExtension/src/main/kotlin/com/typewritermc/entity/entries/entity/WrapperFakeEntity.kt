@@ -6,6 +6,7 @@ import com.typewritermc.engine.paper.entry.entity.FakeEntity
 import com.typewritermc.engine.paper.entry.entity.PositionProperty
 import com.typewritermc.engine.paper.entry.entries.EntityProperty
 import com.typewritermc.engine.paper.utils.toPacketLocation
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import com.typewritermc.entity.entries.entity.custom.state
 import me.tofaa.entitylib.EntityLib
 import me.tofaa.entitylib.meta.EntityMeta
@@ -55,7 +56,7 @@ abstract class WrapperFakeEntity(
     abstract fun applyProperty(property: EntityProperty)
 
     override fun spawn(location: PositionProperty) {
-        entity.spawn(location.toPacketLocation())
+        entity.spawn(location.toPlayerPosition(player).toPacketLocation())
         entity.addViewer(player.uniqueId)
         super.spawn(location)
     }
