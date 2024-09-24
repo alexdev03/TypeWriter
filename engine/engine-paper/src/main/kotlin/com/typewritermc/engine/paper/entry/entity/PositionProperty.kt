@@ -16,7 +16,7 @@ class PositionProperty(
     pitch: Float,
 ) : EntityProperty, Position(world, x, y, z, yaw, pitch) {
     fun distanceSqrt(other: org.bukkit.Location): Double? {
-        if (world.identifier != other.world.uid.toString()) return null
+        if (world.identifier != other.world.name) return null
         return distanceSqrt(other.toPosition())
     }
 
@@ -98,7 +98,7 @@ class PositionProperty(
 }
 
 fun org.bukkit.Location.toProperty(): PositionProperty {
-    return PositionProperty(World(world.uid.toString()), x, y, z, yaw, pitch)
+    return PositionProperty(World(world.name), x, y, z, yaw, pitch)
 }
 
 fun Position.toProperty(): PositionProperty {

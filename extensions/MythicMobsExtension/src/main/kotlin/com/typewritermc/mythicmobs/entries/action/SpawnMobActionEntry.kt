@@ -3,6 +3,7 @@ package com.typewritermc.mythicmobs.entries.action
 import com.typewritermc.core.books.pages.Colors
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.extension.annotations.Entry
+import com.typewritermc.core.extension.annotations.Help
 import com.typewritermc.core.extension.annotations.Placeholder
 import com.typewritermc.core.extension.annotations.WithRotation
 import com.typewritermc.core.utils.point.Position
@@ -54,7 +55,8 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         SYNC.launch {
-            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.get(player).toBukkitLocation()), level.get(player), SpawnReason.OTHER) {
+            println(spawnLocation)
+            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.toBukkitPlayerLocation(player)), level, SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false
                     player.showEntity(plugin, it)
