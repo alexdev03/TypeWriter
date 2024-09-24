@@ -1,6 +1,8 @@
 package com.typewritermc.engine.paper.entry.entity
 
 import com.typewritermc.engine.paper.entry.entries.EntityProperty
+import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
+import com.typewritermc.engine.paper.utils.toPlayerPositionProperty
 import org.bukkit.entity.Player
 import kotlin.reflect.KClass
 import kotlin.reflect.full.safeCast
@@ -38,7 +40,7 @@ abstract class FakeEntity(
     open fun tick() {}
 
     open fun spawn(location: PositionProperty) {
-        properties[PositionProperty::class] = location
+        properties[PositionProperty::class] = location.toPlayerPositionProperty(player)
     }
 
     abstract fun addPassenger(entity: FakeEntity)
