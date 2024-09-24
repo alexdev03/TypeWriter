@@ -16,6 +16,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.koin.java.KoinJavaComponent.get
@@ -132,6 +133,12 @@ class AudienceManager : Listener, Reloadable {
     @EventHandler
     private fun onPlayerQuit(event: PlayerQuitEvent) {
         removePlayerForRoots(event.player)
+    }
+
+    @EventHandler
+    private fun onWorldChange(event: PlayerChangedWorldEvent) {
+        removePlayerForRoots(event.player)
+        addPlayerForRoots(event.player)
     }
 
     fun shutdown() {

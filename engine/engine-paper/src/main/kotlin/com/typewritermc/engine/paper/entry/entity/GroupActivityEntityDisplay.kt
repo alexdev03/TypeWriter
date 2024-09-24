@@ -5,6 +5,8 @@ import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.entries.*
 import lirand.api.extensions.server.server
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -21,6 +23,11 @@ class GroupActivityEntityDisplay(
 
     private fun groupViewers(groupId: GroupId): List<Player> {
         return players.filter { group.groupId(it) == groupId }
+    }
+
+    @EventHandler
+    private fun onWorldChange(event: PlayerChangedWorldEvent) {
+        event.player.updateFilter(false)
     }
 
     override fun filter(player: Player): Boolean {
