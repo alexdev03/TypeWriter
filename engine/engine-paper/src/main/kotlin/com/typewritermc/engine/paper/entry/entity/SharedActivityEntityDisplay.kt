@@ -9,6 +9,8 @@ import com.typewritermc.engine.paper.entry.entries.TickableDisplay
 import com.typewritermc.engine.paper.utils.config
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -28,6 +30,11 @@ class SharedActivityEntityDisplay(
         val npcLocation = activityManager?.position ?: return false
         val distance = npcLocation.distanceSqrt(player.location) ?: return false
         return distance <= entityShowRange * entityShowRange
+    }
+
+    @EventHandler
+    private fun onWorldChange(event: PlayerChangedWorldEvent) {
+        event.player.updateFilter(false)
     }
 
     override fun initialize() {

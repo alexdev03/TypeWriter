@@ -7,7 +7,11 @@ import com.typewritermc.engine.paper.entry.entries.AudienceFilter
 import com.typewritermc.engine.paper.entry.entries.EntityInstanceEntry
 import com.typewritermc.engine.paper.entry.entries.PropertySupplier
 import com.typewritermc.engine.paper.entry.entries.TickableDisplay
+import com.typewritermc.engine.paper.utils.toPlayerPosition
+import com.typewritermc.engine.paper.utils.toPlayerPositionProperty
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -23,15 +27,20 @@ class IndividualActivityEntityDisplay(
 
     override fun filter(player: Player): Boolean {
         val activityManager = activityManagers[player.uniqueId] ?: return false
-        val npcPosition = activityManager.position
+        val npcPosition = activityManager.position.toPlayerPositionProperty(player)
         val distance = npcPosition.distanceSqrt(player.location) ?: return false
         return distance <= entityShowRange * entityShowRange
+    }
+
+    @EventHandler
+    private fun onWorldChange(event: PlayerChangedWorldEvent) {
+        event.player.updateFilter(false)
     }
 
     override fun onPlayerAdd(player: Player) {
         activityManagers.computeIfAbsent(player.uniqueId) {
             val context = IndividualActivityContext(ref, player)
-            val activity = activityCreator.create(context, spawnPosition.toProperty())
+            val activity = activityCreator.create(context, spawnPosition.toPlayerPosition(player).toProperty())
             val activityManager = ActivityManager(activity)
             activityManager.initialize(context)
             activityManager

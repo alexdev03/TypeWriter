@@ -55,7 +55,6 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         SYNC.launch {
-            println(spawnLocation)
             val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.toBukkitPlayerLocation(player)), level, SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false

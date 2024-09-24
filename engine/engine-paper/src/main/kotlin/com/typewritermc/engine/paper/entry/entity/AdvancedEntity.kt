@@ -9,6 +9,7 @@ import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.descendants
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.logger
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 
 @Tags("shared_entity_instance")
 interface SharedAdvancedEntityInstance : EntityInstanceEntry {
