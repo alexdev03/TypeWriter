@@ -23,7 +23,7 @@ import com.typewritermc.engine.paper.entry.entity.*
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.extensions.packetevents.ArmSwing
 import com.typewritermc.engine.paper.extensions.packetevents.toPacketItem
-import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.engine.paper.utils.toPlayerPosition
 import com.typewritermc.entity.entries.data.minecraft.*
 import com.typewritermc.entity.entries.data.minecraft.living.EquipmentProperty
 import io.papermc.paper.event.player.PlayerArmSwingEvent
@@ -159,7 +159,7 @@ class EntityCinematicAction(
 
         val collectedProperties = collectors.mapNotNull { it.collect(player) }
 
-        this.entity?.spawn(startLocation.toProperty())
+        this.entity?.spawn(startLocation.toPlayerPosition(player).toProperty())
         this.entity?.consumeProperties(collectedProperties)
     }
 
