@@ -23,6 +23,7 @@ import com.typewritermc.engine.paper.entry.entity.*
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.extensions.packetevents.ArmSwing
 import com.typewritermc.engine.paper.extensions.packetevents.toPacketItem
+import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
 import com.typewritermc.engine.paper.utils.toPlayerPosition
 import com.typewritermc.entity.entries.data.minecraft.*
 import com.typewritermc.entity.entries.data.minecraft.living.EquipmentProperty
@@ -193,8 +194,8 @@ class EntityCinematicAction(
 
     private fun playStepSound() {
         val location = entity?.property<PositionProperty>() ?: return
-        val sound = location.toBukkitLocation().block.blockData.soundGroup.stepSound
-        player.playSound(location.toBukkitLocation(), sound, SoundCategory.NEUTRAL, 0.4f, 1.0f)
+        val sound = location.toBukkitPlayerLocation(player).block.blockData.soundGroup.stepSound
+        player.playSound(location.toBukkitPlayerLocation(player), sound, SoundCategory.NEUTRAL, 0.4f, 1.0f)
     }
 
     override suspend fun stopSegment(segment: EntityRecordedSegment) {
