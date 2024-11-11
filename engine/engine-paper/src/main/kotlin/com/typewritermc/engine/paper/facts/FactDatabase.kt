@@ -159,13 +159,13 @@ class FactDatabase : KoinComponent {
         }
     }
 
-    fun updateFact(factId: FactId, factData: FactData) {
-        cache[factId] = factData
-    }
-
-    fun removeFact(key: FactId) {
-        cache.remove(key)
-    }
+//    fun updateFact(factId: FactId, factData: FactData) {
+//        cache[factId] = factData
+//    }
+//
+//    fun removeFact(key: FactId) {
+//        cache.remove(key)
+//    }
 }
 
 class FactsModifier {

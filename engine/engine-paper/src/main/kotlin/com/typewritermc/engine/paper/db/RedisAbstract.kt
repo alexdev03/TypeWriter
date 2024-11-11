@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.function.Consumer
 import java.util.function.Function
 
-abstract class RedisAbstract(protected var lettuceRedisClient: RedisClient, poolSize: Int) {
+abstract class RedisAbstract(private var lettuceRedisClient: RedisClient, poolSize: Int) {
     private val roundRobinConnectionPool =
         RoundRobinConnectionPool({ lettuceRedisClient.connect() }, poolSize)
     private val pubSubConnections = ConcurrentHashMap<Array<String>, StatefulRedisPubSubConnection<String, String>>()
