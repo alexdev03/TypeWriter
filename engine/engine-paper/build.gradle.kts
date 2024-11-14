@@ -22,6 +22,14 @@ repositories {
     maven("https://maven.evokegames.gg/snapshots")
 }
 
+val centralDependencies = listOf(
+    "org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
+    "org.jetbrains.kotlin:kotlin-reflect:2.0.21",
+    "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0",
+    "com.corundumstudio.socketio:netty-socketio:1.7.19", // Keep this on a lower version as the newer version breaks the ping
+    "io.lettuce:lettuce-core:6.3.2.RELEASE"
+)
+
 dependencies {
     compileOnlyApi("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 
