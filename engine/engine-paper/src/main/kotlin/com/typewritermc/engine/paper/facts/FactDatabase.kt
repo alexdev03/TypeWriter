@@ -3,13 +3,11 @@ package com.typewritermc.engine.paper.facts
 import com.typewritermc.core.entries.Query
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.ref
-import com.typewritermc.core.interaction.InteractionContext
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.ModifierOperator
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.entry.triggerFor
 import com.typewritermc.core.interaction.context
-import com.typewritermc.engine.paper.interaction.interactionContext
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.ThreadType.DISPATCHERS_ASYNC
 import com.typewritermc.engine.paper.utils.logErrorIfNull
@@ -25,14 +23,21 @@ import kotlin.collections.set
 
 private const val FACT_STORAGE_DELAY = 60 * 3
 
-class FactDatabase : KoinComponent {
+class FactDatabase : KoinComponent, Listener {
     private val storage: FactStorage by inject()
 
     // Local stored version of player facts
-    private val cache = ConcurrentHashMap<FactId, FactData>()
+    private val cache = RedisProxyMap(this, ConcurrentHashMap<FactId, FactData>())
+    val playerFacts: MutableMap<UUID, MutableSet<FactId>> = Maps.newConcurrentMap()
+    val playerUUIDs: MutableSet<UUID> = Sets.newConcurrentHashSet()
+
 
     fun initialize() {
         storage.init()
+        cache.redis.loadPlayerUUIDs().thenAccept {
+            playerUUIDs.addAll(it)
+        }
+//        redis = RedisManager(this, RedisClient.create(communicationHandler.getRedisURI()), 10)
 
         // Load all the facts from the storage
         runBlocking {
@@ -42,21 +47,53 @@ class FactDatabase : KoinComponent {
         // Filter expired facts every second.
         // After that, save the facts of the players who have facts that expired or changed.
         DISPATCHERS_ASYNC.launch {
-            var cycle = 1
+//            var cycle = 1
             while (plugin.isEnabled) {
                 delay(1000)
                 removeExpiredFacts()
 
-                if (cycle++ % FACT_STORAGE_DELAY == 0) {
-                    storeFactsInPersistentStorage()
-                }
+//                if (cycle++ % FACT_STORAGE_DELAY == 0) {
+//                    storeFactsInPersistentStorage()
+//                }
             }
         }
+        plugin.listen<PlayerLoginEvent> { it ->
+            if(it.result != PlayerLoginEvent.Result.ALLOWED) {
+                return@listen
+            }
+            if(!playerUUIDs.contains(it.player.uniqueId)) {
+                cache.redis.savePlayerUUID(it.player.uniqueId)
+                playerUUIDs.add(it.player.uniqueId)
+            }
+            val uuid = it.player.uniqueId
+            val name = it.player.name
+            cache.redis.loadPlayerFacts(it.player.uniqueId).thenAccept {
+                playerFacts[uuid] = it.keys.toMutableSet()
+                it.forEach { (id, data) ->
+                    cache.forceUpdate(id, data)
+                }
+                println("loaded facts for $name")
+            }.exceptionally { it.printStackTrace(); null }
+        }
+
+        plugin.listen<PlayerQuitEvent> {
+            plugin.server.scheduler.runTaskLaterAsynchronously(plugin, Runnable {
+                playerFacts.remove(it.player.uniqueId)?.forEach { factId ->
+                    cache.forceRemove(factId)
+                }
+            }, 3)
+        }
+
     }
+
+    fun getRedis() : RedisManager {
+        return cache.redis
+    }
+
 
     fun shutdown() {
         runBlocking {
-            storeFactsInPersistentStorage()
+//            storeFactsInPersistentStorage()
         }
         storage.shutdown()
     }
@@ -84,7 +121,7 @@ class FactDatabase : KoinComponent {
             true
         }.map { (id, data) -> id to data }
 
-        storage.storeFacts(facts)
+//        redis.saveFacts(facts.stream().collect(Collectors.toMap({ it.first }, { it.second })))
     }
 
     private fun removeExpiredFacts() {
@@ -102,9 +139,39 @@ class FactDatabase : KoinComponent {
     internal operator fun set(id: FactId, data: FactData) {
         if (data.value == 0) {
             cache.remove(id)
+            checkRemovePlayerFact(id)
         } else {
             cache[id] = data
+            checkUpdatePlayerFact(id)
         }
+    }
+
+    private fun checkUpdatePlayerFact(id: FactId) {
+        val uuid = readUUID(id) ?: return
+        if(playerUUIDs.contains(uuid)) {
+            if (playerFacts[uuid]?.contains(id) == false) {
+                playerFacts[uuid]?.add(id)
+            }
+        }
+    }
+
+    private fun checkRemovePlayerFact(id: FactId) {
+        val uuid = readUUID(id) ?: return
+        if(playerUUIDs.contains(uuid)) {
+            playerFacts[uuid]?.remove(id)
+        }
+    }
+
+    fun readUUID(id: FactId): UUID? {
+        return try {
+            UUID.fromString(id.groupId.id)
+        } catch (e: IllegalArgumentException) {
+            null
+        }
+    }
+
+    fun createFactId(entryId: String, uuid: UUID): FactId {
+        return FactId(entryId, GroupId(uuid))
     }
 
     fun modify(player: Player, modifiers: List<Modifier>, context: InteractionContext? = player.interactionContext) {
