@@ -2,6 +2,7 @@ package com.typewritermc.engine.paper.db
 
 import com.typewritermc.core.db.RedisManager
 import com.typewritermc.engine.paper.facts.FactData
+import com.typewritermc.engine.paper.facts.FactDatabase
 import com.typewritermc.engine.paper.facts.FactId
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.ui.CommunicationHandler
@@ -11,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.koin.java.KoinJavaComponent
 
 class RedisProxyMap(
+    factDatabase: FactDatabase,
     private val map : MutableMap<FactId, FactData>
 ) : MutableMap<FactId, FactData> by map
 {
@@ -19,11 +21,15 @@ class RedisProxyMap(
 
     init {
         val communicationHandler: CommunicationHandler = KoinJavaComponent.get(CommunicationHandler::class.java)
-        redis = RedisManager(this, RedisClient.create(communicationHandler.getRedisURI()), 10)
-        redis.loadFacts().thenAccept {
-            println("loaded: $it")
+        redis = RedisManager(factDatabase,this, RedisClient.create(communicationHandler.getRedisURI()), 10)
+        redis.loadGroupFacts().thenAccept {
+            println("Loaded group facts: ${it.size}")
             putAll(it)
-        }.exceptionally { it.printStackTrace(); null }
+        }
+//        redis.loadFacts().thenAccept {
+//            println("loaded: $it")
+//            putAll(it)
+//        }.exceptionally { it.printStackTrace(); null }
 
         plugin.listen<PlayerJoinEvent> {
             redis.saveUsername(it.player.uniqueId, it.player.name)
