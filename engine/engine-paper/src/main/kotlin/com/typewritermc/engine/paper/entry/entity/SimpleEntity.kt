@@ -28,7 +28,7 @@ interface SimpleEntityInstance : EntityInstanceEntry {
         get() = data
 
     override suspend fun display(): AudienceFilter {
-        val definition = definition.get().logErrorIfNull("You must specify a definition for $name")
+        val definition = definition.get().logErrorIfNull("You must specify a definition for $name (${id})")
             ?: return PassThroughFilter(ref())
 
         val activity = this.activity.get() ?: IdleActivity

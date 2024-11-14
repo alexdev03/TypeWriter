@@ -1,5 +1,6 @@
 package com.typewritermc.basic.entries.action
 
+import com.mthaler.aparser.arithmetic.e
 import com.typewritermc.core.books.pages.Colors
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.extension.annotations.Entry
@@ -79,6 +80,7 @@ class RemoveItemActionEntry(
                         }
                     }
                 }
+                else -> player.inventory.removeItemAnySlot(item.build(player, context).clone())
             }
         }
     }

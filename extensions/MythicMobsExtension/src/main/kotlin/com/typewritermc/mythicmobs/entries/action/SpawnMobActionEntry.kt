@@ -16,12 +16,12 @@ import com.typewritermc.engine.paper.entry.entries.ConstVar
 import com.typewritermc.engine.paper.entry.entries.Var
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.plugin
-import com.typewritermc.engine.paper.utils.Sync
+import com.typewritermc.engine.paper.utils.ThreadType.SYNC
 import com.typewritermc.engine.paper.utils.toBukkitLocation
+import com.typewritermc.mythicmobs.entries.data.ListSetVariable
 import io.lumine.mythic.api.mobs.entities.SpawnReason
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
-import kotlinx.coroutines.Dispatchers
 
 
 @Entry("spawn_mythicmobs_mob", "Spawn a mob from MythicMobs", Colors.ORANGE, "fa6-solid:dragon")
@@ -42,6 +42,9 @@ class SpawnMobActionEntry(
     private val mobName: Var<String> = ConstVar(""),
     private val level: Var<Double> = ConstVar(1.0),
     private val onlyVisibleForPlayer: Boolean = false,
+    private val persist: Boolean = true,
+    @Placeholder
+    private val variables : Var<ListSetVariable> = ConstVar(ListSetVariable()),
     @WithRotation
     private var spawnLocation: Var<Position> = ConstVar(Position.ORIGIN),
 ) : ActionEntry {
@@ -50,16 +53,18 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         Dispatchers.Sync.launch {
-            mob.get().spawn(
-                BukkitAdapter.adapt(spawnLocation.get(player, context).toBukkitLocation()),
-                level.get(player, context),
-                SpawnReason.OTHER
-            ) {
+            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.get(player).toBukkitPlayerLocation(player)), level.get(player), SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false
                     player.showEntity(plugin, it)
                 }
+
+                it.isPersistent = persist
             }
+
+            val variables = variables.get(player).list
+            variables.forEach { variable -> variable.add(activeMob, player) }
         }
+
     }
 }

@@ -87,7 +87,7 @@ interface IndividualAdvancedEntityInstance : EntityInstanceEntry {
 private fun EntityInstanceEntry.baseInfo(): BaseInfo? {
     val definition = definition.get()
     if (definition == null) {
-        logger.warning("You must specify a definition for $name")
+        logger.warning("You must specify a definition for $name (${id})")
         return null
     }
 

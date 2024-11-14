@@ -36,7 +36,7 @@ class IndividualAudienceEntityDisplay(
 
     override fun onPlayerAdd(player: Player) {
         activityManagers.computeIfAbsent(player.uniqueId) {
-            val context = IndividualActivityContext(instanceEntryRef, player)
+            val context = IndividualActivityContext(instanceEntryRef, player, playerEntities = entities)
             val activity = activityCreator.create(context, spawnPosition.get(player).toProperty())
             val activityManager = ActivityManager(activity)
             activityManager.initialize(context)
@@ -73,7 +73,7 @@ class IndividualAudienceEntityDisplay(
 
     override fun onPlayerRemove(player: Player) {
         super.onPlayerRemove(player)
-        activityManagers.remove(player.uniqueId)?.dispose(IndividualActivityContext(instanceEntryRef, player))
+        activityManagers.remove(player.uniqueId)?.dispose(IndividualActivityContext(instanceEntryRef, player, playerEntities = entities))
         lastStates.remove(player.uniqueId)
     }
 
@@ -85,7 +85,8 @@ class IndividualAudienceEntityDisplay(
             activityManager.dispose(
                 IndividualActivityContext(
                     instanceEntryRef,
-                    server.getPlayer(playerId) ?: return@forEach
+                    server.getPlayer(playerId) ?: return@forEach,
+                    playerEntities = entities
                 )
             )
         }

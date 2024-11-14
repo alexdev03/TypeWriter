@@ -9,7 +9,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-@AlgebraicTypeInfo("custom_item", Colors.BLUE, "mdi:shape")
+@AlgebraicTypeInfo("custom_item", Colors.MEDIUM_SEA_GREEN, "mdi:shape")
 class CustomItem(
     val components: List<ItemComponent> = emptyList(),
 ) : Item {

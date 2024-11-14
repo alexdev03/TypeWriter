@@ -24,10 +24,15 @@ repositories {
     }
     // EntityLib
     maven("https://maven.evokegames.gg/snapshots")
+
+    maven("https://repo.nexomc.com/releases")
+
+    maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
 }
 
 dependencies {
     compileOnlyApi("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+    compileOnlyApi("io.lettuce:lettuce-core:6.5.2.RELEASE")
 
     api(project(":engine-core"))
     api(project(":engine-loader"))
@@ -59,6 +64,10 @@ dependencies {
     compileOnlyApi("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
 
     testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.46.3")
+    compileOnlyApi("com.nexomc:nexo:1.1.0")
+    compileOnlyApi("net.Indyuce:MMOItems-API:6.9.5-SNAPSHOT")
+
+    testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.18.0")
 }
 
 tasks.withType<ShadowJar> {

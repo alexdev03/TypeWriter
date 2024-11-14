@@ -1,5 +1,6 @@
 package com.typewritermc.entity.entries.entity
 
+import com.github.retrooper.packetevents.protocol.entity.EntityPositionData
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType
 import com.typewritermc.engine.paper.entry.entity.EntityState
 import com.typewritermc.engine.paper.entry.entity.FakeEntity

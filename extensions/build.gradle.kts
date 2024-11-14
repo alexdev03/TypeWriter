@@ -14,6 +14,8 @@ allprojects {
     repositories {
         // Required
         mavenCentral()
+        maven("https://repo.nexomc.com/releases")
+        maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
     }
 
     val targetJavaVersion = 21
