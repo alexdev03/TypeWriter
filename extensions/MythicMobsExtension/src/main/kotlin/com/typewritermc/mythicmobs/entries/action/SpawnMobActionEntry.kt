@@ -11,10 +11,12 @@ import com.typewritermc.engine.paper.entry.Criteria
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.TriggerableEntry
 import com.typewritermc.engine.paper.entry.entries.ActionEntry
+import com.typewritermc.engine.paper.entry.entries.ConstVar
+import com.typewritermc.engine.paper.entry.entries.Var
+import com.typewritermc.engine.paper.entry.entries.get
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
-import com.typewritermc.engine.paper.utils.toBukkitLocation
 import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
 import io.lumine.mythic.api.mobs.entities.SpawnReason
 import io.lumine.mythic.bukkit.BukkitAdapter
@@ -55,8 +57,7 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         SYNC.launch {
-            println(spawnLocation)
-            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.toBukkitPlayerLocation(player)), level, SpawnReason.OTHER) {
+            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.get(player).toBukkitPlayerLocation(player)), level.get(player), SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false
                     player.showEntity(plugin, it)
