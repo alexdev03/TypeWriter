@@ -118,6 +118,31 @@ public class RedisManager extends RedisAbstract {
     }
 
     public void deleteFact(FactId factId) {
+        final UUID targetUUID = factDatabase.readUUID(factId);
+        if (targetUUID == null) {
+            System.out.println("Could not find target UUID for " + factId);
+            return;
+        }
+
+        if(factDatabase.getPlayerUUIDs().contains(targetUUID)) {
+            deletePlayerFact(targetUUID, factId);
+        } else {
+            deleteGroupFact(factId);
+            sendUpdate(factId, null);
+        }
+    }
+
+    private void deletePlayerFact(UUID targetUUID, FactId factId) {
+        final String factIdAsString = factId.getEntryId();
+        getConnectionAsync(c -> c.hdel(RedisKeys.PLAYER_FACTS.getKey() + targetUUID.toString(), factIdAsString));
+    }
+
+    private void deleteGroupFact(FactId factId) {
+        final String factIdAsString = gson.toJson(factId);
+        getConnectionAsync(c -> c.hdel(RedisKeys.GROUP_FACTS.getKey(), factIdAsString));
+    }
+
+    public void deleteFactOld(FactId factId) {
         String factIdAsString = gson.toJson(factId);
         getConnectionAsync(c -> c.hdel(RedisKeys.FACS.getKey(), factIdAsString));
         sendUpdate(factId, null);
