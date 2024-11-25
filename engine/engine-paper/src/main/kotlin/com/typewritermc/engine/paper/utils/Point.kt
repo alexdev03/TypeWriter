@@ -25,8 +25,14 @@ fun Point.toPacketVector3d() = Vector3d(x, y, z)
 fun Point.toPacketVector3i() = Vector3i(blockX, blockY, blockZ)
 fun Point.toBukkitVector(): org.bukkit.util.Vector = org.bukkit.util.Vector(x, y, z)
 
-fun World.toBukkitWorld(): org.bukkit.World = server.getWorld(identifier)
-    ?: throw IllegalArgumentException("Could not find world '$identifier' for location, and no default world available.")
+//fun World.toBukkitWorld(): org.bukkit.World = server.getWorld( identifier)
+//    ?: throw IllegalArgumentException("Could not find world '$identifier' for location, and no default world available.")
+
+//check if identifier is a 36 character string use UUID or identifier
+fun World.toBukkitWorld() : org.bukkit.World {
+    return (if(identifier.length == 36) Bukkit.getWorld(UUID.fromString(identifier)) else Bukkit.getWorld(identifier))
+        ?: throw IllegalArgumentException("Could not find world '$identifier' for location, and no default world available.")
+}
 
 fun org.bukkit.World.toWorld(): World = World(uid.toString())
 
@@ -81,6 +87,12 @@ fun world(player: Player?, position: PositionProperty): World {
 
 private fun defaultWorld(position: Position): World {
     val world = position.world.identifier
+    if (world.length == 36) {
+        val bukkitWorld = Bukkit.getWorld(UUID.fromString(world))
+        if (bukkitWorld != null) {
+            return World(bukkitWorld.name)
+        }
+    }
     val bukkitWorld =
         world.let { server.getWorld(it) } ?: server.worlds.firstOrNull { it.name.equals(world, true) }
             .logErrorIfNull(
