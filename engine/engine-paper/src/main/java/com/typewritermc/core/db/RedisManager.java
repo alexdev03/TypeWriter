@@ -88,6 +88,7 @@ public class RedisManager extends RedisAbstract {
             sendUpdate(factId, factData);
         }
 
+
 ////        System.out.println("Pre send update: " + factId + " " + factData);
 //        String factIdAsString = gson.toJson(factId);
 //        String factDataAsString = serializeFactData(factData);
