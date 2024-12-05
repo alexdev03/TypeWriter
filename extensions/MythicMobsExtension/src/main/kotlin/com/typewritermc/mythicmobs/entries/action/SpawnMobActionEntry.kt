@@ -44,6 +44,7 @@ class SpawnMobActionEntry(
     private val mobName: Var<String> = ConstVar(""),
     private val level: Var<Double> = ConstVar(1.0),
     private val onlyVisibleForPlayer: Boolean = false,
+    private val persist: Boolean = true,
     @Placeholder
     @Help("The variables to set for the mob. Format: variableName:type=value. Example: test:INTEGER=100")
     private val variables : List<String> = emptyList(),
@@ -63,6 +64,7 @@ class SpawnMobActionEntry(
                     player.showEntity(plugin, it)
                 }
 
+                it.isPersistent = persist
             }
 
             val variableMap = mutableMapOf<String, Any>()

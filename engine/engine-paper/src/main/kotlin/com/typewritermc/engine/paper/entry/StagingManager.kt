@@ -45,7 +45,7 @@ interface StagingManager {
     fun updateEntry(pageId: String, data: JsonObject): Result<String>
     fun reorderEntry(pageId: String, entryId: String, newIndex: Int): Result<String>
     fun deleteEntry(pageId: String, entryId: String): Result<String>
-
+    fun clearCache()
     fun findEntryPage(entryId: String): Result<String>
     suspend fun publish(): Result<String>
     fun shutdown()
@@ -228,6 +228,11 @@ class StagingManagerImpl : StagingManager, KoinComponent {
 
         autoSaver()
         return ok("Successfully deleted entry with id $entryId")
+    }
+
+    override fun clearCache() {
+        _pages = null
+        stagingDir.delete()
     }
 
     override fun findEntryPage(entryId: String): Result<String> {

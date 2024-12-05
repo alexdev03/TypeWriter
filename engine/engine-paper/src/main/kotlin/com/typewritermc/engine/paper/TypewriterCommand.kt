@@ -28,6 +28,7 @@ import dev.jorel.commandapi.kotlindsl.*
 import net.kyori.adventure.inventory.Book
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.get
 import java.time.format.DateTimeFormatter
 
@@ -35,6 +36,7 @@ fun typeWriterCommand() = commandTree("typewriter") {
     withAliases("tw")
 
     reloadCommands()
+    clearStagingAndReload()
 
     factsCommands()
 
@@ -62,6 +64,19 @@ private fun CommandTree.reloadCommands() = literalArgument("reload") {
         ThreadType.DISPATCHERS_ASYNC.launch {
             plugin.reload()
             sender.msg("Configuration reloaded!")
+        }
+    }
+}
+
+private fun CommandTree.clearStagingAndReload() = literalArgument("clearStagingAndReload") {
+    withPermission("typewriter.clearStagingAndReload")
+    anyExecutor { sender, _ ->
+        sender.msg("Clearing staging...")
+        ThreadType.DISPATCHERS_ASYNC.launch {
+            val stagingManager = org.koin.java.KoinJavaComponent.get<StagingManager>(com.typewritermc.engine.paper.entry.StagingManager::class.java)
+            stagingManager.clearCache()
+            plugin.reload()
+            sender.msg("Staging cleared!")
         }
     }
 }
