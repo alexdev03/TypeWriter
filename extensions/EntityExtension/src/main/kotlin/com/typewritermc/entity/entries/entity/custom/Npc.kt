@@ -60,6 +60,7 @@ class NpcInstance(
     @OnlyTags("generic_entity_data", "living_entity_data", "lines", "player_data")
     override val data: List<Ref<EntityData<*>>> = emptyList(),
     override val activity: Ref<out SharedEntityActivityEntry> = emptyRef(),
+    val hideIndicator : Boolean = false
 ) : SimpleEntityInstance
 
 class NpcEntity(
