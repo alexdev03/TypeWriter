@@ -6,10 +6,10 @@ import com.typewritermc.core.db.RedisManager
 import com.typewritermc.core.entries.Query
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.ref
+import com.typewritermc.core.interaction.context
 import com.typewritermc.engine.paper.db.RedisProxyMap
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.ModifierOperator
-import com.typewritermc.engine.paper.entry.RefreshFactTrigger
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.entry.triggerFor
 import com.typewritermc.engine.paper.plugin
@@ -229,7 +229,7 @@ class FactDatabase : KoinComponent, Listener {
             val entry = Query.findById<WritableFactEntry>(id) ?: continue
             entry.write(player, value)
             if (entry is ReadableFactEntry) {
-                RefreshFactTrigger(entry.ref()) triggerFor player
+                RefreshFactTrigger(entry.ref()).triggerFor(player, context())
             }
         }
     }
@@ -253,6 +253,13 @@ class FactsModifier {
     }
 
     fun build(): Map<String, Int> = modifications
+}
+
+class RefreshFactTrigger(
+    val fact: Ref<ReadableFactEntry>,
+) : EventTrigger {
+    override val id: String
+        get() = "fact.${fact.id}"
 }
 
 fun Player.fact(ref: Ref<out ReadableFactEntry>) = ref.get()?.readForPlayersGroup(this)
