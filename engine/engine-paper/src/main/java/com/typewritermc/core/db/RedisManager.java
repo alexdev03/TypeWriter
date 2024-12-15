@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.typewritermc.engine.paper.db.RedisAbstract;
 import com.typewritermc.engine.paper.db.RedisProxyMap;
-import com.typewritermc.engine.paper.entry.entries.GroupId;
 import com.typewritermc.engine.paper.facts.FactData;
 import com.typewritermc.engine.paper.facts.FactDatabase;
 import com.typewritermc.engine.paper.facts.FactId;
