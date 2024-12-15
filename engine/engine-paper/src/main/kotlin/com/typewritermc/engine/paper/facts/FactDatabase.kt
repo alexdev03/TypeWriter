@@ -1,21 +1,30 @@
 package com.typewritermc.engine.paper.facts
 
+import com.google.common.collect.Maps
+import com.google.common.collect.Sets
+import com.typewritermc.core.db.RedisManager
 import com.typewritermc.core.entries.Query
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.ref
+import com.typewritermc.engine.paper.db.RedisProxyMap
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.ModifierOperator
+import com.typewritermc.engine.paper.entry.RefreshFactTrigger
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.entry.triggerFor
-import com.typewritermc.core.interaction.context
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.ThreadType.DISPATCHERS_ASYNC
 import com.typewritermc.engine.paper.utils.logErrorIfNull
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import lirand.api.extensions.events.listen
 import org.bukkit.entity.Player
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerLoginEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.component1
 import kotlin.collections.component2
@@ -25,6 +34,7 @@ private const val FACT_STORAGE_DELAY = 60 * 3
 
 class FactDatabase : KoinComponent, Listener {
     private val storage: FactStorage by inject()
+//    private lateinit var redis: RedisManager
 
     // Local stored version of player facts
     private val cache = RedisProxyMap(this, ConcurrentHashMap<FactId, FactData>())
@@ -40,9 +50,11 @@ class FactDatabase : KoinComponent, Listener {
 //        redis = RedisManager(this, RedisClient.create(communicationHandler.getRedisURI()), 10)
 
         // Load all the facts from the storage
-        runBlocking {
-            loadFactsFromPersistentStorage()
-        }
+//        runBlocking {
+////            loadFactsFromPersistentStorage()
+//            println("loading facts from redis")
+//
+//        }
 
         // Filter expired facts every second.
         // After that, save the facts of the players who have facts that expired or changed.
@@ -221,6 +233,14 @@ class FactDatabase : KoinComponent, Listener {
             }
         }
     }
+
+//    fun updateFact(factId: FactId, factData: FactData) {
+//        cache[factId] = factData
+//    }
+//
+//    fun removeFact(key: FactId) {
+//        cache.remove(key)
+//    }
 }
 
 class FactsModifier {
