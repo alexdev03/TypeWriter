@@ -31,6 +31,11 @@ class CommunicationHandler : KoinComponent {
     private val extensionLoader: ExtensionLoader by inject()
     private val extensionJson by extensionLoader::extensionJson
 
+    private val redisUri: String by config(
+        "redisUri",
+        "redis://localhost:6300/3"
+    )
+
     private val hostName: String by config(
         "hostname",
         "127.0.0.1",
@@ -135,6 +140,10 @@ class CommunicationHandler : KoinComponent {
         plugin.listen<StagingChangeEvent> { (newState) ->
             server?.broadcastOperations?.sendEvent("stagingState", newState.name.lowercase())
         }
+    }
+
+    fun getRedisURI() : String {
+        return redisUri
     }
 
     fun load() {
