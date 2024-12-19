@@ -9,10 +9,7 @@ import com.typewritermc.engine.paper.entry.Criteria
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.StagingManager
 import com.typewritermc.engine.paper.entry.TriggerableEntry
-import com.typewritermc.engine.paper.entry.entries.ActionEntry
-import com.typewritermc.engine.paper.entry.entries.ConstVar
-import com.typewritermc.engine.paper.entry.entries.Var
-import com.typewritermc.engine.paper.entry.entries.get
+import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
 import io.lumine.mythic.bukkit.MythicBukkit
@@ -32,8 +29,7 @@ class DespawnMobsActionEntry(
     @Placeholder
     private val variables : List<String> = emptyList(),
 ) : ActionEntry {
-    override fun execute(player: Player) {
-        super.execute(player)
+    override fun ActionTrigger.execute() {       
         //map variables in a map, the key is the variable name, the value is the value parsed with papi
         val variablesMap = variables.associate { it.split("=")[0] to it.split("=")[1].parsePlaceholders(player) }
 
