@@ -18,6 +18,7 @@ import io.lumine.mythic.core.skills.SkillMetadataImpl
 import io.lumine.mythic.core.skills.SkillTriggers
 import io.lumine.mythic.core.utils.MythicUtil
 import org.bukkit.entity.Player
+import kotlin.coroutines.coroutineContext
 
 @Entry("execute_mythicmob_skill", "Executes a MythicMobs skill", Colors.RED, "fa6-solid:bolt-lightning")
 /**

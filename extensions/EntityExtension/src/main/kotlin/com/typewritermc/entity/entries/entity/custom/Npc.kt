@@ -4,10 +4,7 @@ import com.typewritermc.core.books.pages.Colors
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.emptyRef
 import com.typewritermc.core.entries.ref
-import com.typewritermc.core.extension.annotations.Entry
-import com.typewritermc.core.extension.annotations.Help
-import com.typewritermc.core.extension.annotations.OnlyTags
-import com.typewritermc.core.extension.annotations.Tags
+import com.typewritermc.core.extension.annotations.*
 import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.entity.*
 import com.typewritermc.engine.paper.entry.entries.*
@@ -36,12 +33,18 @@ class NpcDefinition(
     override val sound: Sound = Sound.EMPTY,
     @Help("The skin of the npc.")
     val skin: Var<SkinProperty> = ConstVar(SkinProperty()),
+    @Default("false")
+    val hideIndicator : Boolean = false,
     @OnlyTags("generic_entity_data", "living_entity_data", "lines", "player_data")
     override val data: List<Ref<EntityData<*>>> = emptyList(),
 ) : SimpleEntityDefinition {
 
     override fun create(player: Player): FakeEntity {
-        return NpcEntity(player, displayName, skin, ref())
+        return if (!hideIndicator) {
+            NpcEntity(player, displayName, skin, ref())
+        } else {
+            AmberNpcEntity(player, displayName, skin, ref())
+        }
     }
 }
 
