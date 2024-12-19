@@ -11,6 +11,9 @@ import com.typewritermc.engine.paper.entry.Criteria
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.TriggerableEntry
 import com.typewritermc.engine.paper.entry.entries.ActionEntry
+import com.typewritermc.engine.paper.entry.entries.ActionTrigger
+import com.typewritermc.engine.paper.entry.entries.ConstVar
+import com.typewritermc.engine.paper.entry.entries.Var
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
@@ -42,6 +45,7 @@ class SpawnMobActionEntry(
     private val mobName: Var<String> = ConstVar(""),
     private val level: Var<Double> = ConstVar(1.0),
     private val onlyVisibleForPlayer: Boolean = false,
+    private val persist: Boolean = true,
     @Placeholder
     @Help("The variables to set for the mob. Format: variableName:type=value. Example: test:INTEGER=100")
     private val variables : List<String> = emptyList(),
@@ -59,6 +63,7 @@ class SpawnMobActionEntry(
                     player.showEntity(plugin, it)
                 }
 
+                it.isPersistent = persist
             }
 
             val variableMap = mutableMapOf<String, Any>()
