@@ -18,13 +18,11 @@ import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
 import com.typewritermc.engine.paper.utils.toBukkitLocation
-import com.typewritermc.engine.paper.utils.toBukkitPlayerLocation
 import io.lumine.mythic.api.mobs.entities.SpawnReason
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.skills.variables.Variable
 import io.lumine.mythic.core.skills.variables.VariableType
-import org.bukkit.entity.Player
 
 
 @Entry("spawn_mythicmobs_mob", "Spawn a mob from MythicMobs", Colors.ORANGE, "fa6-solid:dragon")
@@ -57,7 +55,7 @@ class SpawnMobActionEntry(
         if (!mob.isPresent) return
 
         SYNC.launch {
-            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.get(player).toBukkitPlayerLocation(player)), level.get(player), SpawnReason.OTHER) {
+            val activeMob = mob.get().spawn(BukkitAdapter.adapt(spawnLocation.get(player).toBukkitLocation()), level.get(player), SpawnReason.OTHER) {
                 if (onlyVisibleForPlayer) {
                     it.isVisibleByDefault = false
                     player.showEntity(plugin, it)
