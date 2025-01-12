@@ -78,13 +78,11 @@ class FactDatabase : KoinComponent, Listener {
                 playerUUIDs.add(it.player.uniqueId)
             }
             val uuid = it.player.uniqueId
-            val name = it.player.name
             cache.redis.loadPlayerFacts(it.player.uniqueId).thenAccept {
                 playerFacts[uuid] = it.keys.toMutableSet()
                 it.forEach { (id, data) ->
                     cache.forceUpdate(id, data)
                 }
-                println("loaded facts for $name")
             }.exceptionally { it.printStackTrace(); null }
         }
 
