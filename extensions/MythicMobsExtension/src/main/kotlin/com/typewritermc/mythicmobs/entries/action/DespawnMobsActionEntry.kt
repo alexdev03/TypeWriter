@@ -29,12 +29,12 @@ class DespawnMobsActionEntry(
     @Placeholder
     private val variables : List<String> = emptyList(),
 ) : ActionEntry {
-    override fun ActionTrigger.execute() {       
+    override fun ActionTrigger.execute() {
         //map variables in a map, the key is the variable name, the value is the value parsed with papi
         val variablesMap = variables.associate { it.split("=")[0] to it.split("=")[1].parsePlaceholders(player) }
 
         val mobs = MythicBukkit.inst().mobManager.activeMobs.filter { it.variables.asMap().entries.all { entry -> variablesMap.containsKey(entry.key) && entry.value.toString() == variablesMap[entry.key]!!.toString() } }
-
+        
         SYNC.launch {
             mobs.forEach {
                 it.remove()
