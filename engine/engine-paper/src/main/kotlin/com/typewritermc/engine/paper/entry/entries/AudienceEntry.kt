@@ -14,6 +14,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.koin.java.KoinJavaComponent.get
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentSkipListSet
 
 
@@ -120,7 +121,7 @@ abstract class AudienceFilter(
     private val ref: Ref<out AudienceFilterEntry>
 ) : AudienceDisplay() {
     private val inverted = (ref.get() as? Invertible)?.inverted ?: false
-    private val filteredPlayers: ConcurrentSkipListSet<UUID> = ConcurrentSkipListSet()
+    private val filteredPlayers: MutableSet<UUID> = Sets.newConcurrentHashSet()
     override val players: List<Player> get() = server.onlinePlayers.filter { it.uniqueId in filteredPlayers }
 
     protected val consideredPlayers: List<Player> get() = super.players
