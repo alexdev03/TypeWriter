@@ -31,6 +31,7 @@ val centralDependencies = listOf(
 )
 
 dependencies {
+    compileOnlyApi("io.lettuce:lettuce-core:6.5.2.RELEASE")
     compileOnlyApi("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 
     api(project(":engine-core"))
