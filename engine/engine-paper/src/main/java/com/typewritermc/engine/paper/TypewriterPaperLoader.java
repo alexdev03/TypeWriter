@@ -40,6 +40,7 @@ public class TypewriterPaperLoader implements PluginLoader {
         addDependency(classpathBuilder, "org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3",
             central);
         addDependency(classpathBuilder, "org.bstats:bstats-bukkit:3.1.0", central);
+        addDependency(classpathBuilder, "io.lettuce:lettuce-core:6.5.2.RELEASE", central);
     }
 
     public void addDependency(PluginClasspathBuilder classpathBuilder, String artifact,
