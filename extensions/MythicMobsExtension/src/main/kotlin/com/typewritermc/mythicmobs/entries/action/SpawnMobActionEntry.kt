@@ -23,8 +23,6 @@ import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.skills.variables.Variable
 import io.lumine.mythic.core.skills.variables.VariableType
-import org.bukkit.event.EventHandler
-import org.bukkit.event.player.PlayerInteractEvent
 
 
 @Entry("spawn_mythicmobs_mob", "Spawn a mob from MythicMobs", Colors.ORANGE, "fa6-solid:dragon")
@@ -51,15 +49,7 @@ class SpawnMobActionEntry(
     private val variables : List<String> = emptyList(),
     @WithRotation
     private var spawnLocation: Var<Position> = ConstVar(Position.ORIGIN),
-    @Help("Despawn the mob when a player is out of range")
-    private var despawnOnOutOfRange: Boolean = false,
 ) : ActionEntry {
-
-    @EventHandler
-    fun onPlayerInteract(event: PlayerInteractEvent) {
-        println("Player ${event.player.uniqueId} interacted with ${event.clickedBlock?.type}")
-    }
-
     override fun ActionTrigger.execute() {
         val mob = MythicBukkit.inst().mobManager.getMythicMob(mobName.get(player, context).parsePlaceholders(player))
         if (!mob.isPresent) return
@@ -72,20 +62,10 @@ class SpawnMobActionEntry(
                 }
 
                 it.isPersistent = persist
-//                println("Spawned ${it.uniqueId} with persistance ${it.isPersistent}")
-//                plugin.server.scheduler.runTaskLater(plugin, Runnable{
-//                    println("After 20 ticks, ${it.uniqueId} is ${it.isPersistent}")
-//                }, 20)
             }
 
             val variableMap = mutableMapOf<String, Any>()
             val variableType = mutableMapOf<String, VariableType>()
-
-            if (despawnOnOutOfRange) {
-                variableMap["despawnOnOutOfRange"] = 1
-                variableType["despawnOnOutOfRange"] = VariableType.INTEGER
-            }
-
             variables.forEach { variable ->
                 val split = variable.split("=")
                 if (split.size == 2) {
