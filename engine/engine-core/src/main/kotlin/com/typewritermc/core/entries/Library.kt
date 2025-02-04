@@ -10,9 +10,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Logger
-import java.util.stream.Collectors
 import kotlin.reflect.full.findAnnotations
 
 class Library : KoinComponent, Reloadable {
@@ -20,7 +18,6 @@ class Library : KoinComponent, Reloadable {
         private set
     internal var entries: List<Entry> = emptyList()
         private set
-    var entriesById: MutableMap<String, Entry> = ConcurrentHashMap()
 
     internal var entryPriority = emptyMap<Ref<out Entry>, Int>()
         private set
@@ -33,7 +30,6 @@ class Library : KoinComponent, Reloadable {
     override suspend fun load() {
         pages = directory.resolve("pages").listFiles().orEmpty()
             .filter { it.isFile && it.canRead() && it.name.endsWith(".json") }
-            .parallelStream()
             .map {
                 val json = JsonParser.parseString(it.readText())
                 if (!json.isJsonObject) throw IllegalArgumentException("Page ${it.name} does not contain a valid json object")
@@ -42,16 +38,14 @@ class Library : KoinComponent, Reloadable {
                 obj
             }
             .map { parsePage(it) }
-            .toList()
 
         entries = pages.flatMap { it.entries }
-        entryPriority = pages.parallelStream().flatMap { page ->
-            page.entries.stream().map { entry ->
-                entriesById[entry.id] = entry
-                if (entry !is PriorityEntry) entry.ref() to page.priority
-                else entry.ref() to entry.priorityOverride.orElse(page.priority)
+        entryPriority = pages.flatMap { page ->
+            page.entries.map { entry ->
+                if (entry !is PriorityEntry) return@map entry.ref() to page.priority
+                entry.ref() to entry.priorityOverride.orElse(page.priority)
             }
-        }.collect(Collectors.toMap({ it.first }, { it.second }))
+        }.toMap()
 
         logger.info("Loaded ${entries.size} entries from ${pages.size} pages.")
     }
@@ -60,7 +54,6 @@ class Library : KoinComponent, Reloadable {
         pages = emptyList()
         entries = emptyList()
         entryPriority = emptyMap()
-        entriesById.clear()
     }
 
     private fun parsePage(obj: JsonObject): Page {

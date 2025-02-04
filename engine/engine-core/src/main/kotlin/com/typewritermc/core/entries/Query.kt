@@ -189,18 +189,11 @@ class Query<E : Entry>(private val klass: KClass<E>) {
          * Find entry by [id].
          * @see findByName
          */
-        fun <E : Entry> findById(klass: KClass<E>, id: String): E? {
-//            get<Library>(Library::class.java).entries
-//                .asSequence()
-//                .filterIsInstance(klass.java)
-//                .firstOrNull { it.id == id }
-            val entry = get<Library>(Library::class.java).entriesById[id]
-            if (entry != null && klass.isInstance(entry)) {
-                return entry as E
-            }
-
-            return null
-        }
+        fun <E : Entry> findById(klass: KClass<E>, id: String): E? =
+            get<Library>(Library::class.java).entries
+                .asSequence()
+                .filterIsInstance(klass.java)
+                .firstOrNull { it.id == id }
 
         /**
          * Find entry all entries that are on the given page [pageId] with the given [filter].
