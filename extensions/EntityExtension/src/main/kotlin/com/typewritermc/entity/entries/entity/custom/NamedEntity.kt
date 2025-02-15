@@ -6,10 +6,7 @@ import com.typewritermc.core.entries.emptyRef
 import com.typewritermc.core.entries.ref
 import com.typewritermc.core.extension.annotations.Entry
 import com.typewritermc.core.utils.point.Vector
-import com.typewritermc.engine.paper.entry.entity.EntityState
-import com.typewritermc.engine.paper.entry.entity.FakeEntity
-import com.typewritermc.engine.paper.entry.entity.PositionProperty
-import com.typewritermc.engine.paper.entry.entity.SimpleEntityDefinition
+import com.typewritermc.engine.paper.entry.entity.*
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.snippets.snippet
@@ -17,6 +14,7 @@ import com.typewritermc.engine.paper.utils.*
 import com.typewritermc.entity.entries.data.minecraft.display.BillboardConstraintProperty
 import com.typewritermc.entity.entries.data.minecraft.display.TranslationProperty
 import com.typewritermc.entity.entries.data.minecraft.display.text.BackgroundColorProperty
+import com.typewritermc.entity.entries.data.minecraft.living.player.NameAndSkinDataProperty
 import com.typewritermc.entity.entries.entity.minecraft.TextDisplayEntity
 import me.tofaa.entitylib.meta.display.AbstractDisplayMeta
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
@@ -64,7 +62,7 @@ class NamedEntityDefinition(
 
 class NamedEntity(
     player: Player,
-    private val displayName: Var<String>,
+    var displayName: Var<String>,
     private val baseEntity: FakeEntity,
     definition: Ref<out EntityDefinitionEntry>,
 ) : FakeEntity(player) {
@@ -90,10 +88,15 @@ class NamedEntity(
             BillboardConstraintProperty(AbstractDisplayMeta.BillboardConstraints.CENTER),
             BackgroundColorProperty(Color.fromHex(namePlateColor))
         )
+
     }
 
     override fun applyProperties(properties: List<EntityProperty>) {
-        return baseEntity.consumeProperties(properties)
+        baseEntity.consumeProperties(properties)
+        val nameAndSkinDataProperty = properties.firstOrNull { it is NameAndSkinDataProperty } as? NameAndSkinDataProperty
+        if (nameAndSkinDataProperty != null) {
+            displayName = ConstVar(nameAndSkinDataProperty.name)
+        }
     }
 
     override fun tick() {

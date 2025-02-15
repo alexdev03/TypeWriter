@@ -36,7 +36,7 @@ class ViewerEquipmentData(
 ) : LivingEntityData<EquipmentProperty> {
     override fun type(): KClass<EquipmentProperty> = EquipmentProperty::class
 
-    override fun build(player: Player): EquipmentProperty = player.equipment.toProperty()
+    override fun build(player: Player): EquipmentProperty = player.equipment!!.toProperty()
 }
 
 data class EquipmentProperty(val data: Map<EquipmentSlot, ItemStack>) : EntityProperty {
