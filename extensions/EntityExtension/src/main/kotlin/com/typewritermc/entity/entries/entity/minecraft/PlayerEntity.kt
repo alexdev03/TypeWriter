@@ -87,7 +87,8 @@ class PlayerEntity(
             entityId = EntityLib.getPlatform().entityIdProvider.provide(uuid, EntityTypes.PLAYER)
         } while (EntityLib.getApi<SpigotEntityLibAPI>().getEntity(entityId) != null)
 
-        entity = WrapperPlayer(UserProfile(uuid, "\u2063${displayName.get(player).stripped().replace(" ", "_")}"), entityId)
+        entity =
+            WrapperPlayer(UserProfile(uuid, "\u2063${displayName.get(player).stripped().replace(" ", "_")}"), entityId)
 
         entity.isInTablist = false
         entity.meta<PlayerMeta> {
@@ -116,6 +117,9 @@ class PlayerEntity(
 
                 is SkinProperty -> entity.textureProperties =
                     listOf(TextureProperty("textures", property.texture, property.signature))
+
+                is NameAndSkinDataProperty -> entity.textureProperties =
+                    listOf(TextureProperty("textures", property.skin.texture, property.skin.signature))
 
                 is PoseProperty -> {
                     if (property.pose == EntityPose.SITTING) {
