@@ -9,6 +9,7 @@ import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.entity.*
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.utils.Sound
+import com.typewritermc.entity.entries.data.minecraft.living.player.NameAndSkinDataProperty
 import com.typewritermc.entity.entries.entity.minecraft.PlayerEntity
 import org.bukkit.entity.Player
 
@@ -81,10 +82,17 @@ class NpcEntity(
         get() = namePlate.state
 
     override fun applyProperties(properties: List<EntityProperty>) {
+        if (properties.any {it is NameAndSkinDataProperty }) {
+            namePlate.consumeProperties(properties)
+            return
+        }
+
         if (properties.any { it is SkinProperty }) {
             namePlate.consumeProperties(properties)
             return
         }
+
+
         namePlate.consumeProperties(properties + skin.get(player))
     }
 
