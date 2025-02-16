@@ -6,7 +6,10 @@ import com.typewritermc.core.entries.emptyRef
 import com.typewritermc.core.entries.ref
 import com.typewritermc.core.extension.annotations.Entry
 import com.typewritermc.core.utils.point.Vector
-import com.typewritermc.engine.paper.entry.entity.*
+import com.typewritermc.engine.paper.entry.entity.EntityState
+import com.typewritermc.engine.paper.entry.entity.FakeEntity
+import com.typewritermc.engine.paper.entry.entity.PositionProperty
+import com.typewritermc.engine.paper.entry.entity.SimpleEntityDefinition
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.snippets.snippet
@@ -96,6 +99,14 @@ class NamedEntity(
             when (property) {
                 is DisplayNameProperty -> {
                     displayName = property.displayName
+                }
+                // If a player's skin is changed, the passengers will be moved off.
+                is SkinProperty -> {
+                    baseEntity.removePassenger(hologram)
+                    baseEntity.removePassenger(indicatorEntity)
+                    baseEntity.consumeProperties(listOf(property))
+                    baseEntity.addPassenger(hologram)
+                    baseEntity.addPassenger(indicatorEntity)
                 }
             }
         }
