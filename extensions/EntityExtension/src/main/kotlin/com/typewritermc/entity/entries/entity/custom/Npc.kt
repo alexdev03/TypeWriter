@@ -4,12 +4,14 @@ import com.typewritermc.core.books.pages.Colors
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.emptyRef
 import com.typewritermc.core.entries.ref
-import com.typewritermc.core.extension.annotations.*
+import com.typewritermc.core.extension.annotations.Entry
+import com.typewritermc.core.extension.annotations.Help
+import com.typewritermc.core.extension.annotations.OnlyTags
+import com.typewritermc.core.extension.annotations.Tags
 import com.typewritermc.core.utils.point.Position
 import com.typewritermc.engine.paper.entry.entity.*
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.utils.Sound
-import com.typewritermc.entity.entries.data.minecraft.living.player.NameAndSkinDataProperty
 import com.typewritermc.entity.entries.entity.minecraft.PlayerEntity
 import org.bukkit.entity.Player
 
@@ -34,18 +36,12 @@ class NpcDefinition(
     override val sound: Sound = Sound.EMPTY,
     @Help("The skin of the npc.")
     val skin: Var<SkinProperty> = ConstVar(SkinProperty()),
-    @Default("false")
-    val hideIndicator : Boolean = false,
     @OnlyTags("generic_entity_data", "living_entity_data", "lines", "player_data")
     override val data: List<Ref<EntityData<*>>> = emptyList(),
 ) : SimpleEntityDefinition {
 
     override fun create(player: Player): FakeEntity {
-        return if (!hideIndicator) {
-            NpcEntity(player, displayName, skin, ref())
-        } else {
-            AmberNpcEntity(player, displayName, skin, ref())
-        }
+        return NpcEntity(player, displayName, skin, ref())
     }
 }
 
@@ -82,17 +78,10 @@ class NpcEntity(
         get() = namePlate.state
 
     override fun applyProperties(properties: List<EntityProperty>) {
-        if (properties.any {it is NameAndSkinDataProperty }) {
-            namePlate.consumeProperties(properties)
-            return
-        }
-
         if (properties.any { it is SkinProperty }) {
             namePlate.consumeProperties(properties)
             return
         }
-
-
         namePlate.consumeProperties(properties + skin.get(player))
     }
 
