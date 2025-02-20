@@ -6,12 +6,14 @@ import com.typewritermc.core.db.RedisManager
 import com.typewritermc.core.entries.Query
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.ref
+import com.typewritermc.core.interaction.InteractionContext
+import com.typewritermc.core.interaction.context
 import com.typewritermc.engine.paper.db.RedisProxyMap
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.ModifierOperator
-import com.typewritermc.engine.paper.entry.RefreshFactTrigger
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.entry.triggerFor
+import com.typewritermc.engine.paper.interaction.interactionContext
 import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.ThreadType.DISPATCHERS_ASYNC
 import com.typewritermc.engine.paper.utils.logErrorIfNull
