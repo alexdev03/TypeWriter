@@ -100,6 +100,9 @@ private class PathActivity(
         if (result == TickResult.IGNORED) {
             currentLocationIndex = (currentLocationIndex + 1)
             refreshActivity(context, network!!)
+            if (activity is IdleActivity) {
+                return TickResult.IGNORED
+            }
         }
 
         return TickResult.CONSUMED

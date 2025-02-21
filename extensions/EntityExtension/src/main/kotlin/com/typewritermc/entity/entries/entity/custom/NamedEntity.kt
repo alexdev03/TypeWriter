@@ -108,7 +108,6 @@ class NamedEntity(
                     indicatorEntity.spawn(location)
                     baseEntity.addPassenger(hologram)
                     baseEntity.addPassenger(indicatorEntity)
-
                 }
             }
         }

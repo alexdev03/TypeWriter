@@ -5,6 +5,7 @@ import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.emptyRef
 import com.typewritermc.core.extension.annotations.Entry
 import com.typewritermc.engine.paper.entry.entity.*
+import com.typewritermc.engine.paper.entry.entries.EntityProperty
 import com.typewritermc.engine.paper.entry.entries.GenericEntityActivityEntry
 import com.typewritermc.engine.paper.utils.distanceSqrt
 import com.typewritermc.engine.paper.utils.toBukkitLocation
