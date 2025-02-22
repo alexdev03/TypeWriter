@@ -91,6 +91,7 @@ class NamedEntity(
     }
 
     override fun applyProperties(properties: List<EntityProperty>) {
+        baseEntity.consumeProperties(properties)
         properties.forEach { property ->
             when (property) {
                 is DisplayNameProperty -> {
@@ -103,11 +104,12 @@ class NamedEntity(
                     indicatorEntity.dispose()
                     baseEntity.removePassenger(hologram)
                     baseEntity.removePassenger(indicatorEntity)
-                    baseEntity.consumeProperties(listOf(property))
                     hologram.spawn(location)
                     indicatorEntity.spawn(location)
                     baseEntity.addPassenger(hologram)
                     baseEntity.addPassenger(indicatorEntity)
+//                    println("Spawning hologram")
+//                    baseEntity.addPassenger(hologram)
                 }
             }
         }
