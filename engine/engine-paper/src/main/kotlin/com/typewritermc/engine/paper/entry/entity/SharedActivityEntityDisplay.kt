@@ -36,7 +36,7 @@ class SharedActivityEntityDisplay(
 
     override fun initialize() {
         super.initialize()
-        val context = SharedActivityContext(instanceEntryRef, players)
+        val context = SharedActivityContext(instanceEntryRef, players, playerEntities = entities)
         activityManager =
             ActivityManager(activityCreators.create(context, spawnPosition.toProperty()))
         activityManager?.initialize(context)
@@ -58,7 +58,7 @@ class SharedActivityEntityDisplay(
         // But there is no real solution to this.
         // So we pick the first entity's state and use to try and keep the state consistent.
         val entityState = entities.values.firstOrNull()?.state?.also { lastState = it } ?: lastState
-        activityManager?.tick(SharedActivityContext(instanceEntryRef, players, entityState))
+        activityManager?.tick(SharedActivityContext(instanceEntryRef, players, entityState, playerEntities = entities))
         entities.values.forEach { it.tick() }
     }
 
@@ -71,7 +71,7 @@ class SharedActivityEntityDisplay(
         super.dispose()
         entities.values.forEach { it.dispose() }
         entities.clear()
-        activityManager?.dispose(SharedActivityContext(instanceEntryRef, players))
+        activityManager?.dispose(SharedActivityContext(instanceEntryRef, players, playerEntities = entities))
         activityManager = null
         lastState = EntityState()
     }

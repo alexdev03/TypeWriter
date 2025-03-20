@@ -1,8 +1,6 @@
 package com.typewritermc.entity.entries.data.minecraft
 
 import com.typewritermc.engine.paper.entry.entries.EntityProperty
-import com.typewritermc.entity.entries.data.minecraft.living.SizeProperty
-import com.typewritermc.entity.entries.data.minecraft.living.applySizeData
 import me.tofaa.entitylib.wrapper.WrapperEntity
 
 

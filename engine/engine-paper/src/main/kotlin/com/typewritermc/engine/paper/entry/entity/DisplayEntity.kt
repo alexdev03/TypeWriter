@@ -10,13 +10,13 @@ import org.bukkit.SoundCategory
 import org.bukkit.entity.Player
 import kotlin.reflect.full.companionObjectInstance
 
-internal class DisplayEntity(
+class DisplayEntity(
     private val player: Player,
     creator: EntityCreator,
     private val activityManager: ActivityManager<*>,
     private val collectors: List<PropertyCollector<*>>,
 ) {
-    private val entity = creator.create(player)
+    val entity = creator.create(player)
 
     private var lastSoundLocation = activityManager.position
 

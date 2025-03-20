@@ -12,8 +12,11 @@ import com.typewritermc.engine.paper.entry.TriggerableEntry
 import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
 import com.typewritermc.engine.paper.utils.ThreadType.SYNC
+import com.typewritermc.mythicmobs.entries.data.ListGetVariable
+import com.typewritermc.mythicmobs.entries.data.VariableGetElement
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.skills.placeholders.PlaceholderExecutor.parsePlaceholders
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 
@@ -25,16 +28,20 @@ class DespawnMobsActionEntry(
     override val criteria: List<Criteria> = emptyList(),
     override val modifiers: List<Modifier> = emptyList(),
     override val triggers: List<Ref<TriggerableEntry>> = emptyList(),
-    @Help("The variables to set for the mob. Format: variableName=value. Example: test=100")
     @Placeholder
-    private val variables : List<String> = emptyList(),
+    val variables: Var<ListGetVariable> = ConstVar(ListGetVariable()),
 ) : ActionEntry {
     override fun ActionTrigger.execute() {
-        //map variables in a map, the key is the variable name, the value is the value parsed with papi
-        val variablesMap = variables.associate { it.split("=")[0] to it.split("=")[1].parsePlaceholders(player) }
+        val variables = variables.get(player).list
+        val mobs = MythicBukkit.inst().mobManager.activeMobs.filter { variables.all { v -> v.has(it, player) } }
 
-        val mobs = MythicBukkit.inst().mobManager.activeMobs.filter { it.variables.asMap().entries.all { entry -> variablesMap.containsKey(entry.key) && entry.value.toString() == variablesMap[entry.key]!!.toString() } }
-        
+        if (Bukkit.isPrimaryThread()) {
+            mobs.forEach {
+                it.remove()
+            }
+            return
+        }
+
         SYNC.launch {
             mobs.forEach {
                 it.remove()

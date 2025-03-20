@@ -6,6 +6,7 @@ import com.typewritermc.engine.paper.entry.entries.EntityActivityEntry
 import com.typewritermc.engine.paper.entry.entries.EntityInstanceEntry
 import com.typewritermc.engine.paper.entry.entries.EntityProperty
 import org.bukkit.entity.Player
+import java.util.UUID
 
 interface ActivityCreator {
     fun create(context: ActivityContext, currentLocation: PositionProperty): EntityActivity<ActivityContext>
@@ -104,12 +105,17 @@ sealed interface ActivityContext {
 
     val randomViewer: Player?
         get() = viewers.randomOrNull()
+
+    val playerEntities: Map<UUID, DisplayEntity>
+
+    fun getPlayerEntity(uuid: UUID) : DisplayEntity? = playerEntities[uuid]
 }
 
 class SharedActivityContext(
     override val instanceRef: Ref<out EntityInstanceEntry>,
     override val viewers: List<Player>,
     override val entityState: EntityState = EntityState(),
+    override val playerEntities: Map<UUID, DisplayEntity> = emptyMap(),
 ) : ActivityContext {
     override val isViewed: Boolean
         get() = viewers.isNotEmpty()
@@ -120,6 +126,7 @@ class IndividualActivityContext(
     val viewer: Player,
     override val isViewed: Boolean = false,
     override val entityState: EntityState = EntityState(),
+    override val playerEntities: Map<UUID, DisplayEntity> = emptyMap(),
 ) : ActivityContext {
     override val viewers: List<Player>
         get() = listOf(viewer)

@@ -32,7 +32,8 @@ import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
 
-private const val FACT_STORAGE_DELAY = 60 * 3
+private const val GLOBAL_ID = "global"
+private val GLOBAL_UUID = UUID(0, 0)
 
 class FactDatabase : KoinComponent, Listener {
     private val storage: FactStorage by inject()
@@ -176,6 +177,9 @@ class FactDatabase : KoinComponent, Listener {
 
     fun readUUID(id: FactId): UUID? {
         return try {
+            if (id.groupId.id == GLOBAL_ID) {
+                return GLOBAL_UUID
+            }
             UUID.fromString(id.groupId.id)
         } catch (e: IllegalArgumentException) {
             null

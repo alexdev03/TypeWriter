@@ -43,7 +43,7 @@ class GroupActivityEntityDisplay(
         val groupId = group.groupId(player) ?: GroupId(player.uniqueId)
         activityManagers.computeIfAbsent(groupId) {
             val viewers = groupViewers(groupId)
-            val context = SharedActivityContext(instanceEntryRef, viewers)
+            val context = SharedActivityContext(instanceEntryRef, viewers, playerEntities = entities)
             val activity = activityCreators.create(context, spawnPosition.toProperty())
             val activityManager = ActivityManager(activity)
             activityManager.initialize(context)
@@ -77,7 +77,7 @@ class GroupActivityEntityDisplay(
                 if (viewerId != null) entities[viewerId]?.state?.also { lastStates[groupId] = it } else null
             val entityState = entityStateFromPlayer ?: lastStates.getOrPut(groupId) { EntityState() }
 
-            val context = SharedActivityContext(instanceEntryRef, viewers, entityState)
+            val context = SharedActivityContext(instanceEntryRef, viewers, entityState, playerEntities = entities)
             manager.tick(context)
         }
 
@@ -94,7 +94,7 @@ class GroupActivityEntityDisplay(
         val groupId = group.groupId(player) ?: GroupId(player.uniqueId)
         // If no players are considered for this group, we can remove the activity manager
         if (consideredPlayers.none { groupId == group.groupId(it) }) {
-            activityManagers.remove(groupId)?.dispose(SharedActivityContext(instanceEntryRef, emptyList()))
+            activityManagers.remove(groupId)?.dispose(SharedActivityContext(instanceEntryRef, emptyList(), playerEntities = entities))
             lastStates.remove(groupId)
         }
     }
@@ -104,7 +104,7 @@ class GroupActivityEntityDisplay(
         entities.values.forEach { it.dispose() }
         entities.clear()
         activityManagers.forEach { (groupId, manager) ->
-            manager.dispose(SharedActivityContext(instanceEntryRef, groupViewers(groupId)))
+            manager.dispose(SharedActivityContext(instanceEntryRef, groupViewers(groupId), playerEntities = entities))
         }
         activityManagers.clear()
         lastStates.clear()
