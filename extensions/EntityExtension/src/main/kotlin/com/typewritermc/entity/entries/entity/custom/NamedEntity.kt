@@ -97,8 +97,23 @@ class NamedEntity(
                 is DisplayNameProperty -> {
                     displayName = property.displayName
                 }
+                // If a player's skin is changed, the passengers will be moved off.
+                is SkinProperty -> {
+                    hologram.dispose()
+                    val location = baseEntity.property<PositionProperty>() ?: return
+                    indicatorEntity.dispose()
+                    baseEntity.removePassenger(hologram)
+                    baseEntity.removePassenger(indicatorEntity)
+                    hologram.spawn(location)
+                    indicatorEntity.spawn(location)
+                    baseEntity.addPassenger(hologram)
+                    baseEntity.addPassenger(indicatorEntity)
+//                    println("Spawning hologram")
+//                    baseEntity.addPassenger(hologram)
+                }
             }
         }
+        baseEntity.consumeProperties(properties)
     }
 
     override fun tick() {

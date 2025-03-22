@@ -16,6 +16,7 @@ fun applyDisplayEntityData(entity: WrapperEntity, property: EntityProperty): Boo
         is PreRotationProperty -> applyPreRotationData(entity, property)
         is PostRotationProperty -> applyPostRotationData(entity, property)
         is BrightnessProperty -> applyBrightnessData(entity, property)
+        is GlowColorOverrideProperty -> applyGlowColorOverrideData(entity, property)
         else -> return false
     }
     return true

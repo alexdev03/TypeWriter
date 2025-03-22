@@ -30,7 +30,7 @@ class PathActivityEntry(
     override val nodes: List<RoadNodeId> = emptyList(),
     @Help("The activity that will be used when the entity is at the final location.")
     val idleActivity: Ref<out EntityActivityEntry> = emptyRef(),
-) : GenericEntityActivityEntry, RoadNodeCollectionEntry {
+): GenericEntityActivityEntry, RoadNodeCollectionEntry {
     override fun create(context: ActivityContext, currentLocation: PositionProperty): EntityActivity<ActivityContext> {
         if (nodes.isEmpty()) return IdleActivity.create(context, currentLocation)
         return PathActivity(roadNetwork, nodes, currentLocation, idleActivity)
@@ -100,7 +100,6 @@ private class PathActivity(
         if (result == TickResult.IGNORED) {
             currentLocationIndex = (currentLocationIndex + 1)
             refreshActivity(context, network!!)
-            // If we refreshed to nothing, we are done.
             if (activity is IdleActivity) {
                 return TickResult.IGNORED
             }
