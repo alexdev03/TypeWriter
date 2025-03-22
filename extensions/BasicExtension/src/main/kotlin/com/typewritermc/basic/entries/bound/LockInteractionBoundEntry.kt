@@ -29,12 +29,10 @@ import com.typewritermc.engine.paper.plugin
 import com.typewritermc.engine.paper.utils.*
 import com.typewritermc.engine.paper.utils.GenericPlayerStateProvider.*
 import kotlinx.coroutines.future.await
+import lirand.api.extensions.server.server
 import me.tofaa.entitylib.meta.display.TextDisplayMeta
 import me.tofaa.entitylib.meta.mobs.villager.VillagerMeta
 import me.tofaa.entitylib.wrapper.WrapperEntity
-import org.bukkit.NamespacedKey
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -87,7 +85,6 @@ class LockInteractionBound(
     override val interruptionTriggers: List<EventTrigger>,
 ) : ListenerInteractionBound {
     private var playerState: PlayerState? = null
-    private var attributeModifier: AttributeModifier? = null
     private var entity: WrapperEntity = createEntity()
     private var previousPosition: Position = Position.ORIGIN
     private var interceptor: InterceptionBundle? = null
@@ -102,18 +99,15 @@ class LockInteractionBound(
 
     private suspend fun setup() {
         assert(playerState == null)
-        playerState = player.state(LOCATION, FLYING, ALLOW_FLIGHT)
+        playerState = player.state(LOCATION, FLYING, ALLOW_FLIGHT, VISIBLE_PLAYERS, SHOWING_PLAYER)
         player.allowFlight = true
         player.isFlying = true
+        player.fakeClearInventory()
 
-        attributeModifier = AttributeModifier(
-            NamespacedKey(plugin, "hand_hiding"),
-            -100.0,
-            AttributeModifier.Operation.ADD_NUMBER
-        ).also {
-            player.getAttribute(Attribute.ATTACK_SPEED)?.addModifier(it)
+        server.onlinePlayers.filter { it.uniqueId != player.uniqueId }.forEach {
+            it.hidePlayer(plugin, player)
+            player.hidePlayer(plugin, it)
         }
-
 
         val startPosition = targetPosition.get(player)
         previousPosition = startPosition
@@ -121,6 +115,8 @@ class LockInteractionBound(
 
         // If the player is a bedrock player, we don't want to modify the location.
         interceptor = player.interceptPackets {
+            keepFakeInventory()
+
             Play.Client.PLAYER_INPUT { event ->
                 val packet = WrapperPlayClientPlayerInput(event)
                 if (packet.isForward || packet.isBackward || packet.isLeft || packet.isRight) {
@@ -167,11 +163,7 @@ class LockInteractionBound(
         ThreadType.SYNC.switchContext {
             player.restore(playerState)
             playerState = null
-
-            attributeModifier?.let {
-                player.getAttribute(Attribute.ATTACK_SPEED)?.removeModifier(it)
-            }
-            attributeModifier = null
+            player.restoreInventory()
         }
     }
 
