@@ -8,6 +8,8 @@ import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.entries.ref
 import com.typewritermc.core.interaction.InteractionContext
 import com.typewritermc.core.interaction.context
+import com.typewritermc.core.utils.UntickedAsync
+import com.typewritermc.core.utils.launch
 import com.typewritermc.engine.paper.db.RedisProxyMap
 import com.typewritermc.engine.paper.entry.Modifier
 import com.typewritermc.engine.paper.entry.ModifierOperator
@@ -15,7 +17,6 @@ import com.typewritermc.engine.paper.entry.entries.*
 import com.typewritermc.engine.paper.entry.triggerFor
 import com.typewritermc.engine.paper.interaction.interactionContext
 import com.typewritermc.engine.paper.plugin
-import com.typewritermc.engine.paper.utils.ThreadType.DISPATCHERS_ASYNC
 import com.typewritermc.engine.paper.utils.logErrorIfNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -61,7 +62,7 @@ class FactDatabase : KoinComponent, Listener {
 
         // Filter expired facts every second.
         // After that, save the facts of the players who have facts that expired or changed.
-        DISPATCHERS_ASYNC.launch {
+        Dispatchers.UntickedAsync.launch {
 //            var cycle = 1
             while (plugin.isEnabled) {
                 delay(1000)

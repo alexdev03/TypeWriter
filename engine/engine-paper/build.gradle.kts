@@ -172,6 +172,8 @@ paperPluginYaml {
         server("packetevents", load = PaperPluginYaml.Load.AFTER, required = true, joinClasspath = true)
         server("PlaceholderAPI", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
         server("floodgate", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
+        server("MMOItems", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
+        server("Nexo", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
     }
 
     loader = "com.typewritermc.engine.paper.TypewriterPaperLoader"

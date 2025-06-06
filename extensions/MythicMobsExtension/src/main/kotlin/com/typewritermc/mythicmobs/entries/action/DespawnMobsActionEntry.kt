@@ -3,21 +3,20 @@ package com.typewritermc.mythicmobs.entries.action
 import com.typewritermc.core.books.pages.Colors
 import com.typewritermc.core.entries.Ref
 import com.typewritermc.core.extension.annotations.Entry
-import com.typewritermc.core.extension.annotations.Help
 import com.typewritermc.core.extension.annotations.Placeholder
+import com.typewritermc.core.utils.launch
 import com.typewritermc.engine.paper.entry.Criteria
 import com.typewritermc.engine.paper.entry.Modifier
-import com.typewritermc.engine.paper.entry.StagingManager
 import com.typewritermc.engine.paper.entry.TriggerableEntry
-import com.typewritermc.engine.paper.entry.entries.*
-import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
-import com.typewritermc.engine.paper.utils.ThreadType.SYNC
+import com.typewritermc.engine.paper.entry.entries.ActionEntry
+import com.typewritermc.engine.paper.entry.entries.ActionTrigger
+import com.typewritermc.engine.paper.entry.entries.ConstVar
+import com.typewritermc.engine.paper.entry.entries.Var
+import com.typewritermc.engine.paper.utils.Sync
 import com.typewritermc.mythicmobs.entries.data.ListGetVariable
-import com.typewritermc.mythicmobs.entries.data.VariableGetElement
 import io.lumine.mythic.bukkit.MythicBukkit
-import io.lumine.mythic.core.skills.placeholders.PlaceholderExecutor.parsePlaceholders
+import kotlinx.coroutines.Dispatchers
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 
 
 @Entry("despawn_mythicmobs_mobs", "Despawn MythicMobs mobs from variable", Colors.ORANGE_RED, "fluent:crown-subtract-24-filled")
@@ -42,7 +41,7 @@ class DespawnMobsActionEntry(
             return
         }
 
-        SYNC.launch {
+        Dispatchers.Sync.launch {
             mobs.forEach {
                 it.remove()
             }
