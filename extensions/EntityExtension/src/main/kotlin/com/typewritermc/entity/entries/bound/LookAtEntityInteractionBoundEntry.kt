@@ -8,7 +8,6 @@ import com.typewritermc.core.extension.annotations.Default
 import com.typewritermc.core.extension.annotations.Entry
 import com.typewritermc.core.extension.annotations.Help
 import com.typewritermc.core.interaction.InteractionBound
-import com.typewritermc.core.interaction.InteractionBound.Empty
 import com.typewritermc.core.utils.point.toVector
 import com.typewritermc.engine.paper.entry.*
 import com.typewritermc.engine.paper.entry.entity.AudienceEntityDisplay
@@ -56,8 +55,7 @@ class LookAtEntityInteractionBoundEntry(
     @Help("If left empty, the entity where they interacted with will be used.")
     val npc: Ref<EntityInstanceEntry> = emptyRef(),
 ) : InteractionBoundEntry {
-    override fun build(player: Player): InteractionBound = LookAtNpcInteractionBound(player, radius, npc,
-        Empty.priority, interruptTriggers.eventTriggers)
+    override fun build(player: Player): InteractionBound = LookAtNpcInteractionBound(player, radius, npc, priority, interruptTriggers.eventTriggers)
 }
 
 class LookAtNpcInteractionBound(

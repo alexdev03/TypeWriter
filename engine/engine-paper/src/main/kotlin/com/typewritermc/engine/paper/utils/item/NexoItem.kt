@@ -11,9 +11,12 @@ import org.bukkit.inventory.ItemStack
 
 @AlgebraicTypeInfo("nexo_item", Colors.MEDIUM_SEA_GREEN, "mdi:alpha-n")
 class NexoItem(
-    private val itemId: String = "",
-    private val components: List<ItemComponent> = emptyList(),
+    val itemId: String = "",
+    val components: List<ItemComponent> = emptyList(),
     ) : Item {
+
+    inline fun <reified C : ItemComponent> components(): List<C> = components.filterIsInstance<C>()
+    inline fun <reified C : ItemComponent> firstComponent(): C? = components.firstOrNull { it is C } as C?
 
     override fun build(player: Player?, context: InteractionContext?): ItemStack {
         return (NexoItems.itemFromId(itemId)?.build() ?: ItemStack(Material.STONE)).apply {

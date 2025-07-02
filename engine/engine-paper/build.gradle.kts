@@ -66,6 +66,7 @@ dependencies {
     testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.46.3")
     compileOnlyApi("com.nexomc:nexo:1.1.0")
     compileOnlyApi("net.Indyuce:MMOItems-API:6.9.5-SNAPSHOT")
+    compileOnly("de.tr7zw:item-nbt-api-plugin:2.15.0")
 
     testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.18.0")
 }
@@ -174,6 +175,7 @@ paperPluginYaml {
         server("floodgate", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
         server("MMOItems", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
         server("Nexo", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
+        server("NBTAPI", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
     }
 
     loader = "com.typewritermc.engine.paper.TypewriterPaperLoader"

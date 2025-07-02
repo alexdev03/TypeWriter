@@ -10,14 +10,13 @@ import com.typewritermc.engine.paper.entry.entries.ConstVar
 import com.typewritermc.engine.paper.entry.entries.EventEntry
 import com.typewritermc.engine.paper.entry.entries.Var
 import com.typewritermc.engine.paper.entry.triggerAllFor
-import com.typewritermc.engine.paper.extensions.placeholderapi.parsePlaceholders
+import com.typewritermc.engine.paper.plugin
 import com.typewritermc.mythicmobs.entries.data.ListGetVariable
 import com.typewritermc.mythicmobs.entries.data.VariableGetElement
-import com.typewritermc.mythicmobs.entries.data.VariableSetElement
-import io.lumine.mythic.api.mobs.MythicMob
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent
 import io.lumine.mythic.core.mobs.ActiveMob
 import org.bukkit.entity.Player
+import java.util.logging.Level
 
 
 @Entry("on_mythic_mob_die", "When a player kill a MythicMobs mob.", Colors.YELLOW, "fa6-solid:skull")
@@ -43,12 +42,17 @@ class MythicMobDeathEventEntry(
 fun onMobDeath(event: MythicMobDeathEvent, query: Query<MythicMobDeathEventEntry>) {
     val player = event.killer as? Player ?: return
     query.findWhere {
-        val variables = it.variables.get(player).list
-        it.mobName.toRegex(RegexOption.IGNORE_CASE).matches(event.mobType.internalName) && checkIfMobHasAllVariables(
-            event.mob,
-            variables,
-            player
-        )
+        try {
+            val variables = it.variables.get(player).list
+            it.mobName.toRegex(RegexOption.IGNORE_CASE).matches(event.mobType.internalName) && checkIfMobHasAllVariables(
+                event.mob,
+                variables,
+                player
+            )
+        } catch (e: Exception) {
+            plugin.logger.log(Level.SEVERE, "Failed to check if mob has all variables in entry ${it.id}", e)
+            false
+        }
     }.triggerAllFor(player, context())
 }
 

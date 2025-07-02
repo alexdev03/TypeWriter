@@ -88,7 +88,8 @@ class PlayerEntity(
             entityId = EntityLib.getPlatform().entityIdProvider.provide(uuid, EntityTypes.PLAYER)
         } while (EntityLib.getApi<SpigotEntityLibAPI>().getEntity(entityId) != null)
 
-        entity = WrapperPlayer(UserProfile(uuid, "\u2063${displayName.get(player).stripped().replace(" ", "_")}"), entityId)
+        entity =
+            WrapperPlayer(UserProfile(uuid, "\u2063${displayName.get(player).stripped().replace(" ", "_")}"), entityId)
 
         entity.isInTablist = false
         entity.meta<PlayerMeta> {
