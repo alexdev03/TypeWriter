@@ -13,7 +13,7 @@ import com.typewritermc.engine.paper.entry.entries.AudienceEntry
 import com.typewritermc.engine.paper.entry.entries.EntityInstanceEntry
 import com.typewritermc.engine.paper.entry.findDisplay
 import com.typewritermc.engine.paper.utils.position
-import com.typewritermc.quest.trackedShowingObjectives
+import com.typewritermc.quest.entries.trackedShowingObjectives
 import com.typewritermc.roadnetwork.RoadNetworkEntry
 import com.typewritermc.roadnetwork.entries.MultiPathStreamDisplay
 import com.typewritermc.roadnetwork.entries.PathStreamDisplayEntry
@@ -26,6 +26,7 @@ import com.typewritermc.roadnetwork.entries.highestPathStreamDisplayEntry
     Colors.GREEN,
     "material-symbols:conversion-path"
 )
+@Deprecated("Move to the new LocatableObjectivesPathStream")
 /**
  * The `Interact Entity Objectives Path Stream` entry is a path stream that shows the path to each interact entity objective.
  * When the player has an interact entity objective, and the quest for the objective is tracked, a path stream will be displayed.
@@ -52,6 +53,7 @@ class InteractEntityObjectivesPathStream(
             }
     }
 
+    // As displays and references can't change (except between reloads) we can just cache all relevant ones here for quick access.
     private val objectiveDisplays: Map<Ref<InteractEntityObjective>, List<Ref<PathStreamDisplayEntry>>> by lazy(
         LazyThreadSafetyMode.NONE
     ) {

@@ -1,6 +1,7 @@
 package com.typewritermc.processors
 
 import com.google.devtools.ksp.*
+import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.*
 import com.google.gson.annotations.SerializedName
@@ -54,19 +55,34 @@ infix fun KSDeclaration.isOrExtends(className: String): Boolean {
 
 infix fun KSType.isOrExtends(className: String): Boolean = declaration isOrExtends className
 
-context(Resolver)
+context(resolver: Resolver)
 @OptIn(KspExperimental::class)
 inline fun <reified T : Annotation> KSAnnotated.annotationClassValue(f: T.() -> KClass<*>) =
     getAnnotationsByType(T::class).first().annotationClassValue(f)
 
-context(Resolver)
+context(resolver: Resolver)
 @OptIn(KspExperimental::class)
 inline fun <reified T : Annotation> T.annotationClassValue(f: T.() -> KClass<*>): KSType = try {
     val klass = f()
-    val declaration = getKotlinClassByName(klass.qualifiedName!!) ?: throw ClassNotFoundException(klass.qualifiedName!!)
+    val declaration =
+        resolver.getKotlinClassByName(klass.qualifiedName!!) ?: throw ClassNotFoundException(klass.qualifiedName!!)
     declaration.asStarProjectedType()
 } catch (e: KSTypeNotPresentException) {
     e.ksType
+}
+
+@OptIn(KspExperimental::class)
+context(logger: KSPLogger)
+fun <T : Annotation> KSAnnotated.superAnnotationsByType(annotationKClass: KClass<T>): Sequence<T> = sequence {
+    val toLook = mutableListOf(this@superAnnotationsByType)
+    while (toLook.isNotEmpty()) {
+        val current = toLook.removeFirst();
+        yieldAll(current.getAnnotationsByType(annotationKClass))
+        when (current) {
+            is KSClassDeclaration -> toLook.addAll(current.superTypes.mapNotNull { it.resolve().declaration as? KSClassDeclaration })
+            is KSPropertyDeclaration -> current.findOverridee()?.let { toLook.add(it) }
+        }
+    }
 }
 
 fun List<KSValueParameter>.hasParameter(className: String): Boolean {
@@ -78,6 +94,13 @@ fun List<KSValueParameter>.hasParameter(index: Int, className: String): Boolean 
 }
 
 fun KSClassDeclaration.isImplementingInterface(interfaceName: String): Boolean {
+    if (classKind == ClassKind.ENUM_ENTRY) {
+        val p = parent
+        if (p !is KSClassDeclaration) {
+            throw EnumEntryMissingParent(fullName)
+        }
+        return p.isImplementingInterface(interfaceName)
+    }
     return getAllSuperTypes().any { it.whenClassNameIs(interfaceName) }
 }
 
@@ -86,3 +109,6 @@ class EntryNotFoundException(what: String, who: String, entry: String) :
 
 class IllegalClassTypeException(className: String) :
     Exception("Class $className does not have a qualified name. Classes must be full classes.")
+
+class EnumEntryMissingParent(className: String) :
+    Exception("Enum entry $className does not have a parent class. This is likely a bug in the KSP processor. Please report this issue.")

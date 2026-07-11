@@ -16,10 +16,10 @@ import com.typewritermc.core.interaction.InteractionBound
 import com.typewritermc.core.interaction.InteractionBoundState
 import com.typewritermc.core.interaction.context
 import com.typewritermc.core.utils.point.Position
+import com.typewritermc.core.utils.point.distanceSquared
 import com.typewritermc.core.utils.switchContext
 import com.typewritermc.engine.paper.entry.*
 import com.typewritermc.engine.paper.entry.dialogue.DialogueTrigger
-import com.typewritermc.engine.paper.entry.entity.toProperty
 import com.typewritermc.engine.paper.entry.entries.ConstVar
 import com.typewritermc.engine.paper.entry.entries.EventTrigger
 import com.typewritermc.engine.paper.entry.entries.Var
@@ -46,7 +46,10 @@ import org.geysermc.geyser.api.connection.GeyserConnection
 import java.util.*
 
 // The max distance the entity can be from the player before it gets teleported.
-private const val MAX_DISTANCE_SQUARED = 25 * 25
+private const val MAX_PLAYER_DISTANCE_SQUARED = 4 * 4
+
+// The max distance between from and to before we cut
+private const val MAX_CUT_DISTANCE_SQUARED = 25 * 25
 
 @Entry(
     "lock_interaction_bound",
@@ -86,9 +89,9 @@ class LockInteractionBoundEntry(
 
 class LockInteractionBound(
     private val player: Player,
-    private val targetPosition: Var<Position>,
-    override val priority: Int,
-    override val interruptionTriggers: List<EventTrigger>,
+    private var targetPosition: Var<Position>,
+    override var priority: Int,
+    override var interruptionTriggers: List<EventTrigger>,
 ) : ListenerInteractionBound {
     private var handler: LockInteractionBoundHandler? = null
     private var playerState: PlayerState? = null
@@ -104,7 +107,7 @@ class LockInteractionBound(
     }
 
     private suspend fun setup() {
-        assert(playerState == null)
+        require(playerState == null)
         playerState = player.state(LOCATION, FLYING, ALLOW_FLIGHT, VISIBLE_PLAYERS, SHOWING_PLAYER)
         player.allowFlight = true
         player.isFlying = true
@@ -133,7 +136,7 @@ class LockInteractionBound(
                 }
 
                 if (!packet.isJump && !packet.isShift) return@PLAYER_INPUT
-                DialogueTrigger.NEXT_OR_COMPLETE.triggerFor(player, player.interactionContext ?: context())
+                DialogueTrigger.NEXT_OR_SKIP_ANIMATION.triggerFor(player, player.interactionContext ?: context())
             }
             // We want to fake the player's location on the client because otherwise they will interact with
             // themselves crash kicking themselves off the server.
@@ -186,6 +189,7 @@ class LockInteractionBound(
         }
     }
 
+
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onPlayerDamaged(event: EntityDamageEvent) {
         if (event.entity.uniqueId != player.uniqueId) return
@@ -217,7 +221,7 @@ class LockInteractionBound(
 
         if (targetPosition is ConstVar<*> || handler == null) return
         val newPosition = targetPosition.get(player)
-        handler?.move(previousPosition, newPosition)
+        handler?.move(previousPosition, newPosition, true)
         previousPosition = newPosition
     }
 
@@ -235,6 +239,17 @@ class LockInteractionBound(
         }
     }
 
+    override suspend fun transitionTo(bound: InteractionBound): Boolean {
+        if (bound !is LockInteractionBound) return true
+        if (handler == null || interceptor == null || playerState == null) return true
+        targetPosition = bound.targetPosition
+        priority = bound.priority
+        interruptionTriggers = bound.interruptionTriggers
+        handler?.move(previousPosition, targetPosition.get(player), targetPosition !is ConstVar<*>)
+        previousPosition = targetPosition.get(player)
+        return false
+    }
+
     override suspend fun teardown() {
         dispose()
     }
@@ -242,16 +257,17 @@ class LockInteractionBound(
 
 private sealed interface LockInteractionBoundHandler {
     suspend fun initialize()
-    suspend fun move(from: Position, to: Position)
+    suspend fun move(from: Position, to: Position, canMove: Boolean)
     suspend fun dispose()
 }
 
 private class JavaLockInteractionBoundHandler(
     private val player: Player,
-    private val canMove: Boolean,
+    private var canMove: Boolean,
     private val startPosition: Position,
 ) : LockInteractionBoundHandler {
     private var entity: WrapperEntity = createEntity()
+    private var lastPosition: Position = startPosition
 
     private val positionYCorrection: Double by lazy {
         if (!canMove) return@lazy 0.0
@@ -262,20 +278,47 @@ private class JavaLockInteractionBoundHandler(
         setupEntity(startPosition)
     }
 
-    override suspend fun move(from: Position, to: Position) {
+    override suspend fun move(from: Position, to: Position, canMove: Boolean) {
+        lastPosition = to
         if (from.world != to.world) {
             teardownEntity()
             setupEntity(to)
             return
         }
 
-        val target = to.withY { it + positionYCorrection }.toProperty()
+        if (this.canMove != canMove) {
+            this.canMove = canMove
+            val target = to.withY { it + positionYCorrection }
+            moveToNewEntity(target)
+            return
+        }
+
+        val target = to.withY { it + positionYCorrection }
+        /// If the distance is too big, we make a jump.
+        if ((from.distanceSquared(target) ?: Double.NEGATIVE_INFINITY) > MAX_CUT_DISTANCE_SQUARED) {
+            moveToNewEntity(target)
+            return
+        }
+
         entity.rotateHead(target.yaw, target.pitch)
         entity.teleport(target.toPacketLocation())
 
-        if (player.position.distanceSquared(to) > MAX_DISTANCE_SQUARED) {
+        if ((player.position.distanceSquared(to) ?: Double.NEGATIVE_INFINITY) > MAX_PLAYER_DISTANCE_SQUARED) {
             player.teleportAsync(to.toBukkitLocation()).await()
         }
+    }
+
+    private suspend fun moveToNewEntity(to: Position) {
+        val newEntity = createEntity()
+        newEntity.spawn(to.toPacketLocation())
+        newEntity.addViewer(player.uniqueId)
+
+        player.teleportAsync(to.toBukkitLocation()).await()
+        player.spectateEntity(newEntity)
+
+        entity.despawn()
+        entity.remove()
+        entity = newEntity
     }
 
     override suspend fun dispose() {
@@ -336,7 +379,7 @@ private class BedrockLockInteractionBoundHandler(
         geyserConnection.forceCameraPosition(position)
     }
 
-    override suspend fun move(from: Position, to: Position) {
+    override suspend fun move(from: Position, to: Position, canMove: Boolean) {
         val position = to.withY { it + positionYCorrection }
         if (from.world != to.world) {
             player.teleportAsync(to.toBukkitLocation()).await()
@@ -344,7 +387,7 @@ private class BedrockLockInteractionBoundHandler(
             return
         }
         geyserConnection.interpolateCameraPosition(position)
-        if (player.position.distanceSquared(to) > MAX_DISTANCE_SQUARED) {
+        if ((player.position.distanceSquared(to) ?: Double.NEGATIVE_INFINITY) > MAX_PLAYER_DISTANCE_SQUARED) {
             player.teleportAsync(to.toBukkitLocation()).await()
         }
     }

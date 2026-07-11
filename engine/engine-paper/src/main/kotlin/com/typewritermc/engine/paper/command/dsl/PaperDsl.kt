@@ -4,6 +4,7 @@ package com.typewritermc.engine.paper.command.dsl
 
 import com.typewritermc.core.entries.Entry
 import com.typewritermc.engine.paper.utils.msg
+import com.typewritermc.loader.Extension
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
@@ -44,6 +45,11 @@ fun CommandTree.executePlayerOrTarget(block: ExecutionContext<CommandSourceStack
         }
     }
 
+    executePlayer(block)
+}
+
+
+fun CommandTree.executePlayer(block: ExecutionContext<CommandSourceStack>.(Player) -> Unit) {
     executes {
         (source.executor as? Player)?.let { player ->
             block(this, player)
@@ -53,11 +59,17 @@ fun CommandTree.executePlayerOrTarget(block: ExecutionContext<CommandSourceStack
             block(this, player)
             return@executes
         }
-        sender.msg("Provide a player to execute this command on.")
+        sender.msg("You must be a player to execute this command!")
     }
 }
 
 inline fun <reified E : Entry> CommandTree.entry(
     name: String,
+    noinline filter: Predicate<E> = { true },
     noinline block: ArgumentBlock<CommandSourceStack, E> = {},
-) = argument(name, EntryArgumentType(E::class), E::class, block)
+) = argument(name, EntryArgumentType(E::class, filter), E::class, block)
+
+inline fun <reified E : Extension> CommandTree.extension(
+    name: String,
+    noinline block: ArgumentBlock<CommandSourceStack, E> = {},
+) = argument(name, ExtensionArgumentType(E::class), E::class, block)

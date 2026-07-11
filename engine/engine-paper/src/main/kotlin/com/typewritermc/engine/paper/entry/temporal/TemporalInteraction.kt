@@ -1,6 +1,7 @@
 package com.typewritermc.engine.paper.entry.temporal
 
 import com.typewritermc.core.entries.Query
+import com.typewritermc.core.interaction.ContextModifier
 import com.typewritermc.core.interaction.Interaction
 import com.typewritermc.core.interaction.InteractionContext
 import com.typewritermc.core.utils.UntickedAsync
@@ -11,7 +12,9 @@ import com.typewritermc.engine.paper.entry.entries.CinematicAction
 import com.typewritermc.engine.paper.entry.entries.CinematicEntry
 import com.typewritermc.engine.paper.entry.entries.EventTrigger
 import com.typewritermc.engine.paper.entry.matches
-import com.typewritermc.engine.paper.entry.temporal.TemporalState.*
+import com.typewritermc.engine.paper.entry.temporal.TemporalState.ENDING
+import com.typewritermc.engine.paper.entry.temporal.TemporalState.PLAYING
+import com.typewritermc.engine.paper.entry.temporal.TemporalState.STARTING
 import com.typewritermc.engine.paper.entry.triggerFor
 import com.typewritermc.engine.paper.events.AsyncCinematicEndEvent
 import com.typewritermc.engine.paper.events.AsyncCinematicStartEvent
@@ -28,7 +31,7 @@ import java.time.Duration
 class TemporalInteraction(
     val pageId: String,
     private val player: Player,
-    override val context: InteractionContext,
+    private val startContext: InteractionContext,
     val eventTriggers: List<EventTrigger>,
     private val settings: TemporalSettings,
 ) : Interaction {
@@ -40,6 +43,13 @@ class TemporalInteraction(
     override val priority by lazy { Query.findPageById(pageId)?.priority ?: 0 }
 
     private lateinit var actions: List<CinematicAction>
+
+    override val context: InteractionContext
+        get() {
+            if (!::actions.isInitialized) return startContext
+            return actions.filterIsInstance<ContextModifier>()
+                .fold(startContext) { context, modifier -> context.combine(modifier.additionContext) }
+        }
 
     override suspend fun initialize(): Result<Unit> {
         if (state != STARTING) return failure("Temporal interaction is already initialized")

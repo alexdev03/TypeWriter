@@ -18,28 +18,27 @@ public class TypewriterPaperLoader implements PluginLoader {
     @Override
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
         RemoteRepository central = new RemoteRepository.Builder(
-            "central",
-            "default",
-            getDefaultMavenCentralMirror()
-        ).build();
+                "central",
+                "default",
+                getDefaultMavenCentralMirror()).build();
 
-        addDependency(classpathBuilder, "org.jetbrains.kotlin:kotlin-stdlib:2.0.21", central);
-        addDependency(classpathBuilder, "org.jetbrains.kotlin:kotlin-reflect:2.0.21", central);
+        addDependency(classpathBuilder, "org.jetbrains.kotlin:kotlin-stdlib:2.3.20", central);
+        addDependency(classpathBuilder, "org.jetbrains.kotlin:kotlin-reflect:2.3.20", central);
         addDependency(classpathBuilder, "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2",
-            central);
+                central);
         addDependency(classpathBuilder, "com.corundumstudio.socketio:netty-socketio:1.7.19",
-            central);
+                central);
 
         addDependency(classpathBuilder,
-            "com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.22.0", central);
+                "com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.22.0", central);
         addDependency(classpathBuilder,
-            "com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.22.0", central);
+                "com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.22.0", central);
 
-        addDependency(classpathBuilder, "io.ktor:ktor-server-core-jvm:2.3.12", central);
-        addDependency(classpathBuilder, "io.ktor:ktor-server-netty-jvm:2.3.12", central);
-        addDependency(classpathBuilder, "org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1",
-            central);
-        addDependency(classpathBuilder, "org.bstats:bstats-bukkit:3.1.0", central);
+        addDependency(classpathBuilder, "io.ktor:ktor-server-core-jvm:2.3.13", central);
+        addDependency(classpathBuilder, "io.ktor:ktor-server-netty-jvm:2.3.13", central);
+        addDependency(classpathBuilder, "org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0",
+                central);
+        addDependency(classpathBuilder, "org.bstats:bstats-bukkit:3.2.1", central);
         addDependency(classpathBuilder, "io.lettuce:lettuce-core:6.5.2.RELEASE", central);
     }
 
@@ -53,7 +52,9 @@ public class TypewriterPaperLoader implements PluginLoader {
         classpathBuilder.addLibrary(resolver);
     }
 
-    // Because we still want to support <1.21.6 versions, we just copy this from Paper's API.
+    // Because we still want to support <1.21.6 versions, we just copy this from
+    // Paper's API.
+    // MavenLibraryResolver.MAVEN_CENTRAL_DEFAULT_MIRROR
     private static String getDefaultMavenCentralMirror() {
         String central = System.getenv("PAPER_DEFAULT_CENTRAL_REPOSITORY");
         if (central == null) {

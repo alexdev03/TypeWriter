@@ -52,7 +52,8 @@ class WorldGuardInitializer : Initializable {
             WorldGuard.getInstance().platform.sessionManager.getIfPresent(bukkitPlayer)?.let { session ->
                 session::class.java.getDeclaredField("handlers").apply {
                     isAccessible = true
-                    val handlers = get(session) as MutableMap<*, *>
+                    @Suppress("UNCHECKED_CAST")
+                    val handlers = get(session) as MutableMap<Class<*>, Any>
                     handlers.remove(WorldGuardHandler::class.java)
                 }
             }

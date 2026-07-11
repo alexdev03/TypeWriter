@@ -1,14 +1,39 @@
-plugins {
-    id("java")
-    kotlin("jvm") version "2.0.21"
-    id("java-library")
-    `maven-publish`
-    id("io.github.goooler.shadow") version "8.1.7" apply false
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.tomlj.Toml
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.tomlj:tomlj:1.1.1")
+    }
 }
 
+plugins {
+    id("java")
+    kotlin("jvm") version "2.3.20"
+    id("java-library")
+    `maven-publish`
+    id("com.gradleup.shadow") version "9.4.1" apply false
+}
+
+val typewriterSettingsFile = rootProject.file("../settings.toml")
+val typewriterSettings = Toml.parse(typewriterSettingsFile.toPath())
+
+if (typewriterSettings.hasErrors()) {
+    error(typewriterSettings.errors().joinToString("\n"))
+}
+
+val configuredTypewriterVersion = typewriterSettings.getString("version") ?: error("Missing version in settings.toml")
+val configuredTypewriterJavaVersion = typewriterSettings.getLong("java")?.toInt() ?: error("Missing java in settings.toml")
+val typewriterVersion = providers.gradleProperty("typewriter.version").getOrElse(configuredTypewriterVersion)
+val typewriterJavaVersion = providers.gradleProperty("typewriter.java")
+    .map(String::toInt)
+    .getOrElse(configuredTypewriterJavaVersion)
+
 group = "com.typewritermc"
-val versionFile = if (file("version.txt").exists()) file("version.txt") else file("../version.txt")
-version = versionFile.readText().trim()
+version = typewriterVersion
 
 allprojects {
     apply(plugin = "java")
@@ -25,12 +50,15 @@ allprojects {
         useJUnitPlatform()
     }
     kotlin {
-        jvmToolchain(21)
+        jvmToolchain(typewriterJavaVersion)
+    }
+    tasks.withType(KotlinCompile::class.java) {
+        compilerOptions.freeCompilerArgs.add("-Xcontext-parameters")
     }
 }
 
 subprojects {
-    apply(plugin = "io.github.goooler.shadow")
+    apply(plugin = "com.gradleup.shadow")
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
 
@@ -38,19 +66,19 @@ subprojects {
     version = rootProject.version
 
     dependencies {
-        api("io.insert-koin:koin-core:4.0.4")
-        compileOnly("com.google.code.gson:gson:2.13.1")
+        api("io.insert-koin:koin-core:4.2.1")
+        compileOnly("com.google.code.gson:gson:2.13.2")
 
         compileOnlyApi(kotlin("stdlib"))
         compileOnlyApi(kotlin("reflect"))
         compileOnlyApi("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
-        val kotestVersion = "5.9.1"
+        val kotestVersion = "6.1.11"
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-        testImplementation("io.kotest:kotest-framework-datatest:$kotestVersion")
+        testImplementation("io.kotest:kotest-framework-engine:$kotestVersion")
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
         testImplementation("io.kotest:kotest-property:$kotestVersion")
-        testImplementation("io.mockk:mockk:1.13.16")
+        testImplementation("io.mockk:mockk:1.14.9")
     }
 
     tasks.register("releaseSourcesJar", Jar::class) {

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("com.google.devtools.ksp") version "2.0.21-1.0.28"
+    id("com.google.devtools.ksp") version "2.3.8"
 }
 
 repositories {
@@ -11,11 +11,11 @@ repositories {
 dependencies {
     implementation(project(":processor"))
 
-    val ktorVersion = "2.3.12"
+    val ktorVersion = "3.4.2"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
 }
 
 tasks.withType(KotlinCompile::class.java) {
-    kotlinOptions.freeCompilerArgs += "-Xcontext-receivers"
+    compilerOptions.freeCompilerArgs.add("-Xcontext-parameters")
 }

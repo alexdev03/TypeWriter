@@ -1,9 +1,19 @@
 import "package:flutter/material.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
+import "package:typewriter/models/mc_version.dart";
 import "package:typewriter/utils/icons.dart";
 
 part "materials.freezed.dart";
 part "materials.g.dart";
+
+Map<String, MinecraftMaterial> availableMaterials(McVersion version) =>
+    Map.fromEntries(
+      materials.entries.where(
+        (entry) =>
+            entry.value.since == null ||
+            version.compareTo(entry.value.since!) >= 0,
+      ),
+    );
 
 enum MaterialProperty {
   item(TWIcons.magicWand, Colors.blue, "Item"),
@@ -7893,11 +7903,6 @@ const Map<String, MinecraftMaterial> materials = {
     properties: [MaterialProperty.item],
     icon: "assets/materials/recovery_compass.png",
   ),
-  "bundle": MinecraftMaterial(
-    name: "Bundle",
-    properties: [MaterialProperty.item],
-    icon: "assets/materials/bundle.png",
-  ),
   "fishing_rod": MinecraftMaterial(
     name: "Fishing Rod",
     properties: [MaterialProperty.item, MaterialProperty.fuel],
@@ -10959,6 +10964,3226 @@ const Map<String, MinecraftMaterial> materials = {
     ],
     icon: "assets/materials/potted_flowering_azalea_bush.png",
   ),
+  "black_bundle": MinecraftMaterial(
+    name: "Black Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/black_bundle.png",
+  ),
+  "black_harness": MinecraftMaterial(
+    name: "Black Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/black_harness.png",
+  ),
+  "blue_bundle": MinecraftMaterial(
+    name: "Blue Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/blue_bundle.png",
+  ),
+  "blue_harness": MinecraftMaterial(
+    name: "Blue Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/blue_harness.png",
+  ),
+  "brown_bundle": MinecraftMaterial(
+    name: "Brown Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/brown_bundle.png",
+  ),
+  "brown_harness": MinecraftMaterial(
+    name: "Brown Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/brown_harness.png",
+  ),
+  "bundle": MinecraftMaterial(
+    name: "Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bundle.png",
+  ),
+  "bush": MinecraftMaterial(
+    name: "Bush",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bush.png",
+  ),
+  "cactus_flower": MinecraftMaterial(
+    name: "Cactus Flower",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/cactus_flower.png",
+  ),
+  "chiseled_resin_bricks": MinecraftMaterial(
+    name: "Chiseled Resin Bricks",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/chiseled_resin_bricks.png",
+  ),
+  "closed_eyeblossom": MinecraftMaterial(
+    name: "Closed Eyeblossom",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/closed_eyeblossom.png",
+  ),
+  "copper_bulb": MinecraftMaterial(
+    name: "Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_bulb.png",
+  ),
+  "copper_door": MinecraftMaterial(
+    name: "Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_door.png",
+  ),
+  "copper_grate": MinecraftMaterial(
+    name: "Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_grate.png",
+  ),
+  "copper_trapdoor": MinecraftMaterial(
+    name: "Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_trapdoor.png",
+  ),
+  "copper_chain": MinecraftMaterial(
+    name: "Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_chain.png",
+  ),
+  "copper_lantern": MinecraftMaterial(
+    name: "Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_lantern.png",
+  ),
+  "copper_pickaxe": MinecraftMaterial(
+    name: "Copper Pickaxe",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.tool,
+    ],
+    icon: "assets/materials/copper_pickaxe.png",
+  ),
+  "copper_axe": MinecraftMaterial(
+    name: "Copper Axe",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.tool,
+    ],
+    icon: "assets/materials/copper_axe.png",
+  ),
+  "copper_shovel": MinecraftMaterial(
+    name: "Copper Shovel",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.tool,
+    ],
+    icon: "assets/materials/copper_shovel.png",
+  ),
+  "copper_hoe": MinecraftMaterial(
+    name: "Copper Hoe",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.tool,
+    ],
+    icon: "assets/materials/copper_hoe.png",
+  ),
+  "copper_sword": MinecraftMaterial(
+    name: "Copper Sword",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.weapon,
+      MaterialProperty.tool,
+    ],
+    icon: "assets/materials/copper_sword.png",
+  ),
+  "copper_helmet": MinecraftMaterial(
+    name: "Copper Helmet",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.armor,
+    ],
+    icon: "assets/materials/copper_helmet.png",
+  ),
+  "copper_chestplate": MinecraftMaterial(
+    name: "Copper Chestplate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.armor,
+    ],
+    icon: "assets/materials/copper_chestplate.png",
+  ),
+  "copper_leggings": MinecraftMaterial(
+    name: "Copper Leggings",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.armor,
+    ],
+    icon: "assets/materials/copper_leggings.png",
+  ),
+  "copper_boots": MinecraftMaterial(
+    name: "Copper Boots",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.armor,
+    ],
+    icon: "assets/materials/copper_boots.png",
+  ),
+  "copper_horse_armor": MinecraftMaterial(
+    name: "Copper Horse Armor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.armor,
+    ],
+    icon: "assets/materials/copper_horse_armor.png",
+  ),
+  "copper_nugget": MinecraftMaterial(
+    name: "Copper Nugget",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_nugget.png",
+  ),
+  "copper_golem_spawn_egg": MinecraftMaterial(
+    name: "Copper Golem Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_golem_spawn_egg.png",
+  ),
+  "creaking_heart": MinecraftMaterial(
+    name: "Creaking Heart",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/creaking_heart.png",
+  ),
+  "creaking_spawn_egg": MinecraftMaterial(
+    name: "Creaking Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/creaking_spawn_egg.png",
+  ),
+  "cyan_bundle": MinecraftMaterial(
+    name: "Cyan Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/cyan_bundle.png",
+  ),
+  "cyan_harness": MinecraftMaterial(
+    name: "Cyan Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/cyan_harness.png",
+  ),
+  "dried_ghast": MinecraftMaterial(
+    name: "Dried Ghast",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/dried_ghast.png",
+  ),
+  "exposed_copper_bulb": MinecraftMaterial(
+    name: "Exposed Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_bulb.png",
+  ),
+  "exposed_copper_door": MinecraftMaterial(
+    name: "Exposed Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_door.png",
+  ),
+  "exposed_copper_grate": MinecraftMaterial(
+    name: "Exposed Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_grate.png",
+  ),
+  "exposed_copper_trapdoor": MinecraftMaterial(
+    name: "Exposed Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_trapdoor.png",
+  ),
+  "exposed_copper_chain": MinecraftMaterial(
+    name: "Exposed Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_chain.png",
+  ),
+  "exposed_copper_lantern": MinecraftMaterial(
+    name: "Exposed Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_lantern.png",
+  ),
+  "firefly_bush": MinecraftMaterial(
+    name: "Firefly Bush",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/firefly_bush.png",
+  ),
+  "gray_bundle": MinecraftMaterial(
+    name: "Gray Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/gray_bundle.png",
+  ),
+  "gray_harness": MinecraftMaterial(
+    name: "Gray Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/gray_harness.png",
+  ),
+  "green_bundle": MinecraftMaterial(
+    name: "Green Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/green_bundle.png",
+  ),
+  "green_harness": MinecraftMaterial(
+    name: "Green Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/green_harness.png",
+  ),
+  "happy_ghast_spawn_egg": MinecraftMaterial(
+    name: "Happy Ghast Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/happy_ghast_spawn_egg.png",
+  ),
+  "leaf_litter": MinecraftMaterial(
+    name: "Leaf Litter",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/leaf_litter.png",
+  ),
+  "light_blue_bundle": MinecraftMaterial(
+    name: "Light Blue Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/light_blue_bundle.png",
+  ),
+  "light_blue_harness": MinecraftMaterial(
+    name: "Light Blue Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/light_blue_harness.png",
+  ),
+  "light_gray_bundle": MinecraftMaterial(
+    name: "Light Gray Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/light_gray_bundle.png",
+  ),
+  "light_gray_harness": MinecraftMaterial(
+    name: "Light Gray Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/light_gray_harness.png",
+  ),
+  "lime_bundle": MinecraftMaterial(
+    name: "Lime Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/lime_bundle.png",
+  ),
+  "lime_harness": MinecraftMaterial(
+    name: "Lime Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/lime_harness.png",
+  ),
+  "magenta_bundle": MinecraftMaterial(
+    name: "Magenta Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/magenta_bundle.png",
+  ),
+  "magenta_harness": MinecraftMaterial(
+    name: "Magenta Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/magenta_harness.png",
+  ),
+  "music_disc_lava_chicken": MinecraftMaterial(
+    name: "Music Disc",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/music_disc_lava_chicken.png",
+  ),
+  "music_disc_tears": MinecraftMaterial(
+    name: "Music Disc",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/music_disc_tears.png",
+  ),
+  "open_eyeblossom": MinecraftMaterial(
+    name: "Open Eyeblossom",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/open_eyeblossom.png",
+  ),
+  "orange_bundle": MinecraftMaterial(
+    name: "Orange Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/orange_bundle.png",
+  ),
+  "orange_harness": MinecraftMaterial(
+    name: "Orange Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/orange_harness.png",
+  ),
+  "oxidized_copper_bulb": MinecraftMaterial(
+    name: "Oxidized Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_bulb.png",
+  ),
+  "oxidized_copper_door": MinecraftMaterial(
+    name: "Oxidized Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_door.png",
+  ),
+  "oxidized_copper_grate": MinecraftMaterial(
+    name: "Oxidized Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_grate.png",
+  ),
+  "oxidized_copper_trapdoor": MinecraftMaterial(
+    name: "Oxidized Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_trapdoor.png",
+  ),
+  "oxidized_copper_chain": MinecraftMaterial(
+    name: "Oxidized Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_chain.png",
+  ),
+  "oxidized_copper_lantern": MinecraftMaterial(
+    name: "Oxidized Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_lantern.png",
+  ),
+  "pale_hanging_moss": MinecraftMaterial(
+    name: "Pale Hanging Moss",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_hanging_moss.png",
+  ),
+  "pale_moss_block": MinecraftMaterial(
+    name: "Pale Moss Block",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_moss_block.png",
+  ),
+  "pale_moss_carpet": MinecraftMaterial(
+    name: "Pale Moss Carpet",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_moss_carpet.png",
+  ),
+  "pale_oak_boat": MinecraftMaterial(
+    name: "Pale Oak Boat",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_boat.png",
+  ),
+  "pale_oak_button": MinecraftMaterial(
+    name: "Pale Oak Button",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_button.png",
+  ),
+  "pale_oak_chest_boat": MinecraftMaterial(
+    name: "Pale Oak Boat with Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_chest_boat.png",
+  ),
+  "pale_oak_door": MinecraftMaterial(
+    name: "Pale Oak Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_door.png",
+  ),
+  "pale_oak_fence": MinecraftMaterial(
+    name: "Pale Oak Fence",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_fence.png",
+  ),
+  "pale_oak_fence_gate": MinecraftMaterial(
+    name: "Pale Oak Fence Gate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_fence_gate.png",
+  ),
+  "pale_oak_hanging_sign": MinecraftMaterial(
+    name: "Pale Oak Hanging Sign",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_hanging_sign.png",
+  ),
+  "pale_oak_leaves": MinecraftMaterial(
+    name: "Pale Oak Leaves",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_leaves.png",
+  ),
+  "pale_oak_log": MinecraftMaterial(
+    name: "Pale Oak Log",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_log.png",
+  ),
+  "pale_oak_planks": MinecraftMaterial(
+    name: "Pale Oak Planks",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_planks.png",
+  ),
+  "pale_oak_pressure_plate": MinecraftMaterial(
+    name: "Pale Oak Pressure Plate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_pressure_plate.png",
+  ),
+  "pale_oak_sapling": MinecraftMaterial(
+    name: "Pale Oak Sapling",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_sapling.png",
+  ),
+  "pale_oak_sign": MinecraftMaterial(
+    name: "Pale Oak Sign",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_sign.png",
+  ),
+  "pale_oak_slab": MinecraftMaterial(
+    name: "Pale Oak Slab",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_slab.png",
+  ),
+  "pale_oak_stairs": MinecraftMaterial(
+    name: "Pale Oak Stairs",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_stairs.png",
+  ),
+  "pale_oak_trapdoor": MinecraftMaterial(
+    name: "Pale Oak Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_trapdoor.png",
+  ),
+  "pale_oak_wood": MinecraftMaterial(
+    name: "Pale Oak Wood",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_wood.png",
+  ),
+  "pink_bundle": MinecraftMaterial(
+    name: "Pink Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pink_bundle.png",
+  ),
+  "pink_harness": MinecraftMaterial(
+    name: "Pink Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pink_harness.png",
+  ),
+  "purple_bundle": MinecraftMaterial(
+    name: "Purple Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/purple_bundle.png",
+  ),
+  "purple_harness": MinecraftMaterial(
+    name: "Purple Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/purple_harness.png",
+  ),
+  "red_bundle": MinecraftMaterial(
+    name: "Red Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/red_bundle.png",
+  ),
+  "red_harness": MinecraftMaterial(
+    name: "Red Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/red_harness.png",
+  ),
+  "resin_block": MinecraftMaterial(
+    name: "Block of Resin",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/resin_block.png",
+  ),
+  "resin_brick": MinecraftMaterial(
+    name: "Resin Brick",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/resin_brick.png",
+  ),
+  "resin_brick_slab": MinecraftMaterial(
+    name: "Resin Brick Slab",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/resin_brick_slab.png",
+  ),
+  "resin_brick_stairs": MinecraftMaterial(
+    name: "Resin Brick Stairs",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/resin_brick_stairs.png",
+  ),
+  "resin_brick_wall": MinecraftMaterial(
+    name: "Resin Brick Wall",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/resin_brick_wall.png",
+  ),
+  "resin_bricks": MinecraftMaterial(
+    name: "Resin Bricks",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/resin_bricks.png",
+  ),
+  "resin_clump": MinecraftMaterial(
+    name: "Resin Clump",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/resin_clump.png",
+  ),
+  "short_dry_grass": MinecraftMaterial(
+    name: "Short Dry Grass",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/short_dry_grass.png",
+  ),
+  "short_grass": MinecraftMaterial(
+    name: "Short Grass",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/short_grass.png",
+  ),
+  "tall_dry_grass": MinecraftMaterial(
+    name: "Tall Dry Grass",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tall_dry_grass.png",
+  ),
+  "waxed_copper_bulb": MinecraftMaterial(
+    name: "Waxed Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_bulb.png",
+  ),
+  "waxed_copper_door": MinecraftMaterial(
+    name: "Waxed Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_door.png",
+  ),
+  "waxed_copper_grate": MinecraftMaterial(
+    name: "Waxed Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_grate.png",
+  ),
+  "waxed_copper_trapdoor": MinecraftMaterial(
+    name: "Waxed Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_trapdoor.png",
+  ),
+  "waxed_exposed_copper_bulb": MinecraftMaterial(
+    name: "Waxed Exposed Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_bulb.png",
+  ),
+  "waxed_exposed_copper_door": MinecraftMaterial(
+    name: "Waxed Exposed Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_door.png",
+  ),
+  "waxed_exposed_copper_grate": MinecraftMaterial(
+    name: "Waxed Exposed Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_grate.png",
+  ),
+  "waxed_exposed_copper_trapdoor": MinecraftMaterial(
+    name: "Waxed Exposed Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_trapdoor.png",
+  ),
+  "waxed_exposed_copper_lantern": MinecraftMaterial(
+    name: "Waxed Exposed Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_lantern.png",
+  ),
+  "waxed_oxidized_copper_bulb": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_bulb.png",
+  ),
+  "waxed_oxidized_copper_door": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_door.png",
+  ),
+  "waxed_oxidized_copper_grate": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_grate.png",
+  ),
+  "waxed_oxidized_copper_trapdoor": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_trapdoor.png",
+  ),
+  "waxed_oxidized_copper_lantern": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_lantern.png",
+  ),
+  "waxed_weathered_copper_bulb": MinecraftMaterial(
+    name: "Waxed Weathered Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_bulb.png",
+  ),
+  "waxed_weathered_copper_door": MinecraftMaterial(
+    name: "Waxed Weathered Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_door.png",
+  ),
+  "waxed_weathered_copper_grate": MinecraftMaterial(
+    name: "Waxed Weathered Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_grate.png",
+  ),
+  "waxed_weathered_copper_trapdoor": MinecraftMaterial(
+    name: "Waxed Weathered Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_trapdoor.png",
+  ),
+  "waxed_weathered_copper_lantern": MinecraftMaterial(
+    name: "Waxed Weathered Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_lantern.png",
+  ),
+  "weathered_copper_bulb": MinecraftMaterial(
+    name: "Weathered Copper Bulb",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_bulb.png",
+  ),
+  "weathered_copper_door": MinecraftMaterial(
+    name: "Weathered Copper Door",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_door.png",
+  ),
+  "weathered_copper_grate": MinecraftMaterial(
+    name: "Weathered Copper Grate",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_grate.png",
+  ),
+  "weathered_copper_trapdoor": MinecraftMaterial(
+    name: "Weathered Copper Trapdoor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_trapdoor.png",
+  ),
+  "weathered_copper_lantern": MinecraftMaterial(
+    name: "Weathered Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_lantern.png",
+  ),
+  "white_bundle": MinecraftMaterial(
+    name: "White Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/white_bundle.png",
+  ),
+  "white_harness": MinecraftMaterial(
+    name: "White Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/white_harness.png",
+  ),
+  "wildflowers": MinecraftMaterial(
+    name: "Wildflowers",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/wildflowers.png",
+  ),
+  "yellow_bundle": MinecraftMaterial(
+    name: "Yellow Bundle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/yellow_bundle.png",
+  ),
+  "yellow_harness": MinecraftMaterial(
+    name: "Yellow Harness",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/yellow_harness.png",
+  ),
+  // 1.21.11 - Spears
+  "wooden_spear": MinecraftMaterial(
+    name: "Wooden Spear",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.weapon],
+    icon: "assets/materials/wooden_spear.png",
+  ),
+  "stone_spear": MinecraftMaterial(
+    name: "Stone Spear",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.weapon],
+    icon: "assets/materials/stone_spear.png",
+  ),
+  "copper_spear": MinecraftMaterial(
+    name: "Copper Spear",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.weapon],
+    icon: "assets/materials/copper_spear.png",
+  ),
+  "iron_spear": MinecraftMaterial(
+    name: "Iron Spear",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.weapon],
+    icon: "assets/materials/iron_spear.png",
+  ),
+  "golden_spear": MinecraftMaterial(
+    name: "Golden Spear",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.weapon],
+    icon: "assets/materials/golden_spear.png",
+  ),
+  "diamond_spear": MinecraftMaterial(
+    name: "Diamond Spear",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.weapon],
+    icon: "assets/materials/diamond_spear.png",
+  ),
+  "netherite_spear": MinecraftMaterial(
+    name: "Netherite Spear",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.weapon],
+    icon: "assets/materials/netherite_spear.png",
+  ),
+  // 1.21.11 - Nautilus Armor
+  "copper_nautilus_armor": MinecraftMaterial(
+    name: "Copper Nautilus Armor",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.armor],
+    icon: "assets/materials/copper_nautilus_armor.png",
+  ),
+  "golden_nautilus_armor": MinecraftMaterial(
+    name: "Golden Nautilus Armor",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.armor],
+    icon: "assets/materials/golden_nautilus_armor.png",
+  ),
+  "iron_nautilus_armor": MinecraftMaterial(
+    name: "Iron Nautilus Armor",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.armor],
+    icon: "assets/materials/iron_nautilus_armor.png",
+  ),
+  "diamond_nautilus_armor": MinecraftMaterial(
+    name: "Diamond Nautilus Armor",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.armor],
+    icon: "assets/materials/diamond_nautilus_armor.png",
+  ),
+  "netherite_nautilus_armor": MinecraftMaterial(
+    name: "Netherite Nautilus Armor",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item, MaterialProperty.armor],
+    icon: "assets/materials/netherite_nautilus_armor.png",
+  ),
+  // 1.21.11 - Horse Armor
+  "netherite_horse_armor": MinecraftMaterial(
+    name: "Netherite Horse Armor",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item],
+    icon: "assets/materials/netherite_horse_armor.png",
+  ),
+  // 1.21.11 - Spawn eggs
+  "camel_husk_spawn_egg": MinecraftMaterial(
+    name: "Camel Husk Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item],
+    icon: "assets/materials/camel_husk_spawn_egg.png",
+  ),
+  "parched_spawn_egg": MinecraftMaterial(
+    name: "Parched Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item],
+    icon: "assets/materials/parched_spawn_egg.png",
+  ),
+  "nautilus_spawn_egg": MinecraftMaterial(
+    name: "Nautilus Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item],
+    icon: "assets/materials/nautilus_spawn_egg.png",
+  ),
+  "zombie_nautilus_spawn_egg": MinecraftMaterial(
+    name: "Zombie Nautilus Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [MaterialProperty.item],
+    icon: "assets/materials/zombie_nautilus_spawn_egg.png",
+  ),
+  "acacia_hanging_sign": MinecraftMaterial(
+    name: "Acacia Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/acacia_hanging_sign.png",
+  ),
+  "acacia_shelf": MinecraftMaterial(
+    name: "Acacia Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/acacia_shelf.png",
+  ),
+  "angler_pottery_sherd": MinecraftMaterial(
+    name: "Angler Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/angler_pottery_sherd.png",
+  ),
+  "archer_pottery_sherd": MinecraftMaterial(
+    name: "Archer Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/archer_pottery_sherd.png",
+  ),
+  "armadillo_scute": MinecraftMaterial(
+    name: "Armadillo Scute",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/armadillo_scute.png",
+  ),
+  "armadillo_spawn_egg": MinecraftMaterial(
+    name: "Armadillo Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/armadillo_spawn_egg.png",
+  ),
+  "arms_up_pottery_sherd": MinecraftMaterial(
+    name: "Arms Up Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/arms_up_pottery_sherd.png",
+  ),
+  "bamboo_block": MinecraftMaterial(
+    name: "Bamboo Block",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_block.png",
+  ),
+  "bamboo_button": MinecraftMaterial(
+    name: "Bamboo Button",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_button.png",
+  ),
+  "bamboo_chest_raft": MinecraftMaterial(
+    name: "Bamboo Chest Raft",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bamboo_chest_raft.png",
+  ),
+  "bamboo_door": MinecraftMaterial(
+    name: "Bamboo Door",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_door.png",
+  ),
+  "bamboo_fence": MinecraftMaterial(
+    name: "Bamboo Fence",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_fence.png",
+  ),
+  "bamboo_fence_gate": MinecraftMaterial(
+    name: "Bamboo Fence Gate",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_fence_gate.png",
+  ),
+  "bamboo_hanging_sign": MinecraftMaterial(
+    name: "Bamboo Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_hanging_sign.png",
+  ),
+  "bamboo_mosaic": MinecraftMaterial(
+    name: "Bamboo Mosaic",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_mosaic.png",
+  ),
+  "bamboo_mosaic_slab": MinecraftMaterial(
+    name: "Bamboo Mosaic Slab",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bamboo_mosaic_slab.png",
+  ),
+  "bamboo_mosaic_stairs": MinecraftMaterial(
+    name: "Bamboo Mosaic Stairs",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bamboo_mosaic_stairs.png",
+  ),
+  "bamboo_planks": MinecraftMaterial(
+    name: "Bamboo Planks",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_planks.png",
+  ),
+  "bamboo_pressure_plate": MinecraftMaterial(
+    name: "Bamboo Pressure Plate",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_pressure_plate.png",
+  ),
+  "bamboo_raft": MinecraftMaterial(
+    name: "Bamboo Raft",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bamboo_raft.png",
+  ),
+  "bamboo_shelf": MinecraftMaterial(
+    name: "Bamboo Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_shelf.png",
+  ),
+  "bamboo_sign": MinecraftMaterial(
+    name: "Bamboo Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_sign.png",
+  ),
+  "bamboo_slab": MinecraftMaterial(
+    name: "Bamboo Slab",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_slab.png",
+  ),
+  "bamboo_stairs": MinecraftMaterial(
+    name: "Bamboo Stairs",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_stairs.png",
+  ),
+  "bamboo_trapdoor": MinecraftMaterial(
+    name: "Bamboo Trapdoor",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/bamboo_trapdoor.png",
+  ),
+  "birch_hanging_sign": MinecraftMaterial(
+    name: "Birch Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/birch_hanging_sign.png",
+  ),
+  "birch_shelf": MinecraftMaterial(
+    name: "Birch Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/birch_shelf.png",
+  ),
+  "blade_pottery_sherd": MinecraftMaterial(
+    name: "Blade Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/blade_pottery_sherd.png",
+  ),
+  "blue_egg": MinecraftMaterial(
+    name: "Blue Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/blue_egg.png",
+  ),
+  "bogged_spawn_egg": MinecraftMaterial(
+    name: "Bogged Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bogged_spawn_egg.png",
+  ),
+  "bolt_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Bolt Armor Trim Smithing Template",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bolt_armor_trim_smithing_template.png",
+  ),
+  "bordure_indented_banner_pattern": MinecraftMaterial(
+    name: "Bordure Indented Banner Pattern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/bordure_indented_banner_pattern.png",
+  ),
+  "breeze_rod": MinecraftMaterial(
+    name: "Breeze Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/breeze_rod.png",
+  ),
+  "breeze_spawn_egg": MinecraftMaterial(
+    name: "Breeze Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/breeze_spawn_egg.png",
+  ),
+  "brewer_pottery_sherd": MinecraftMaterial(
+    name: "Brewer Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/brewer_pottery_sherd.png",
+  ),
+  "brown_egg": MinecraftMaterial(
+    name: "Brown Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/brown_egg.png",
+  ),
+  "brush": MinecraftMaterial(
+    name: "Brush",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.tool,
+    ],
+    icon: "assets/materials/brush.png",
+  ),
+  "burn_pottery_sherd": MinecraftMaterial(
+    name: "Burn Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/burn_pottery_sherd.png",
+  ),
+  "calibrated_sculk_sensor": MinecraftMaterial(
+    name: "Calibrated Sculk Sensor",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.solid,
+    ],
+    icon: "assets/materials/calibrated_sculk_sensor.png",
+  ),
+  "camel_spawn_egg": MinecraftMaterial(
+    name: "Camel Spawn Egg",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/camel_spawn_egg.png",
+  ),
+  "cherry_boat": MinecraftMaterial(
+    name: "Cherry Boat",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/cherry_boat.png",
+  ),
+  "cherry_button": MinecraftMaterial(
+    name: "Cherry Button",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_button.png",
+  ),
+  "cherry_chest_boat": MinecraftMaterial(
+    name: "Cherry Chest Boat",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/cherry_chest_boat.png",
+  ),
+  "cherry_door": MinecraftMaterial(
+    name: "Cherry Door",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_door.png",
+  ),
+  "cherry_fence": MinecraftMaterial(
+    name: "Cherry Fence",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_fence.png",
+  ),
+  "cherry_fence_gate": MinecraftMaterial(
+    name: "Cherry Fence Gate",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_fence_gate.png",
+  ),
+  "cherry_hanging_sign": MinecraftMaterial(
+    name: "Cherry Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_hanging_sign.png",
+  ),
+  "cherry_leaves": MinecraftMaterial(
+    name: "Cherry Leaves",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.transparent,
+      MaterialProperty.occluding,
+      MaterialProperty.flammable,
+      MaterialProperty.burnable,
+    ],
+    icon: "assets/materials/cherry_leaves.png",
+  ),
+  "cherry_log": MinecraftMaterial(
+    name: "Cherry Log",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_log.png",
+  ),
+  "cherry_planks": MinecraftMaterial(
+    name: "Cherry Planks",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_planks.png",
+  ),
+  "cherry_pressure_plate": MinecraftMaterial(
+    name: "Cherry Pressure Plate",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_pressure_plate.png",
+  ),
+  "cherry_sapling": MinecraftMaterial(
+    name: "Cherry Sapling",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.transparent,
+    ],
+    icon: "assets/materials/cherry_sapling.png",
+  ),
+  "cherry_shelf": MinecraftMaterial(
+    name: "Cherry Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_shelf.png",
+  ),
+  "cherry_sign": MinecraftMaterial(
+    name: "Cherry Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_sign.png",
+  ),
+  "cherry_slab": MinecraftMaterial(
+    name: "Cherry Slab",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_slab.png",
+  ),
+  "cherry_stairs": MinecraftMaterial(
+    name: "Cherry Stairs",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_stairs.png",
+  ),
+  "cherry_trapdoor": MinecraftMaterial(
+    name: "Cherry Trapdoor",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.intractable,
+      MaterialProperty.solid,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_trapdoor.png",
+  ),
+  "cherry_wood": MinecraftMaterial(
+    name: "Cherry Wood",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/cherry_wood.png",
+  ),
+  "chiseled_bookshelf": MinecraftMaterial(
+    name: "Chiseled Bookshelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/chiseled_bookshelf.png",
+  ),
+  "chiseled_copper": MinecraftMaterial(
+    name: "Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/chiseled_copper.png",
+  ),
+  "chiseled_tuff": MinecraftMaterial(
+    name: "Chiseled Tuff",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/chiseled_tuff.png",
+  ),
+  "chiseled_tuff_bricks": MinecraftMaterial(
+    name: "Chiseled Tuff Bricks",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/chiseled_tuff_bricks.png",
+  ),
+  "coast_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Coast Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/coast_armor_trim_smithing_template.png",
+  ),
+  "copper_bars": MinecraftMaterial(
+    name: "Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_bars.png",
+  ),
+  "copper_chest": MinecraftMaterial(
+    name: "Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_chest.png",
+  ),
+  "copper_golem_statue": MinecraftMaterial(
+    name: "Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_golem_statue.png",
+  ),
+  "copper_torch": MinecraftMaterial(
+    name: "Copper Torch",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/copper_torch.png",
+  ),
+  "crafter": MinecraftMaterial(
+    name: "Crafter",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/crafter.png",
+  ),
+  "crimson_hanging_sign": MinecraftMaterial(
+    name: "Crimson Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.solid,
+    ],
+    icon: "assets/materials/crimson_hanging_sign.png",
+  ),
+  "crimson_shelf": MinecraftMaterial(
+    name: "Crimson Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/crimson_shelf.png",
+  ),
+  "danger_pottery_sherd": MinecraftMaterial(
+    name: "Danger Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/danger_pottery_sherd.png",
+  ),
+  "dark_oak_hanging_sign": MinecraftMaterial(
+    name: "Dark Oak Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/dark_oak_hanging_sign.png",
+  ),
+  "dark_oak_shelf": MinecraftMaterial(
+    name: "Dark Oak Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/dark_oak_shelf.png",
+  ),
+  "decorated_pot": MinecraftMaterial(
+    name: "Decorated Pot",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.solid,
+    ],
+    icon: "assets/materials/decorated_pot.png",
+  ),
+  "dune_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Dune Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/dune_armor_trim_smithing_template.png",
+  ),
+  "ender_dragon_spawn_egg": MinecraftMaterial(
+    name: "Ender Dragon Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/ender_dragon_spawn_egg.png",
+  ),
+  "explorer_pottery_sherd": MinecraftMaterial(
+    name: "Explorer Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/explorer_pottery_sherd.png",
+  ),
+  "exposed_chiseled_copper": MinecraftMaterial(
+    name: "Exposed Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_chiseled_copper.png",
+  ),
+  "exposed_copper_bars": MinecraftMaterial(
+    name: "Exposed Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_bars.png",
+  ),
+  "exposed_copper_chest": MinecraftMaterial(
+    name: "Exposed Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_chest.png",
+  ),
+  "exposed_copper_golem_statue": MinecraftMaterial(
+    name: "Exposed Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_copper_golem_statue.png",
+  ),
+  "exposed_lightning_rod": MinecraftMaterial(
+    name: "Exposed Lightning Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/exposed_lightning_rod.png",
+  ),
+  "eye_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Eye Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/eye_armor_trim_smithing_template.png",
+  ),
+  "field_masoned_banner_pattern": MinecraftMaterial(
+    name: "Field Masoned Banner Pattern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/field_masoned_banner_pattern.png",
+  ),
+  "flow_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Flow Armor Trim Smithing Template",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/flow_armor_trim_smithing_template.png",
+  ),
+  "flow_banner_pattern": MinecraftMaterial(
+    name: "Flow Banner Pattern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/flow_banner_pattern.png",
+  ),
+  "flow_pottery_sherd": MinecraftMaterial(
+    name: "Flow Pottery Sherd",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/flow_pottery_sherd.png",
+  ),
+  "friend_pottery_sherd": MinecraftMaterial(
+    name: "Friend Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/friend_pottery_sherd.png",
+  ),
+  "guster_banner_pattern": MinecraftMaterial(
+    name: "Guster Banner Pattern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/guster_banner_pattern.png",
+  ),
+  "guster_pottery_sherd": MinecraftMaterial(
+    name: "Guster Pottery Sherd",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/guster_pottery_sherd.png",
+  ),
+  "heart_pottery_sherd": MinecraftMaterial(
+    name: "Heart Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/heart_pottery_sherd.png",
+  ),
+  "heartbreak_pottery_sherd": MinecraftMaterial(
+    name: "Heartbreak Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/heartbreak_pottery_sherd.png",
+  ),
+  "heavy_core": MinecraftMaterial(
+    name: "Heavy Core",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/heavy_core.png",
+  ),
+  "host_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Host Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/host_armor_trim_smithing_template.png",
+  ),
+  "howl_pottery_sherd": MinecraftMaterial(
+    name: "Howl Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/howl_pottery_sherd.png",
+  ),
+  "iron_chain": MinecraftMaterial(
+    name: "Iron Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/iron_chain.png",
+  ),
+  "iron_golem_spawn_egg": MinecraftMaterial(
+    name: "Iron Golem Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/iron_golem_spawn_egg.png",
+  ),
+  "jungle_hanging_sign": MinecraftMaterial(
+    name: "Jungle Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/jungle_hanging_sign.png",
+  ),
+  "jungle_shelf": MinecraftMaterial(
+    name: "Jungle Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/jungle_shelf.png",
+  ),
+  "mace": MinecraftMaterial(
+    name: "Mace",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/mace.png",
+  ),
+  "mangrove_hanging_sign": MinecraftMaterial(
+    name: "Mangrove Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/mangrove_hanging_sign.png",
+  ),
+  "mangrove_shelf": MinecraftMaterial(
+    name: "Mangrove Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/mangrove_shelf.png",
+  ),
+  "miner_pottery_sherd": MinecraftMaterial(
+    name: "Miner Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/miner_pottery_sherd.png",
+  ),
+  "mourner_pottery_sherd": MinecraftMaterial(
+    name: "Mourner Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/mourner_pottery_sherd.png",
+  ),
+  "music_disc_creator": MinecraftMaterial(
+    name: "Music Disc Creator",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/music_disc_creator.png",
+  ),
+  "music_disc_creator_music_box": MinecraftMaterial(
+    name: "Music Disc Creator Music Box",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/music_disc_creator_music_box.png",
+  ),
+  "music_disc_precipice": MinecraftMaterial(
+    name: "Music Disc Precipice",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.transparent,
+    ],
+    icon: "assets/materials/music_disc_precipice.png",
+  ),
+  "music_disc_relic": MinecraftMaterial(
+    name: "Music Disc Relic",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/music_disc_relic.png",
+  ),
+  "netherite_upgrade_smithing_template": MinecraftMaterial(
+    name: "Netherite Upgrade Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/netherite_upgrade_smithing_template.png",
+  ),
+  "oak_hanging_sign": MinecraftMaterial(
+    name: "Oak Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/oak_hanging_sign.png",
+  ),
+  "oak_shelf": MinecraftMaterial(
+    name: "Oak Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/oak_shelf.png",
+  ),
+  "ominous_bottle": MinecraftMaterial(
+    name: "Ominous Bottle",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/ominous_bottle.png",
+  ),
+  "ominous_trial_key": MinecraftMaterial(
+    name: "Ominous Trial Key",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/ominous_trial_key.png",
+  ),
+  "oxidized_chiseled_copper": MinecraftMaterial(
+    name: "Oxidized Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_chiseled_copper.png",
+  ),
+  "oxidized_copper_bars": MinecraftMaterial(
+    name: "Oxidized Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_bars.png",
+  ),
+  "oxidized_copper_chest": MinecraftMaterial(
+    name: "Oxidized Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_chest.png",
+  ),
+  "oxidized_copper_golem_statue": MinecraftMaterial(
+    name: "Oxidized Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_copper_golem_statue.png",
+  ),
+  "oxidized_lightning_rod": MinecraftMaterial(
+    name: "Oxidized Lightning Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/oxidized_lightning_rod.png",
+  ),
+  "pale_oak_shelf": MinecraftMaterial(
+    name: "Pale Oak Shelf",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pale_oak_shelf.png",
+  ),
+  "piglin_head": MinecraftMaterial(
+    name: "Piglin Head",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/piglin_head.png",
+  ),
+  "pink_petals": MinecraftMaterial(
+    name: "Pink Petals",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pink_petals.png",
+  ),
+  "pitcher_plant": MinecraftMaterial(
+    name: "Pitcher Plant",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pitcher_plant.png",
+  ),
+  "pitcher_pod": MinecraftMaterial(
+    name: "Pitcher Pod",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/pitcher_pod.png",
+  ),
+  "plenty_pottery_sherd": MinecraftMaterial(
+    name: "Plenty Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/plenty_pottery_sherd.png",
+  ),
+  "polished_tuff": MinecraftMaterial(
+    name: "Polished Tuff",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/polished_tuff.png",
+  ),
+  "polished_tuff_slab": MinecraftMaterial(
+    name: "Polished Tuff Slab",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/polished_tuff_slab.png",
+  ),
+  "polished_tuff_stairs": MinecraftMaterial(
+    name: "Polished Tuff Stairs",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/polished_tuff_stairs.png",
+  ),
+  "polished_tuff_wall": MinecraftMaterial(
+    name: "Polished Tuff Wall",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/polished_tuff_wall.png",
+  ),
+  "prize_pottery_sherd": MinecraftMaterial(
+    name: "Prize Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/prize_pottery_sherd.png",
+  ),
+  "raiser_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Raiser Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/raiser_armor_trim_smithing_template.png",
+  ),
+  "rib_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Rib Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/rib_armor_trim_smithing_template.png",
+  ),
+  "scrape_pottery_sherd": MinecraftMaterial(
+    name: "Scrape Pottery Sherd",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/scrape_pottery_sherd.png",
+  ),
+  "sentry_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Sentry Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/sentry_armor_trim_smithing_template.png",
+  ),
+  "shaper_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Shaper Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/shaper_armor_trim_smithing_template.png",
+  ),
+  "sheaf_pottery_sherd": MinecraftMaterial(
+    name: "Sheaf Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/sheaf_pottery_sherd.png",
+  ),
+  "shelter_pottery_sherd": MinecraftMaterial(
+    name: "Shelter Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/shelter_pottery_sherd.png",
+  ),
+  "silence_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Silence Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/silence_armor_trim_smithing_template.png",
+  ),
+  "skull_pottery_sherd": MinecraftMaterial(
+    name: "Skull Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/skull_pottery_sherd.png",
+  ),
+  "sniffer_egg": MinecraftMaterial(
+    name: "Sniffer Egg",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/sniffer_egg.png",
+  ),
+  "sniffer_spawn_egg": MinecraftMaterial(
+    name: "Sniffer Spawn Egg",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/sniffer_spawn_egg.png",
+  ),
+  "snort_pottery_sherd": MinecraftMaterial(
+    name: "Snort Pottery Sherd",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/snort_pottery_sherd.png",
+  ),
+  "snout_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Snout Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/snout_armor_trim_smithing_template.png",
+  ),
+  "snow_golem_spawn_egg": MinecraftMaterial(
+    name: "Snow Golem Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/snow_golem_spawn_egg.png",
+  ),
+  "spire_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Spire Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/spire_armor_trim_smithing_template.png",
+  ),
+  "spruce_hanging_sign": MinecraftMaterial(
+    name: "Spruce Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/spruce_hanging_sign.png",
+  ),
+  "spruce_shelf": MinecraftMaterial(
+    name: "Spruce Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/spruce_shelf.png",
+  ),
+  "stripped_bamboo_block": MinecraftMaterial(
+    name: "Stripped Bamboo Block",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/stripped_bamboo_block.png",
+  ),
+  "stripped_cherry_log": MinecraftMaterial(
+    name: "Stripped Cherry Log",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/stripped_cherry_log.png",
+  ),
+  "stripped_cherry_wood": MinecraftMaterial(
+    name: "Stripped Cherry Wood",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.fuel,
+      MaterialProperty.occluding,
+      MaterialProperty.solid,
+      MaterialProperty.burnable,
+      MaterialProperty.flammable,
+    ],
+    icon: "assets/materials/stripped_cherry_wood.png",
+  ),
+  "stripped_pale_oak_log": MinecraftMaterial(
+    name: "Stripped Pale Oak Log",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/stripped_pale_oak_log.png",
+  ),
+  "stripped_pale_oak_wood": MinecraftMaterial(
+    name: "Stripped Pale Oak Wood",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/stripped_pale_oak_wood.png",
+  ),
+  "suspicious_gravel": MinecraftMaterial(
+    name: "Suspicious Gravel",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.solid,
+    ],
+    icon: "assets/materials/suspicious_gravel.png",
+  ),
+  "suspicious_sand": MinecraftMaterial(
+    name: "Suspicious Sand",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.solid,
+    ],
+    icon: "assets/materials/suspicious_sand.png",
+  ),
+  "test_block": MinecraftMaterial(
+    name: "Test Block",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/test_block.png",
+  ),
+  "test_instance_block": MinecraftMaterial(
+    name: "Test Instance Block",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/test_instance_block.png",
+  ),
+  "tide_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Tide Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tide_armor_trim_smithing_template.png",
+  ),
+  "torchflower": MinecraftMaterial(
+    name: "Torchflower",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/torchflower.png",
+  ),
+  "torchflower_seeds": MinecraftMaterial(
+    name: "Torchflower Seeds",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/torchflower_seeds.png",
+  ),
+  "trial_key": MinecraftMaterial(
+    name: "Trial Key",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/trial_key.png",
+  ),
+  "trial_spawner": MinecraftMaterial(
+    name: "Trial Spawner",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/trial_spawner.png",
+  ),
+  "tuff_brick_slab": MinecraftMaterial(
+    name: "Tuff Brick Slab",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tuff_brick_slab.png",
+  ),
+  "tuff_brick_stairs": MinecraftMaterial(
+    name: "Tuff Brick Stairs",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tuff_brick_stairs.png",
+  ),
+  "tuff_brick_wall": MinecraftMaterial(
+    name: "Tuff Brick Wall",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tuff_brick_wall.png",
+  ),
+  "tuff_bricks": MinecraftMaterial(
+    name: "Tuff Bricks",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tuff_bricks.png",
+  ),
+  "tuff_slab": MinecraftMaterial(
+    name: "Tuff Slab",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tuff_slab.png",
+  ),
+  "tuff_stairs": MinecraftMaterial(
+    name: "Tuff Stairs",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tuff_stairs.png",
+  ),
+  "tuff_wall": MinecraftMaterial(
+    name: "Tuff Wall",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/tuff_wall.png",
+  ),
+  "turtle_scute": MinecraftMaterial(
+    name: "Turtle Scute",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/turtle_scute.png",
+  ),
+  "vault": MinecraftMaterial(
+    name: "Vault",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/vault.png",
+  ),
+  "vex_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Vex Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/vex_armor_trim_smithing_template.png",
+  ),
+  "ward_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Ward Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/ward_armor_trim_smithing_template.png",
+  ),
+  "warped_hanging_sign": MinecraftMaterial(
+    name: "Warped Hanging Sign",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+      MaterialProperty.solid,
+    ],
+    icon: "assets/materials/warped_hanging_sign.png",
+  ),
+  "warped_shelf": MinecraftMaterial(
+    name: "Warped Shelf",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/warped_shelf.png",
+  ),
+  "waxed_chiseled_copper": MinecraftMaterial(
+    name: "Waxed Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_chiseled_copper.png",
+  ),
+  "waxed_copper_bars": MinecraftMaterial(
+    name: "Waxed Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_bars.png",
+  ),
+  "waxed_copper_chain": MinecraftMaterial(
+    name: "Waxed Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_chain.png",
+  ),
+  "waxed_copper_chest": MinecraftMaterial(
+    name: "Waxed Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_chest.png",
+  ),
+  "waxed_copper_golem_statue": MinecraftMaterial(
+    name: "Waxed Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_golem_statue.png",
+  ),
+  "waxed_copper_lantern": MinecraftMaterial(
+    name: "Waxed Copper Lantern",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_copper_lantern.png",
+  ),
+  "waxed_exposed_chiseled_copper": MinecraftMaterial(
+    name: "Waxed Exposed Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_chiseled_copper.png",
+  ),
+  "waxed_exposed_copper_bars": MinecraftMaterial(
+    name: "Waxed Exposed Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_bars.png",
+  ),
+  "waxed_exposed_copper_chain": MinecraftMaterial(
+    name: "Waxed Exposed Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_chain.png",
+  ),
+  "waxed_exposed_copper_chest": MinecraftMaterial(
+    name: "Waxed Exposed Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_chest.png",
+  ),
+  "waxed_exposed_copper_golem_statue": MinecraftMaterial(
+    name: "Waxed Exposed Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_copper_golem_statue.png",
+  ),
+  "waxed_exposed_lightning_rod": MinecraftMaterial(
+    name: "Waxed Exposed Lightning Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_exposed_lightning_rod.png",
+  ),
+  "waxed_lightning_rod": MinecraftMaterial(
+    name: "Waxed Lightning Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_lightning_rod.png",
+  ),
+  "waxed_oxidized_chiseled_copper": MinecraftMaterial(
+    name: "Waxed Oxidized Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_chiseled_copper.png",
+  ),
+  "waxed_oxidized_copper_bars": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_bars.png",
+  ),
+  "waxed_oxidized_copper_chain": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_chain.png",
+  ),
+  "waxed_oxidized_copper_chest": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_chest.png",
+  ),
+  "waxed_oxidized_copper_golem_statue": MinecraftMaterial(
+    name: "Waxed Oxidized Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_copper_golem_statue.png",
+  ),
+  "waxed_oxidized_lightning_rod": MinecraftMaterial(
+    name: "Waxed Oxidized Lightning Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_oxidized_lightning_rod.png",
+  ),
+  "waxed_weathered_chiseled_copper": MinecraftMaterial(
+    name: "Waxed Weathered Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_chiseled_copper.png",
+  ),
+  "waxed_weathered_copper_bars": MinecraftMaterial(
+    name: "Waxed Weathered Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_bars.png",
+  ),
+  "waxed_weathered_copper_chain": MinecraftMaterial(
+    name: "Waxed Weathered Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_chain.png",
+  ),
+  "waxed_weathered_copper_chest": MinecraftMaterial(
+    name: "Waxed Weathered Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_chest.png",
+  ),
+  "waxed_weathered_copper_golem_statue": MinecraftMaterial(
+    name: "Waxed Weathered Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_copper_golem_statue.png",
+  ),
+  "waxed_weathered_lightning_rod": MinecraftMaterial(
+    name: "Waxed Weathered Lightning Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.tool,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/waxed_weathered_lightning_rod.png",
+  ),
+  "wayfinder_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Wayfinder Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/wayfinder_armor_trim_smithing_template.png",
+  ),
+  "weathered_chiseled_copper": MinecraftMaterial(
+    name: "Weathered Chiseled Copper",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_chiseled_copper.png",
+  ),
+  "weathered_copper_bars": MinecraftMaterial(
+    name: "Weathered Copper Bars",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_bars.png",
+  ),
+  "weathered_copper_chain": MinecraftMaterial(
+    name: "Weathered Copper Chain",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_chain.png",
+  ),
+  "weathered_copper_chest": MinecraftMaterial(
+    name: "Weathered Copper Chest",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.block,
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_chest.png",
+  ),
+  "weathered_copper_golem_statue": MinecraftMaterial(
+    name: "Weathered Copper Golem Statue",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_copper_golem_statue.png",
+  ),
+  "weathered_lightning_rod": MinecraftMaterial(
+    name: "Weathered Lightning Rod",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/weathered_lightning_rod.png",
+  ),
+  "wild_armor_trim_smithing_template": MinecraftMaterial(
+    name: "Wild Armor Trim Smithing Template",
+    since: McVersion.v1_20,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/wild_armor_trim_smithing_template.png",
+  ),
+  "wind_charge": MinecraftMaterial(
+    name: "Wind Charge",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/wind_charge.png",
+  ),
+  "wither_spawn_egg": MinecraftMaterial(
+    name: "Wither Spawn Egg",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/wither_spawn_egg.png",
+  ),
+  "wolf_armor": MinecraftMaterial(
+    name: "Wolf Armor",
+    since: McVersion.v1_21,
+    properties: [
+      MaterialProperty.item,
+    ],
+    icon: "assets/materials/wolf_armor.png",
+  ),
 };
 
 @freezed
@@ -10967,6 +14192,7 @@ class MinecraftMaterial with _$MinecraftMaterial {
     required String name,
     required List<MaterialProperty> properties,
     required String icon,
+    McVersion? since,
   }) = _MinecraftMaterial;
 
   factory MinecraftMaterial.fromJson(Map<String, dynamic> json) =>

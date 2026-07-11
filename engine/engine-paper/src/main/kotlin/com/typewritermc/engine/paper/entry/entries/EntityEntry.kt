@@ -128,6 +128,7 @@ interface SharedEntityActivityEntry : EntityActivityEntry {
             SharedActivityContext::class,
             this
         )
+        @Suppress("UNCHECKED_CAST")
         return create(context, currentLocation) as EntityActivity<ActivityContext>
     }
 
@@ -145,6 +146,7 @@ interface IndividualEntityActivityEntry : EntityActivityEntry {
             IndividualActivityContext::class,
             this
         )
+        @Suppress("UNCHECKED_CAST")
         return create(context, currentLocation) as EntityActivity<ActivityContext>
     }
 
@@ -165,6 +167,7 @@ interface GenericEntityActivityEntry : SharedEntityActivityEntry, IndividualEnti
         context: SharedActivityContext,
         currentLocation: PositionProperty
     ): EntityActivity<SharedActivityContext> {
+        @Suppress("UNCHECKED_CAST")
         return create(context as ActivityContext, currentLocation) as EntityActivity<SharedActivityContext>
     }
 
@@ -172,6 +175,7 @@ interface GenericEntityActivityEntry : SharedEntityActivityEntry, IndividualEnti
         context: IndividualActivityContext,
         currentLocation: PositionProperty
     ): EntityActivity<IndividualActivityContext> {
+        @Suppress("UNCHECKED_CAST")
         return create(context as ActivityContext, currentLocation) as EntityActivity<IndividualActivityContext>
     }
 }

@@ -86,7 +86,7 @@ class JavaOptionDialogueDialogueMessenger(player: Player, context: InteractionCo
     override val modifiers: List<Modifier>
         get() = entry.modifiers + (selected?.modifiers ?: emptyList())
 
-    override var isCompleted: Boolean
+    override var animationComplete: Boolean
         get() = playTime >= totalDuration
         set(value) {
             playTime = if (!value) Duration.ZERO
@@ -109,6 +109,8 @@ class JavaOptionDialogueDialogueMessenger(player: Player, context: InteractionCo
         confirmationKeyHandler = confirmationKey.handler(player) {
             completeOrFinish()
         }
+        // Set the index here so we ensure that the context value is written into the context.
+        selectedIndex = 0
     }
 
     @EventHandler
@@ -144,7 +146,7 @@ class JavaOptionDialogueDialogueMessenger(player: Player, context: InteractionCo
 
         // When there are no options, just go to the next dialogue
         if (usableOptions.isEmpty()) {
-            isCompleted = true
+            animationComplete = true
             state = MessengerState.FINISHED
             return
         }

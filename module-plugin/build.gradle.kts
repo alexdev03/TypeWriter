@@ -1,16 +1,41 @@
+import org.tomlj.Toml
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.tomlj:tomlj:1.1.1")
+    }
+}
+
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.3.20"
     `java-gradle-plugin`
-    id("com.gradle.plugin-publish") version "1.2.1"
-    id("com.google.devtools.ksp") version "2.0.21-1.0.28"
-    kotlin("plugin.serialization") version "2.0.20" apply false
+    id("com.gradle.plugin-publish") version "2.1.1"
+    id("com.google.devtools.ksp") version "2.3.8"
+    kotlin("plugin.serialization") version "2.3.20" apply false
     `maven-publish`
 }
 
-group = "com.typewritermc.module-plugin"
-version = "1.3.0"
+val typewriterSettingsFile = rootProject.file("../settings.toml")
+val typewriterSettings = Toml.parse(typewriterSettingsFile.toPath())
 
-val engineVersion = file("../version.txt").readText().trim().substringBefore("-beta")
+if (typewriterSettings.hasErrors()) {
+    error(typewriterSettings.errors().joinToString("\n"))
+}
+
+val configuredTypewriterVersion = typewriterSettings.getString("version") ?: error("Missing version in settings.toml")
+val configuredTypewriterJavaVersion = typewriterSettings.getLong("java")?.toInt() ?: error("Missing java in settings.toml")
+val typewriterVersion = providers.gradleProperty("typewriter.version").getOrElse(configuredTypewriterVersion)
+val typewriterJavaVersion = providers.gradleProperty("typewriter.java")
+    .map(String::toInt)
+    .getOrElse(configuredTypewriterJavaVersion)
+
+group = "com.typewritermc.module-plugin"
+version = "2.1.0"
+
+val engineVersion = typewriterVersion.substringBefore("-beta")
 
 subprojects {
     group = rootProject.group
@@ -29,15 +54,15 @@ allprojects {
 
     dependencies {
         implementation(kotlin("stdlib"))
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
-        implementation("com.google.devtools.ksp:symbol-processing-gradle-plugin:2.0.21-1.0.28")
-        implementation("com.google.devtools.ksp:symbol-processing-api:2.0.21-1.0.28")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+        implementation("com.google.devtools.ksp:symbol-processing-gradle-plugin:2.3.8")
+        implementation("com.google.devtools.ksp:symbol-processing-api:2.3.8")
 
         implementation("com.typewritermc:engine-core:$engineVersion")
 
 
         testImplementation(kotlin("test"))
-        val kotestVersion = "5.9.1"
+        val kotestVersion = "6.1.11"
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
         testImplementation("io.kotest:kotest-property:$kotestVersion")
@@ -47,7 +72,7 @@ allprojects {
         useJUnitPlatform()
     }
     kotlin {
-        jvmToolchain(21)
+        jvmToolchain(typewriterJavaVersion)
     }
 
     publishing {

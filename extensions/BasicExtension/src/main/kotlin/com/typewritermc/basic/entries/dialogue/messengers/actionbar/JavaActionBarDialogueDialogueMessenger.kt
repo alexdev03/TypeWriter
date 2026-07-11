@@ -32,7 +32,7 @@ class JavaActionBarDialogueDialogueMessenger(
     private var typingDuration = Duration.ZERO
     private var playTime = Duration.ZERO
 
-    override var isCompleted: Boolean
+    override var animationComplete: Boolean
         get() = playTime >= typingDuration
         set(value) {
             playTime = if (!value) Duration.ZERO

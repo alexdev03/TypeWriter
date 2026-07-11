@@ -1,11 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.papermc.hangarpublishplugin.model.Platforms
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
-import java.io.ByteArrayOutputStream
 
 plugins {
-    id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
-    id("io.papermc.hangar-publish-plugin") version "0.1.3"
+    id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
+    id("io.papermc.hangar-publish-plugin") version "0.1.4"
 }
 
 repositories {
@@ -23,15 +22,18 @@ repositories {
         url = uri("https://repo.papermc.io/repository/maven-public/")
     }
     // EntityLib
-    maven("https://maven.evokegames.gg/snapshots")
-
+    maven {
+        name = "TypewriterMC"
+        url = uri("https://maven.typewritermc.com/external")
+    }
     maven("https://repo.nexomc.com/releases")
-
     maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
 }
 
 dependencies {
-    compileOnlyApi("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+    val paperVersion = "1.21.11-R0.1-SNAPSHOT"
+//    val paperVersion = "26.2.build.34-alpha"
+    compileOnlyApi("io.papermc.paper:paper-api:$paperVersion")
     compileOnlyApi("io.lettuce:lettuce-core:6.5.2.RELEASE")
 
     api(project(":engine-core"))
@@ -39,36 +41,35 @@ dependencies {
 
     compileOnlyApi("com.corundumstudio.socketio:netty-socketio:1.7.19") // Keep this on a lower version as the newer version breaks the ping
 
-    api("me.tofaa.entitylib:spigot:+bff89d2-SNAPSHOT")
+    api("me.tofaa2:spigot:3.3.4-SNAPSHOT")
     compileOnlyApi("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.22.0")
     compileOnlyApi("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.22.0")
 
     // Doesn't want to load properly using the spigot api.
     compileOnlyApi("io.ktor:ktor-server-core-jvm:2.3.13")
     compileOnlyApi("io.ktor:ktor-server-netty-jvm:2.3.13")
-    compileOnlyApi("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1")
-    compileOnlyApi("org.bstats:bstats-bukkit:3.1.0")
+    compileOnlyApi("org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
+    compileOnlyApi("org.bstats:bstats-bukkit:3.2.1")
 
-    val adventureVersion = "4.22.0"
+    val adventureVersion = "5.1.1"
     compileOnlyApi("net.kyori:adventure-api:$adventureVersion")
     compileOnlyApi("net.kyori:adventure-text-minimessage:$adventureVersion")
     compileOnlyApi("net.kyori:adventure-text-serializer-plain:$adventureVersion")
     compileOnlyApi("net.kyori:adventure-text-serializer-legacy:$adventureVersion")
     compileOnlyApi("net.kyori:adventure-text-serializer-gson:$adventureVersion")
 
-    compileOnlyApi("com.github.retrooper:packetevents-api:2.9.4")
-    compileOnlyApi("com.github.retrooper:packetevents-spigot:2.9.4")
+    compileOnlyApi("com.github.retrooper:packetevents-api:2.13.0")
+    compileOnlyApi("com.github.retrooper:packetevents-spigot:2.13.0")
 
-    compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnlyApi("org.geysermc.geyser:api:2.8.2-SNAPSHOT")
-    compileOnlyApi("org.geysermc.floodgate:api:2.2.4-SNAPSHOT")
-
-    testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.46.3")
+    compileOnly("me.clip:placeholderapi:2.12.2")
+    compileOnlyApi("org.geysermc.geyser:api:2.9.5-SNAPSHOT")
+    compileOnlyApi("org.geysermc.floodgate:api:2.2.5-SNAPSHOT")
     compileOnlyApi("com.nexomc:nexo:1.1.0")
     compileOnlyApi("net.Indyuce:MMOItems-API:6.9.5-SNAPSHOT")
     compileOnly("de.tr7zw:item-nbt-api-plugin:2.15.0")
 
-    testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.18.0")
+    testImplementation("io.papermc.paper:paper-api:$paperVersion")
+    testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.108.0")
 }
 
 tasks.withType<ShadowJar> {
@@ -80,19 +81,20 @@ tasks.withType<ShadowJar> {
     }
 }
 
-tasks.register<ShadowJar>("buildAndMove") {
-    from(tasks.shadowJar)
+tasks.register<Copy>("buildAndMove") {
+    dependsOn(tasks.shadowJar)
+    from(tasks.shadowJar.flatMap { it.archiveFile })
     group = "build"
     description = "Builds the jar and moves it to the server folder"
     outputs.upToDateWhen { false }
 
-    destinationDirectory = file("../../server/plugins")
-    archiveFileName = "Typewriter.${archiveExtension.get()}"
-    manifest.from(tasks.shadowJar.get().manifest)
+    into(file("../../server/plugins"))
+    rename { "Typewriter.jar" }
 }
 
-tasks.register<ShadowJar>("buildRelease") {
-    from(tasks.shadowJar)
+tasks.register<Jar>("buildRelease") {
+    dependsOn(tasks.shadowJar)
+    from(zipTree(tasks.shadowJar.flatMap { it.archiveFile }))
     from("../../app/build/web") {
         into("web")
     }
@@ -101,18 +103,15 @@ tasks.register<ShadowJar>("buildRelease") {
 
     outputs.upToDateWhen { false }
 
-    archiveFileName = "Typewriter-${project.version}.${archiveExtension.get()}"
-    destinationDirectory = file("../../jars/engine")
+    archiveFileName = "Typewriter-${project.version}.jar"
+    destinationDirectory.set(file("../../jars/engine"))
     manifest.from(tasks.shadowJar.get().manifest)
 }
 
 fun executeGitCommand(vararg command: String): String {
-    val byteOut = ByteArrayOutputStream()
-    exec {
-        commandLine = listOf("git", *command)
-        standardOutput = byteOut
-    }
-    return byteOut.toString(Charsets.UTF_8.name()).trim()
+    return providers.exec {
+        commandLine("git", *command)
+    }.standardOutput.asText.get().trim()
 }
 
 fun latestCommitMessage(): String {
@@ -170,12 +169,12 @@ paperPluginYaml {
     foliaSupported = false
 
     dependencies {
-        server("packetevents", load = PaperPluginYaml.Load.AFTER, required = true, joinClasspath = true)
-        server("PlaceholderAPI", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
-        server("floodgate", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
-        server("MMOItems", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
-        server("Nexo", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
-        server("NBTAPI", load = PaperPluginYaml.Load.AFTER, required = false, joinClasspath = true)
+        server("packetevents", load = PaperPluginYaml.Load.BEFORE, required = true, joinClasspath = true)
+        server("PlaceholderAPI", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+        server("floodgate", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+        server("MMOItems", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+        server("Nexo", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+        server("NBTAPI", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
     }
 
     loader = "com.typewritermc.engine.paper.TypewriterPaperLoader"

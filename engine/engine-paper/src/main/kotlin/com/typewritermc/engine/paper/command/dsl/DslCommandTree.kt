@@ -43,6 +43,12 @@ abstract class DslCommandTree<S, A : ArgumentBuilder<S, A>> {
     }
 
     fun literal(literal: String, block: LiteralCommandTree<S>.() -> Unit = {}): LiteralCommandTree<S> {
+        val existing = children.filterIsInstance<LiteralCommandTree<S>>().firstOrNull { it.literal == literal }
+        if (existing != null) {
+            existing.apply(block)
+            return existing
+        }
+
         val literalCommandTree = LiteralCommandTree<S>(literal).apply(block)
         children.add(literalCommandTree)
         return literalCommandTree
@@ -81,7 +87,7 @@ abstract class DslCommandTree<S, A : ArgumentBuilder<S, A>> {
 }
 
 class LiteralCommandTree<S>(
-    private val literal: String,
+    val literal: String,
 ) : DslCommandTree<S, LiteralArgumentBuilder<S>>() {
     override fun buildArgument(): LiteralArgumentBuilder<S> {
         return LiteralArgumentBuilder.literal(literal)

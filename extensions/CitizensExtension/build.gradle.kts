@@ -6,7 +6,7 @@ repositories {
 
 dependencies {
     // External dependencies
-    compileOnly("net.citizensnpcs:citizens-main:2.0.38-SNAPSHOT") {
+    compileOnly("net.citizensnpcs:citizens-main:2.0.41-SNAPSHOT") {
         exclude(group = "*", module = "*")
     }
 }
@@ -22,7 +22,7 @@ typewriter {
             |Letting you to create dialogues, actions, and more when interacting with NPCs.
         """.trimMargin()
         flag(ExtensionFlag.Unsupported)
-        engineVersion = file("../../version.txt").readText().trim()
+        engineVersion = rootProject.extra["typewriterEngineVersion"] as String
         channel = com.typewritermc.moduleplugin.ReleaseChannel.NONE
 
         paper {

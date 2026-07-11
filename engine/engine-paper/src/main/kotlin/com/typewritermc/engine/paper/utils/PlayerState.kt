@@ -11,7 +11,7 @@ import com.github.retrooper.packetevents.util.Dummy
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetSlot
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTimeUpdate
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowItems
-import com.typewritermc.engine.paper.utils.serverVersion
+import com.typewritermc.core.utils.point.Vector
 import com.typewritermc.engine.paper.extensions.packetevents.sendPacketTo
 import com.typewritermc.engine.paper.interaction.InterceptionBundle
 import com.typewritermc.engine.paper.plugin
@@ -46,6 +46,7 @@ enum class GenericPlayerStateProvider(private val store: Player.() -> Any, priva
         resetPlayerTime()
         WrapperPlayServerTimeUpdate(world.gameTime, playerTime).sendPacketTo(this)
     }),
+    VELOCITY({ velocity.toVector() }, { velocity = (it as Vector).toBukkitVector() }),
 
     // All Players that are visible to the player
     VISIBLE_PLAYERS({
@@ -126,6 +127,10 @@ fun Player.state(keys: Array<out PlayerStateProvider>): PlayerState {
     return PlayerState(keys.associateWith { it.store(this) })
 }
 
+fun Player.state(keys: List<PlayerStateProvider>): PlayerState {
+    return PlayerState(keys.associateWith { it.store(this) })
+}
+
 fun Player.restore(state: PlayerState?) {
     state?.state?.forEach { (key, value) -> key.restore(this, value) }
 }
@@ -163,7 +168,7 @@ fun Player.fakeClearInventory() {
 fun Player.restoreInventory() {
     // I can't be bother to transform the ids from the normal version to the weird version need for the WrapperPlayServerWindowItems
     // So we just send many packets instead
-    for (i in 0..46) {
+    for (i in 0..45) {
         val item = inventory.getItem(i) ?: ItemStack.empty()
 
         val packet = WrapperPlayServerSetSlot(-2, 0, i, SpigotReflectionUtil.decodeBukkitItemStack(item))

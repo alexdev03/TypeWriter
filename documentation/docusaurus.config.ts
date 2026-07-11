@@ -25,7 +25,6 @@ const config: Config = {
   organizationName: "gabber235",
   projectName: "Typewriter",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
   clientModules: [require.resolve("./src/css/custom.css")],
   i18n: {
     defaultLocale: "en",
@@ -34,6 +33,9 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
     mdx1Compat: {
       comments: false,
       admonitions: false,
@@ -119,11 +121,6 @@ const config: Config = {
       theme: {
         customCss: require.resolve("./src/css/custom.css"),
       },
-      announcementBar: {
-        id: "support_us",
-        content: "Typewriter 0.8.0 is out!",
-        isCloseable: true,
-      },
       mermaid: {
         theme: { light: "base", dark: "base" },
         options: {
@@ -198,8 +195,8 @@ const config: Config = {
                 to: "/docs/home",
               },
               {
-                label: "Clickup",
-                href: "https://sharing.clickup.com/9015308602/l/h/6-901502296591-1/e32ea9f33a22632",
+                label: "Fibery",
+                href: "https://typewriter.fibery.io/@public/Development/Current-Tasks-84",
               },
               {
                 label: "Privacy Policy",

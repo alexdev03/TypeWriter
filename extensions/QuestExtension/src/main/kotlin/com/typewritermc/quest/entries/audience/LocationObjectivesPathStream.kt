@@ -9,7 +9,8 @@ import com.typewritermc.core.extension.annotations.Entry
 import com.typewritermc.engine.paper.entry.descendants
 import com.typewritermc.engine.paper.entry.entries.AudienceDisplay
 import com.typewritermc.engine.paper.entry.entries.AudienceEntry
-import com.typewritermc.quest.trackedShowingObjectives
+import com.typewritermc.quest.entries.audience.objectives.concrete.LocationObjectiveEntry
+import com.typewritermc.quest.entries.trackedShowingObjectives
 import com.typewritermc.roadnetwork.RoadNetworkEntry
 import com.typewritermc.roadnetwork.entries.MultiPathStreamDisplay
 import com.typewritermc.roadnetwork.entries.PathStreamDisplayEntry
@@ -22,6 +23,7 @@ import com.typewritermc.roadnetwork.entries.highestPathStreamDisplayEntry
     Colors.GREEN,
     "material-symbols:conversion-path"
 )
+@Deprecated("Move to the new LocatableObjectivesPathStream")
 /**
  * The `Location Objectives Path Stream` entry is a path stream that shows the path to each tracked location objective.
  * When the player has a location objective, and the quest for the objective is tracked, a path stream will be displayed.
@@ -35,6 +37,7 @@ class LocationObjectivesPathStream(
     val display: Ref<PathStreamDisplayEntry> = emptyRef(),
     val road: Ref<RoadNetworkEntry> = emptyRef(),
 ) : AudienceEntry {
+    // As displays and references can't change (except between reloads) we can just cache all relevant ones here for quick access.
     private val objectiveDisplays: Map<Ref<LocationObjectiveEntry>, List<Ref<PathStreamDisplayEntry>>> by lazy(
         LazyThreadSafetyMode.NONE
     ) {

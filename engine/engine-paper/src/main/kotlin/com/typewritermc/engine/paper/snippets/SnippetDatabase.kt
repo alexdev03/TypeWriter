@@ -32,21 +32,7 @@ class SnippetDatabaseImpl : SnippetDatabase, KoinComponent {
         val cached = cache[path]
         if (cached != null) return cached
 
-        val value = ymlConfiguration.get(path)
-
-        if (value == null) {
-            ymlConfiguration.set(path, default)
-            if (comment.isNotBlank()) {
-                ymlConfiguration.setComments(path, comment.lines())
-            }
-            try {
-                ymlConfiguration.save(file)
-                println("Saved $path")
-            } catch (e: Exception) {
-                plugin.logger.log(Level.SEVERE, "Could not save config file for $path", e)
-            }
-            return default
-        }
+        val value = ymlConfiguration.get(path) ?: return default
 
         cache[path] = value
         return value
@@ -55,15 +41,8 @@ class SnippetDatabaseImpl : SnippetDatabase, KoinComponent {
     override fun <T : Any> getSnippet(path: String, klass: KClass<T>, default: T, comment: String): T {
         val value = get(path, default, comment)
 
-        // First, try a direct cast. This will work for non-numeric types and
-        // when the numeric type is already correct.
-        val casted = klass.safeCast(value)
-        if (casted != null) {
-            return casted
-        }
+        klass.safeCast(value)?.let { return it }
 
-        // If the direct cast fails, check for number conversion.
-        // This handles cases like reading a Double from YAML when a Float is needed.
         if (value is Number) {
             val converted: Any? = when (klass) {
                 Float::class -> value.toFloat()
@@ -72,7 +51,7 @@ class SnippetDatabaseImpl : SnippetDatabase, KoinComponent {
                 Long::class -> value.toLong()
                 Short::class -> value.toShort()
                 Byte::class -> value.toByte()
-                else -> null // Not a numeric type we can handle here
+                else -> null
             }
 
             @Suppress("UNCHECKED_CAST")
@@ -82,9 +61,10 @@ class SnippetDatabaseImpl : SnippetDatabase, KoinComponent {
             }
         }
 
-        // If all casting and conversion fails, the type is genuinely wrong.
-        // Reset it to the default, save, and log the issue.
-        plugin.logger.warning("Type mismatch for snippet '$path'. Expected ${klass.simpleName} but found ${value::class.simpleName}. Resetting to default value.")
+        plugin.logger.warning(
+            "Type mismatch for snippet '$path'. Expected ${klass.simpleName} but found " +
+                "${value::class.simpleName}. Resetting to default value."
+        )
         ymlConfiguration.set(path, default)
         if (comment.isNotBlank()) {
             ymlConfiguration.setComments(path, comment.lines())
@@ -100,6 +80,14 @@ class SnippetDatabaseImpl : SnippetDatabase, KoinComponent {
     }
 
     override fun registerSnippet(path: String, defaultValue: Any, comment: String) {
-        get(path, defaultValue, comment)
+        if (ymlConfiguration.contains(path)) return
+
+        ymlConfiguration.set(path, defaultValue)
+        if (comment.isNotBlank()) {
+            ymlConfiguration.setComments(path, comment.lines())
+        }
+        ymlConfiguration.save(file)
+
+        cache[path] = defaultValue
     }
 }
